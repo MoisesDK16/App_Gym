@@ -1,0 +1,102 @@
+<div class="menu-container">
+  <div class="menu">
+    <div class="menu-header">
+      <button (click)="setActiveMenu('fact-Producto')">Facturación de Productos</button>
+      <button (click)="setActiveMenu('Fact-Renovacion_membresia')">Facturación de Renovación de Membresías</button>
+      <button (click)="setActiveMenu('fact-Compra_membresia')">Facturación de Adquisición de Membresías</button>
+    </div>
+    <div class="menu-content">
+      <ng-container *ngIf="activeMenu === 'fact-Producto'">
+        <h2 style="text-align: center;">Factura Proforma</h2>
+        <div class="factura-container">
+          <div class="factura-header">
+            <div class="empresa-info">
+              <p><strong>GYM CIUDAD VERDE</strong></p>
+              <p>TELÉFONO: [Teléfono]</p>
+              <p>EMAIL: [Correo electrónico]</p>
+            </div>
+            <div class="factura-info">
+              <p><strong>DATOS DEL CLIENTE</strong></p>
+              <p>IDENTIFICACION: </p>
+              <P>NOMBRE: </P>
+              <P>CORREO: </P>
+            </div>
+            <div class="factura-info">
+              <p><strong>DATOS DEL VENDEDOR</strong></p>
+              <p>VENDEDOR: [Vendedor]</p>
+              <p>CORREO: </p>
+              <p>TELÉFONO: [Teléfono]</p>
+            </div>
+          </div>
+
+          <div class="factura-producto">
+            <div>
+              <p><strong>CODIGO DE PRODUCTO</strong></p>
+              <input #productoInput (keyup.enter)="unoProducto(productoInput.value)" id="buscador-producto">
+              <button (click)="unoProducto(productoInput.value)">Buscar</button>
+            </div>
+            <div style="margin-left: 2rem;">
+              <p><strong>NOMBRE</strong></p>
+              <input [value]="producto.nombre" readonly>
+            </div>
+            <div style="margin-left: 2rem;">
+              <p><strong>CANTIDAD</strong></p>
+              <input [(ngModel)]="detalle.cantidad" style="width: 5rem;" id="cantidad-producto">               
+            </div>
+            <div id="btn-group-productos" style="margin-left: 2rem;">
+              <p><strong>OPERACIONES</strong></p>
+              <button (click)="agregarDetalle()"><strong>Añadir</strong></button>
+              <button style="margin-left: 1rem;"><strong>Eliminar</strong></button>
+            </div>
+          </div>
+
+          <table class="factura-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>PRODUCTO</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+                <th>SUB TOTAL</th>
+                <th>ACCION</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let detalle of detalles; let i = index">
+              <tr>
+                <td>{{detalle.producto.id_producto}}</td> 
+                <td>{{detalle.producto.nombre}}</td>
+                <td>{{detalle.cantidad}}</td>
+                <td>{{detalle.precio}}</td>
+                <td>{{detalle.total}}</td>
+                <td>
+                  <button (click)="eliminarDetalle(i)" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                </td>
+              </tr>
+              <!-- Agrega más filas según sea necesario -->
+            </tbody>
+          </table>
+
+          <div class="factura-pie">
+            <p><strong>SUBTOTAL:</strong>{{factura.subtotal}} $</p>
+            <p><strong>IVA:</strong> {{factura.iva}} $</p>
+            <p><strong>TOTAL:</strong>{{factura.total}} $</p>
+          </div>
+
+          <div id="pagar-productos">
+            <button>Pagar</button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="activeMenu === 'Fact-Renovacion_membresia'">
+        <p>Facturación de Renovación de Membresías</p>
+        <!-- Implementa la estructura similar para renovación de membresías -->
+      </ng-container>
+
+      <ng-container *ngIf="activeMenu === 'fact-Compra_membresia'">
+        <p>Facturación de Adquisición de Membresías</p>
+        <!-- Implementa la estructura similar para compra de membresías -->
+      </ng-container>
+    </div>
+  </div>
+</div>
