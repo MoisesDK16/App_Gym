@@ -12,12 +12,13 @@
           <div class="factura-header">
             <div class="empresa-info">
               <p><strong>GYM CIUDAD VERDE</strong></p>
-              <p>TELÉFONO: [Teléfono]</p>
+              <p>RUC: <input [(ngModel)]="ruc" id="ruc"> </p>
+              <p>TELÉFONO: [Teléfono]</p> 
               <p>EMAIL: [Correo electrónico]</p>
             </div>
             <div class="factura-info">
               <p><strong>DATOS DEL CLIENTE</strong></p>
-              <p>IDENTIFICACION: </p>
+              <p>IDENTIFICACION: <input [(ngModel)]="id_cliente" id="id_cliente"></p>
               <P>NOMBRE: </P>
               <P>CORREO: </P>
             </div>
@@ -83,7 +84,7 @@
           </div>
 
           <div id="pagar-productos">
-            <button>Pagar</button>
+            <button (click)="pagar()" id="btn-pagar">Pagar</button>
           </div>
         </div>
       </ng-container>

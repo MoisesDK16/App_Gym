@@ -1,5 +1,5 @@
 export class Factura {
-  id_factura?: number;
+  idFactura: number;
   usuario?: {
     id_usuario: number;
     nombre: string; 
@@ -7,24 +7,29 @@ export class Factura {
   cliente: {
     id_cliente: string;
   };
-  fecha_emision: Date;
-  metodo_pago: string;
+  ruc: string;
+  fechaEmision: Date;
+  metodoPago: string;
   subtotal: number;
   iva: number;
   total: number;
 
   constructor(
-    cliente: { id_cliente: string},
-    fecha_emision: Date,
-    metodo_pago: string,
+    idFactura: number,
+    cliente: { id_cliente: string },
+    ruc: string,
+    fechaEmision: Date,
+    metodoPago: string,
     subtotal: number,
     iva: number,
     total: number,
     usuario?: { id_usuario: number, nombre: string }
   ) {
+    this.idFactura = idFactura;
     this.cliente = cliente;
-    this.fecha_emision = fecha_emision;
-    this.metodo_pago = metodo_pago;
+    this.ruc = ruc;
+    this.fechaEmision = fechaEmision;
+    this.metodoPago = metodoPago;
     this.subtotal = subtotal;
     this.iva = iva;
     this.total = total;
