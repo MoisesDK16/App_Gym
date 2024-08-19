@@ -12,21 +12,26 @@
           <div class="factura-header">
             <div class="empresa-info">
               <p><strong>GYM CIUDAD VERDE</strong></p>
-              <p>RUC: <input [(ngModel)]="ruc" id="ruc"> </p>
-              <p>TELÉFONO: [Teléfono]</p> 
-              <p>EMAIL: [Correo electrónico]</p>
+              <p>RUC: <input type="text" [(ngModel)]="ruc" id="ruc" disabled="true"></p>
+              <p>TELÉFONO: <input type="text" [value]="0129289823" disabled="true"> </p>
+              <p>EMAIL: <input style="width: 15rem;" type="text" value="gymCiudadVerde@gmail.com" disabled="true"></p>
             </div>
             <div class="factura-info">
               <p><strong>DATOS DEL CLIENTE</strong></p>
-              <p>IDENTIFICACION: <input [(ngModel)]="id_cliente" id="id_cliente"></p>
-              <P>NOMBRE: </P>
-              <P>CORREO: </P>
+              <p>IDENTIFICACION: 
+                <input style="width: 10rem; margin-right: 0.5rem;" [(ngModel)]="id_cliente" id="id_cliente">
+                <button (click)="openModal()" class="btn btn-success"><i class="bi bi-search"></i></button>
+              </p>
+              <label for="id_nombre">NOMBRE: </label>
+              <p id="id_nombre">{{cliente.nombre}} {{cliente.primer_apellido}} {{cliente.segundo_apellido}}</p> 
+              <label for="id_correo_cliente">CORREO:</label>
+              <p id="id_correo_cliente">{{cliente.correo}}</p>
             </div>
             <div class="factura-info">
               <p><strong>DATOS DEL VENDEDOR</strong></p>
-              <p>VENDEDOR: [Vendedor]</p>
-              <p>CORREO: </p>
-              <p>TELÉFONO: [Teléfono]</p>
+              <p>VENDEDOR:</p>
+              <p>CORREO:</p>
+              <p>TELÉFONO:</p>
             </div>
           </div>
 
@@ -34,7 +39,7 @@
             <div>
               <p><strong>CODIGO DE PRODUCTO</strong></p>
               <input #productoInput (keyup.enter)="unoProducto(productoInput.value)" id="buscador-producto">
-              <button (click)="unoProducto(productoInput.value)">Buscar</button>
+              <button (click)="unoProducto(productoInput.value)"><i class="bi bi-search"></i></button>
             </div>
             <div style="margin-left: 2rem;">
               <p><strong>NOMBRE</strong></p>
@@ -42,7 +47,7 @@
             </div>
             <div style="margin-left: 2rem;">
               <p><strong>CANTIDAD</strong></p>
-              <input [(ngModel)]="detalle.cantidad" style="width: 5rem;" id="cantidad-producto">               
+              <input type="number" [(ngModel)]="detalle.cantidad" style="width: 5rem;" id="cantidad-producto">
             </div>
             <div id="btn-group-productos" style="margin-left: 2rem;">
               <p><strong>OPERACIONES</strong></p>
@@ -63,8 +68,8 @@
               </tr>
             </thead>
             <tbody *ngFor="let detalle of detalles; let i = index">
-              <tr>
-                <td>{{detalle.producto.id_producto}}</td> 
+              <tr *ngIf="detalle.cantidad>0">
+                <td>{{detalle.producto.id_producto}}</td>
                 <td>{{detalle.producto.nombre}}</td>
                 <td>{{detalle.cantidad}}</td>
                 <td>{{detalle.precio}}</td>
@@ -78,9 +83,9 @@
           </table>
 
           <div class="factura-pie">
-            <p><strong>SUBTOTAL:</strong>{{factura.subtotal}} $</p>
-            <p><strong>IVA:</strong> {{factura.iva}} $</p>
-            <p><strong>TOTAL:</strong>{{factura.total}} $</p>
+            <p><strong>SUBTOTAL: </strong>{{factura.subtotal}} $</p>
+            <p><strong>IVA: </strong> {{factura.iva}} $</p>
+            <p><strong>TOTAL: </strong>{{factura.total}} $</p>
           </div>
 
           <div id="pagar-productos">
@@ -101,3 +106,57 @@
     </div>
   </div>
 </div>
+
+<div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Buscar Cliente</h5>
+        <button type="button" (click)="buscarCliente()" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input id="buscador-cliente"
+          (keyup.enter)="buscarCliente()" 
+          [(ngModel)]="id_cliente" 
+          type="text" 
+          placeholder="Buscar por identificación" 
+          class="form-control mb-3"
+        />
+        
+        <!-- Tabla para mostrar los clientes -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>DNI</th>
+              <th>Tipo DNI</th>
+              <th>Nombre</th>
+              <th>Primer Apellido</th>
+              <th>Segundo Apellido</th>
+              <th>Correo</th>
+              <th>Clave</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{cliente.id_cliente}}</td>
+              <td>{{cliente.tipo_identificacion}}</td>
+              <td>{{cliente.nombre}}</td>
+              <td>{{cliente.primer_apellido}}</td>
+              <td>{{cliente.segundo_apellido}}</td>
+              <td>{{cliente.correo}}</td>
+              <td>{{cliente.clave}}</td>
+              <td>{{cliente.direccion}}</td>
+              <td>{{cliente.telefono}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

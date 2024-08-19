@@ -1,27 +1,43 @@
 import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Productos } from '../../models/Productos';
 import { ProductoService } from '../../services/producto-service';
 import { Detalle } from '../../models/Detalle';
 import { FormsModule } from '@angular/forms';
 import { Factura } from '../../models/Factura';
 import { FacturacionCajaService } from '../../services/facturacion-caja.service';
-import { Observable } from 'rxjs/internal/Observable';
+import { ClienteResponse, Clientes } from '../../models/Clientes';
+import { ClienteService } from '../../services/cliente-service';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-facturacion-caja',
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, CommonModule],
+  imports: [
+    NgIf,
+    NgFor,
+    FormsModule,
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+  ],
   templateUrl: './facturacion-caja.component.html',
   styleUrl: './facturacion-caja.component.css',
 })
 export class FacturacionCajaComponent implements OnInit {
   id_cliente: string = '';
-  ruc: string = '';
+  ruc: string = '54656465465';
   fecha_emision: Date = new Date();
   detalles: Detalle[] = [];
   productos: Productos[] = [];
 
+  //Estados
+  estado: string = '';
   detalle: Detalle = new Detalle({ id_producto: '', nombre: '' }, 0, 0, 0, {
     idFactura: 0,
   });
@@ -48,13 +64,31 @@ export class FacturacionCajaComponent implements OnInit {
     0 // total
   );
 
+  cliente: Clientes = new Clientes('', '', '', '', '', '', '', '', '');
+
   activeMenu: string = 'fact-Producto'; // Inicia con el menú primario activo
 
   constructor(
     private _productoService: ProductoService,
     private _FacturaService: FacturacionCajaService,
-    private _DetalleService: FacturacionCajaService
+    private _DetalleService: FacturacionCajaService,
+    private _ClienteService: ClienteService
   ) {}
+
+  buscarCliente(): void {
+    this._ClienteService.unoCliente(this.id_cliente).subscribe((data) => {
+      this.cliente = data;
+      console.log(this.cliente);
+    });
+  }
+
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  setActiveMenu(menu: string): void {
+    this.activeMenu = menu;
+  }
 
   resetProducto() {
     this.producto = new Productos(
@@ -76,12 +110,8 @@ export class FacturacionCajaComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
-
-  setActiveMenu(menu: string): void {
-    this.activeMenu = menu;
+  resetEstado() {
+    this.estado = '';
   }
 
   unoProducto(id: string): void {
@@ -98,6 +128,16 @@ export class FacturacionCajaComponent implements OnInit {
   }
 
   agregarDetalle(): void {
+    if (this.detalle.cantidad <= 0) {
+      console.log('la cantidad debe ser mayor a 0');
+      return;
+    }
+
+    if (this.producto.stock < this.detalle.cantidad) {
+      console.log('stock insuficiente');
+      return;
+    }
+
     this.productos.push(this.producto);
     this.detalle.producto = this.producto;
     this.detalle.precio = this.producto.precio_venta;
@@ -106,6 +146,7 @@ export class FacturacionCajaComponent implements OnInit {
 
     console.log(this.productos);
     console.log(this.detalles);
+
     this.calcularSubtotalFactura();
     this.calcularIva();
     this.calcularTotalFactura();
@@ -149,16 +190,16 @@ export class FacturacionCajaComponent implements OnInit {
       this.ruc,
       this.fecha_emision,
       'EFECTIVO',
-      this.factura.subtotal, // subtotal
-      this.factura.iva, // iva
-      this.factura.total // total
+      this.factura.subtotal,
+      this.factura.iva,
+      this.factura.total
     );
 
     this._FacturaService.generarFactura(this.factura).subscribe(
       (data: Factura) => {
         this.factura = data;
         console.log('id Factura generada:', this.factura.idFactura);
-        this.generarDetalles(); 
+        this.generarDetalles();
       },
       (error) => {
         console.error('Error al generar la factura:', error);
@@ -167,17 +208,58 @@ export class FacturacionCajaComponent implements OnInit {
   }
 
   generarDetalles(): void {
-    // Generar los detalles solo después de obtener la última factura
     for (const detalle of this.detalles) {
-      detalle.factura = { idFactura: this.factura.idFactura};
+      console.log("Detalle Productos: "+ detalle.producto.id_producto);
+      detalle.factura = { idFactura: this.factura.idFactura };
       this._DetalleService.generarDetalle(detalle).subscribe(
         (data: Detalle) => {
           console.log('Detalle generado:', data);
+          // Llamar a actualizarStock con el producto y la cantidad del detalle
+          this.actualizarStock(detalle.producto.id_producto, detalle.cantidad);
         },
         (error) => {
           console.error('Error al generar el detalle:', error);
         }
       );
+    }
+  }
+  
+  actualizarStock(id_producto: string , cantidad: number): void {
+
+    this._productoService
+      .actualizarStock(id_producto, cantidad)
+      .subscribe(
+        (data) => {
+          console.log('Stock actualizado:', data);
+        }
+      );
+  }
+  
+
+  openModal(): void {
+    const modalDiv = document.getElementById('myModal');
+    if (modalDiv != null) {
+      modalDiv.classList.add('show');
+      modalDiv.style.display = 'block';
+      document.body.classList.add('modal-open');
+      const backdrop = document.createElement('div');
+      backdrop.classList.add('modal-backdrop', 'fade', 'show');
+      document.body.appendChild(backdrop);
+      console.log(this.estado);
+    }
+  }
+
+  closeModal(): void {
+    const modalDiv = document.getElementById('myModal');
+    if (modalDiv != null) {
+      this.resetEstado();
+      modalDiv.classList.remove('show');
+      modalDiv.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        document.body.removeChild(backdrop);
+      }
     }
   }
 }

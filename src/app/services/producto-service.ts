@@ -4,19 +4,19 @@ import { map, Observable } from 'rxjs';
 import { ProductoResponse, Productos } from '../models/Productos';
 import { Categorias, CategoriasResponse } from '../models/Categorias';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ProductoService{
+export class ProductoService {
+  private url: string = 'api/productos';
+  private urlCategorias: string = 'api/categorias';
 
-  private url: string = "api/productos";
-  private urlCategorias: string = "api/categorias";
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getProductos(page: number, size: number): Observable<ProductoResponse> {
-    return this.http.get<ProductoResponse>(`${this.url}/all?page=${page}&size=${size}`);
+    return this.http.get<ProductoResponse>(
+      `${this.url}/all?page=${page}&size=${size}`
+    );
   }
 
   registrarProducto(producto: Productos): Observable<any> {
@@ -24,7 +24,10 @@ export class ProductoService{
   }
 
   actualizarProducto(producto: Productos): Observable<any> {
-    return this.http.put<any>(`${this.url}/actualizar/${producto.id_producto}`, producto);
+    return this.http.put<any>(
+      `${this.url}/actualizar/${producto.id_producto}`,
+      producto
+    );
   }
 
   eliminarProducto(id_producto: string): Observable<any> {
@@ -38,4 +41,9 @@ export class ProductoService{
   listarCategorias(): Observable<CategoriasResponse[]> {
     return this.http.get<CategoriasResponse[]>(`${this.urlCategorias}/all`);
   }
+
+  actualizarStock(id_producto: string, cantidad: number): Observable<any> {
+    return this.http.post<any>(`${this.url}/actualizarStock/${id_producto}/${cantidad}`, {});
+  }
+  
 }

@@ -74,3 +74,17 @@
   width: 10rem;
   border-radius: 3rem;
 }
+
+.modal-dialog{
+  margin-right: 70rem;
+}
+
+.modal-content{
+  width: 80rem;
+}
+
+#buscador-cliente{
+  width: 15rem;
+  margin: auto;
+  justify-content: center;
+}

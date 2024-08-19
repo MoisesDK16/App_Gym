@@ -30,8 +30,8 @@ export class ClienteService {
     return this.http.delete<any>(`${this.url}/eliminar/${id_cliente}`);
   }
 
-  unoCliente(id_cliente: string): Observable<Clientes> {
-    return this.http.get<Clientes>(`${this.url}/${id_cliente}`);
+  unoCliente(id_cliente: string): Observable<any> {
+    return this.http.get<any>(`${this.url}/${id_cliente}`);
   }
 
 }
