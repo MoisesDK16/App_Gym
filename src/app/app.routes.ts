@@ -5,6 +5,8 @@ import { CatalogoProductosComponent } from './components/catalogo-productos/cata
 import { CatalogoPlanesComponent } from './components/catalogo-planes/catalogo-planes.component';
 import { PlanesComponent } from './components/planes/planes.component';
 import { FacturacionCajaComponent } from './components/facturacion-caja/facturacion-caja.component';
+import { ServiciosComponent } from './components/servicio/servicio.component';
+import { FacturasComponent } from './components/facturas/facturas.component';
 
 export const routes: Routes = [
     {path: 'cliente' , component: ClienteComponent}, 
@@ -12,5 +14,7 @@ export const routes: Routes = [
     {path: 'planes' , component: PlanesComponent},
     {path: 'catalogo_productos', component: CatalogoProductosComponent},
     {path: 'catalogo-planes', component: CatalogoPlanesComponent},
-    {path: 'facturacion-caja', component: FacturacionCajaComponent}
+    {path: 'facturacion-caja', component: FacturacionCajaComponent},
+    {path: 'servicios', component: ServiciosComponent},
+    {path: 'facturas', component: FacturasComponent}
 ];

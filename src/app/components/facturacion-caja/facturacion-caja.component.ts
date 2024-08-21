@@ -55,7 +55,7 @@ export class FacturacionCajaComponent implements OnInit {
 
   factura: Factura = new Factura(
     0,
-    { id_cliente: '' }, // Objeto cliente con id_cliente
+    {id_cliente: '', nombre: '', primer_apellido: ''}, // Objeto cliente con id_cliente
     '',
     new Date(), // fecha_emision
     '', // metodo_pago
@@ -186,7 +186,7 @@ export class FacturacionCajaComponent implements OnInit {
   generarFactura(): void {
     this.factura = new Factura(
       0,
-      { id_cliente: this.id_cliente },
+      { id_cliente: this.id_cliente, nombre: this.cliente.nombre, primer_apellido: this.cliente.primer_apellido },
       this.ruc,
       this.fecha_emision,
       'EFECTIVO',

@@ -7,11 +7,10 @@ export interface CategoriasResponse {
 }
 
 export class Categorias {
-  id_categoria: number;
+  id_categoria?: number;
   categoria: string;
 
-  constructor(id_categoria: number, categoria: string) {
-    this.id_categoria = id_categoria;
+  constructor(categoria: string) {
     this.categoria = categoria;
   }
 }

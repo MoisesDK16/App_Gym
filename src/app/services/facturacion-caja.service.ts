@@ -24,4 +24,20 @@ export class FacturacionCajaService {
   getLastFactura(id_cliente: string): Observable<Factura> {
     return this.http.get<Factura>(`${this.urlFacturacion}/last/${id_cliente}`);
   }
+
+  listarFacturas(): Observable<Factura[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all`);
+  }
+
+  downloadFacturasPDF(): Observable<Blob> {
+    return this.http.get(`${this.urlFacturacion}/all?format=pdf`, {
+      responseType: 'blob'
+    });
+  }
+  
+
+  listarDetallesFactura(idFactura: number): Observable<Detalle[]> {
+    return this.http.get<Detalle[]>(`${this.urlDetalles}/listar/${idFactura}`);
+  }
+
 }

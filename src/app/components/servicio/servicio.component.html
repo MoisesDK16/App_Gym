@@ -1,0 +1,95 @@
+<h2 style="text-align: center; margin-top: 2rem;">CRUD SERVICIOS</h2>
+
+<div style="margin-top: 2rem; margin-bottom: 2rem; margin-left: 7rem;">
+  <button style="font-size: medium;" (click)="openModal(); resetEstado()" type="button" class="btn btn-primary">
+    Insertar Servicio
+  </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Servicio</h1>
+        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formServicios">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" [(ngModel)]="servicio.nombre" name="nombre" class="form-control" id="nombre">
+          </div>
+          <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select [(ngModel)]="servicio.categoria.id_categoria" name="categoria" class="form-control" id="categoria">
+              <option *ngFor="let categoria of categorias" [value]="categoria.id_categoria">{{categoria.categoria}}</option>
+           </select>
+          </div>
+          <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <input type="number" [(ngModel)]="servicio.precio" name="precio" class="form-control" id="precio">
+          </div>
+          <button class="btn btn-primary" type="button" (click)="estado ? actualizarServicio() : registrarServicio()">Agregar Servicio</button>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mat-elevation-z8" id="table-container">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- Nombre Servicio Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    </ng-container>
+
+    <!-- Categoría Column -->
+    <ng-container matColumnDef="categoria">
+      <th mat-header-cell *matHeaderCellDef> Categoría </th>
+      <td mat-cell *matCellDef="let element"> {{element.categoria.categoria}} </td>
+    </ng-container>
+
+    <!-- Precio Column -->
+    <ng-container matColumnDef="precio">
+      <th mat-header-cell *matHeaderCellDef> Precio </th>
+      <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+    </ng-container>
+
+    <!-- Acciones Column -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="d-flex justify-content-center">
+          <button (click)="unoServicio(element.id_servicio)" style="margin-right: 0.25rem;" type="button" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button (click)="eliminarServicio(element.id_servicio)" style="margin-right: 0.25rem;" type="button" class="btn btn-danger">
+            <i class="bi bi-trash"></i>
+          </button>
+          <button type="button" class="btn btn-info">INFO</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator 
+    [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]" 
+    showFirstLastButtons 
+    aria-label="Select page of periodic elements"
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+
+</div>
+

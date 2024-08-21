@@ -2,10 +2,12 @@ export class Factura {
   idFactura: number;
   usuario?: {
     id_usuario: number;
-    nombre: string; 
+    nombre: string;
   };
   cliente: {
     id_cliente: string;
+    nombre:string;
+    primer_apellido:string;
   };
   ruc: string;
   fechaEmision: Date;
@@ -16,7 +18,7 @@ export class Factura {
 
   constructor(
     idFactura: number,
-    cliente: { id_cliente: string },
+    cliente: { id_cliente: string, nombre:string, primer_apellido:string},
     ruc: string,
     fechaEmision: Date,
     metodoPago: string,
