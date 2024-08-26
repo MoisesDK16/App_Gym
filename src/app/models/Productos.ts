@@ -19,6 +19,7 @@ export class Productos {
   precio_venta: number;
   fecha_caducacion: Date;
   descripcion: string;
+  imagen: string
   
   constructor(
     id_producto: string,
@@ -29,7 +30,8 @@ export class Productos {
     margen_ganancia: number,
     precio_venta: number,
     fecha_caducacion: Date,
-    descripcion: string
+    descripcion: string,
+    imagen: string
   ) {
     this.id_producto = id_producto;
     this.nombre = nombre;
@@ -40,5 +42,6 @@ export class Productos {
     this.precio_venta = precio_venta;
     this.fecha_caducacion = fecha_caducacion;
     this.descripcion = descripcion;
+    this.imagen = imagen;
   }
 }

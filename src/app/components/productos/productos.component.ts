@@ -17,7 +17,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 export class ProductosComponent implements OnInit, AfterViewInit {
 
   productos: Productos[] = [];
-  producto: Productos = new Productos('', '', { id_categoria: '', categoria: '' }, 0, 0, 0, 0, new Date(), '');
+  producto: Productos = new Productos('', '', { id_categoria: '', categoria: '' }, 0, 0, 0, 0, new Date(), '', '');
   estado: string = "";
   margen_ganancias: number[] = [5, 10, 15, 20, 25, 30, 40, 50];
   margen_ganancia_porcentual: number = 0;
@@ -44,7 +44,7 @@ export class ProductosComponent implements OnInit, AfterViewInit {
 
   resetEstado() {
     this.estado = "";
-    this.producto = new Productos('', '', { id_categoria: '', categoria: '' } , 0, 0, 0, 0, new Date(), '');
+    this.producto = new Productos('', '', { id_categoria: '', categoria: '' } , 0, 0, 0, 0, new Date(), '','');
   }
 
   calcularPrecioVenta(): void {

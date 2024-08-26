@@ -50,6 +50,7 @@ export class FacturacionCajaComponent implements OnInit {
     0,
     0,
     new Date(),
+    '',
     ''
   );
 
@@ -100,6 +101,7 @@ export class FacturacionCajaComponent implements OnInit {
       0,
       0,
       new Date(),
+      '',
       ''
     );
   }
@@ -166,7 +168,7 @@ export class FacturacionCajaComponent implements OnInit {
   }
 
   calcularIva(): void {
-    this.factura.iva = parseFloat((this.factura.subtotal * 0.14).toFixed(2));
+    this.factura.iva = parseFloat((this.factura.subtotal * 0.15).toFixed(2));
   }
 
   calcularTotalFactura(): void {

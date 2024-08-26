@@ -36,7 +36,7 @@
             <td>{{factura.iva}}</td>
             <td>{{factura.total}}</td>
             <td>
-              <button class="btn btn-success">PDF</button>
+              <button (click)="downloadFacturaPDF(factura.idFactura)" class="btn btn-success">PDF</button>
               <button (click)="listarDetallesFactura(factura.idFactura)" style="margin-left: 0.5rem;"
                 class="btn btn-info">Detalles</button>
             </td>

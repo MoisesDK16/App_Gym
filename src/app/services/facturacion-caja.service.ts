@@ -35,9 +35,14 @@ export class FacturacionCajaService {
     });
   }
   
-
   listarDetallesFactura(idFactura: number): Observable<Detalle[]> {
     return this.http.get<Detalle[]>(`${this.urlDetalles}/listar/${idFactura}`);
+  }
+
+  downloadPdfFactura(idFactura: number): Observable<Blob> {
+    return this.http.get(`${this.urlFacturacion}/DownloadPdf/${idFactura}`, {
+      responseType: 'blob'
+    });
   }
 
 }
