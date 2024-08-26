@@ -20,7 +20,7 @@ export class ProductoService {
   }
 
   registrarProducto(formData: FormData) {
-    return this.http.post('http://localhost:8080/api/productos/registrar', formData);
+    return this.http.post(`${this.url}/registrar`, formData);
   }
 
   actualizarProducto(producto: Productos): Observable<any> {

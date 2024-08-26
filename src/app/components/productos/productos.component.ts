@@ -4,7 +4,11 @@ import { Productos } from '../../models/Productos';
 import { DatePipe, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Categorias } from '../../models/Categorias';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
@@ -12,17 +16,36 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
   standalone: true,
   imports: [NgFor, FormsModule, MatTableModule, MatPaginatorModule, DatePipe],
   templateUrl: './productos.component.html',
-  styleUrls: ['./productos.component.css']
+  styleUrls: ['./productos.component.css'],
 })
 export class ProductosComponent implements OnInit, AfterViewInit {
-
   productos: Productos[] = [];
-  producto: Productos = new Productos('', '', { id_categoria: '', categoria: '' }, 0, 0, 0, 0, new Date(), '', '');
-  estado: string = "";
+  producto: Productos = new Productos(
+    '',
+    '',
+    { id_categoria: '', categoria: '' },
+    0,
+    0,
+    0,
+    0,
+    new Date(),
+    '',
+    ''
+  );
+  estado: string = '';
   margen_ganancias: number[] = [5, 10, 15, 20, 25, 30, 40, 50];
   margen_ganancia_porcentual: number = 0;
   categorias: Categorias[] = [];
-  displayedColumns: string[] = ['id_producto', 'nombre', 'categoria', 'precio_compra', 'precio_venta', 'stock','fecha_caducacion', 'acciones'];
+  displayedColumns: string[] = [
+    'id_producto',
+    'nombre',
+    'categoria',
+    'precio_compra',
+    'precio_venta',
+    'stock',
+    'fecha_caducacion',
+    'acciones',
+  ];
   dataSource!: MatTableDataSource<Productos>;
   selectedFile: File | null = null;
 
@@ -32,7 +55,7 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   currentPage = 0;
   totalItems = 0;
 
-  constructor(private servicio_productos: ProductoService) { }
+  constructor(private servicio_productos: ProductoService) {}
 
   ngOnInit(): void {
     this.getProductos();
@@ -44,25 +67,44 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   }
 
   resetEstado() {
-    this.estado = "";
-    this.producto = new Productos('', '', { id_categoria: '', categoria: '' } , 0, 0, 0, 0, new Date(), '','');
+    this.estado = '';
+    this.producto = new Productos(
+      '',
+      '',
+      { id_categoria: '', categoria: '' },
+      0,
+      0,
+      0,
+      0,
+      new Date(),
+      '',
+      ''
+    );
   }
 
   calcularPrecioVenta(): void {
-    console.log("Precio de compra:", this.producto.precioCompra);
-    console.log("Margen de ganancia Porcentual:", this.margen_ganancia_porcentual);
+    console.log('Precio de compra:', this.producto.precioCompra);
+    console.log(
+      'Margen de ganancia Porcentual:',
+      this.margen_ganancia_porcentual
+    );
 
-    if (!isNaN(this.margen_ganancia_porcentual) && !isNaN(this.producto.precioCompra)) {
-      this.producto.margenGanancia = this.producto.precioCompra * (this.margen_ganancia_porcentual / 100);
-      this.producto.precioVenta = this.producto.margenGanancia + this.producto.precioCompra;
-      console.log("Precio de venta calculado:", this.producto.precioVenta);
+    if (
+      !isNaN(this.margen_ganancia_porcentual) &&
+      !isNaN(this.producto.precioCompra)
+    ) {
+      this.producto.margenGanancia =
+        this.producto.precioCompra * (this.margen_ganancia_porcentual / 100);
+      this.producto.precioVenta =
+        this.producto.margenGanancia + this.producto.precioCompra;
+      console.log('Precio de venta calculado:', this.producto.precioVenta);
     } else {
-      console.error("Margen de ganancia o precio de compra no válido");
+      console.error('Margen de ganancia o precio de compra no válido');
     }
   }
 
   printMargenGanancia(): void {
-    console.log("Margen de ganancia actual:", this.producto.margenGanancia);
+    console.log('Margen de ganancia actual:', this.producto.margenGanancia);
   }
 
   parseNumber(value: string): number {
@@ -70,15 +112,17 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   }
 
   getProductos(): void {
-    this.servicio_productos.getProductos(this.currentPage, this.pageSize).subscribe((data: any) => {
-      this.productos = data.content;
-      this.dataSource = new MatTableDataSource<Productos>(this.productos);
-      this.totalItems = data.totalElements;
-      if (this.paginator) {
-        this.dataSource.paginator = this.paginator;
-      }
-      console.log(this.productos);
-    });
+    this.servicio_productos
+      .getProductos(this.currentPage, this.pageSize)
+      .subscribe((data: any) => {
+        this.productos = data.content;
+        this.dataSource = new MatTableDataSource<Productos>(this.productos);
+        this.totalItems = data.totalElements;
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+        console.log(this.productos);
+      });
   }
 
   onFileChange(event: any) {
@@ -88,54 +132,74 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   }
 
   registrarProducto(): void {
-    if (this.producto.categoria && this.producto.categoria.id_categoria && this.selectedFile) {
+    if (
+      this.producto.categoria &&
+      this.producto.categoria.id_categoria &&
+      this.selectedFile
+    ) {
       const formData: FormData = new FormData();
       formData.append('idProducto', this.producto.idProducto);
-      formData.append('categoriaId', this.producto.categoria.id_categoria.toString());
+      formData.append(
+        'categoriaId',
+        this.producto.categoria.id_categoria.toString()
+      );
       formData.append('nombre', this.producto.nombre);
       formData.append('stock', this.producto.stock.toString());
       formData.append('precioCompra', this.producto.precioCompra.toString());
-      formData.append('margenGanancia', this.producto.margenGanancia.toString());
+      formData.append(
+        'margenGanancia',
+        this.producto.margenGanancia.toString()
+      );
       formData.append('precioVenta', this.producto.precioVenta.toString());
+      formData.append('fecha_caducacion', this.producto.fecha_caducacion.toString());
       formData.append('descripcion', this.producto.descripcion);
       formData.append('imagen', this.selectedFile);
 
-      this.servicio_productos.registrarProducto(formData).subscribe((data: any) => {
+      this.servicio_productos
+        .registrarProducto(formData)
+        .subscribe((data: any) => {
+          console.log(data);
+          this.getProductos();
+          this.closeModal();
+        });
+    } else {
+      console.error(
+        'La categoría no puede ser nula o el archivo no está seleccionado'
+      );
+    }
+  }
+
+  unoProducto(id_producto: string): void {
+    this.servicio_productos
+      .unoProducto(id_producto)
+      .subscribe((data: Productos) => {
+        this.producto = data;
+        console.log(this.producto);
+        this.openModal();
+        this.estado = 'actualizar';
+        console.log(this.estado);
+      });
+  }
+
+  actualizarProducto(): void {
+    this.servicio_productos
+      .actualizarProducto(this.producto)
+      .subscribe((data: Productos) => {
+        console.log(data);
+        this.getProductos();
+        this.closeModal();
+        this.resetEstado();
+      });
+  }
+
+  eliminarProducto(id_producto: string): void {
+    this.servicio_productos
+      .eliminarProducto(id_producto)
+      .subscribe((data: any) => {
         console.log(data);
         this.getProductos();
         this.closeModal();
       });
-    } else {
-      console.error("La categoría no puede ser nula o el archivo no está seleccionado");
-    }
-}
-
-
-  unoProducto(id_producto: string): void {
-    this.servicio_productos.unoProducto(id_producto).subscribe((data: Productos) => {
-      this.producto = data;
-      console.log(this.producto);
-      this.openModal();
-      this.estado = "actualizar";
-      console.log(this.estado);
-    });
-  }
-
-  actualizarProducto(): void {
-    this.servicio_productos.actualizarProducto(this.producto).subscribe((data: Productos) => {
-      console.log(data);
-      this.getProductos();
-      this.closeModal();
-      this.resetEstado();
-    });
-  }
-
-  eliminarProducto(id_producto: string): void {
-    this.servicio_productos.eliminarProducto(id_producto).subscribe((data: any) => {
-      console.log(data);
-      this.getProductos();
-      this.closeModal();
-    });
   }
 
   listarCategorias(): void {
