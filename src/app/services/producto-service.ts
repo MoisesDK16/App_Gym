@@ -19,13 +19,13 @@ export class ProductoService {
     );
   }
 
-  registrarProducto(producto: Productos): Observable<any> {
-    return this.http.post<any>(`${this.url}/registrar`, producto);
+  registrarProducto(formData: FormData) {
+    return this.http.post('http://localhost:8080/api/productos/registrar', formData);
   }
 
   actualizarProducto(producto: Productos): Observable<any> {
     return this.http.put<any>(
-      `${this.url}/actualizar/${producto.id_producto}`,
+      `${this.url}/actualizar/${producto.idProducto}`,
       producto
     );
   }
@@ -43,7 +43,9 @@ export class ProductoService {
   }
 
   actualizarStock(id_producto: string, cantidad: number): Observable<any> {
-    return this.http.post<any>(`${this.url}/actualizarStock/${id_producto}/${cantidad}`, {});
+    return this.http.post<any>(
+      `${this.url}/actualizarStock/${id_producto}/${cantidad}`,
+      {}
+    );
   }
-  
 }

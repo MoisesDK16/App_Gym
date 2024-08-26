@@ -7,39 +7,39 @@ export interface ProductoResponse {
 }
 
 export class Productos {
-  id_producto: string;
+  idProducto: string;
   nombre: string;
   categoria: {
     id_categoria: string,
     categoria: string
   };
   stock: number;
-  precio_compra: number;
-  margen_ganancia: number;
-  precio_venta: number;
+  precioCompra: number;
+  margenGanancia: number;
+  precioVenta: number;
   fecha_caducacion: Date;
   descripcion: string;
   imagen: string
   
   constructor(
-    id_producto: string,
+    idProducto: string,
     nombre: string,
     categoria: { id_categoria: string, categoria: string },
     stock: number,
-    precio_compra: number,
-    margen_ganancia: number,
-    precio_venta: number,
+    precioCompra: number,
+    margenGanancia: number,
+    precioVenta: number,
     fecha_caducacion: Date,
     descripcion: string,
     imagen: string
   ) {
-    this.id_producto = id_producto;
+    this.idProducto = idProducto;
     this.nombre = nombre;
     this.categoria = categoria;
     this.stock = stock;
-    this.precio_compra = precio_compra;
-    this.margen_ganancia = margen_ganancia;
-    this.precio_venta = precio_venta;
+    this.precioCompra = precioCompra;
+    this.margenGanancia = margenGanancia;
+    this.precioVenta = precioVenta;
     this.fecha_caducacion = fecha_caducacion;
     this.descripcion = descripcion;
     this.imagen = imagen;

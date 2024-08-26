@@ -38,7 +38,7 @@ export class FacturacionCajaComponent implements OnInit {
 
   //Estados
   estado: string = '';
-  detalle: Detalle = new Detalle({ id_producto: '', nombre: '' }, 0, 0, 0, {
+  detalle: Detalle = new Detalle({ idProducto: '', nombre: '' }, 0, 0, 0, {
     idFactura: 0,
   });
   producto: Productos = new Productos(
@@ -107,7 +107,7 @@ export class FacturacionCajaComponent implements OnInit {
   }
 
   resetDetalle() {
-    this.detalle = new Detalle({ id_producto: '', nombre: '' }, 0, 0, 0, {
+    this.detalle = new Detalle({ idProducto: '', nombre: '' }, 0, 0, 0, {
       idFactura: 0,
     });
   }
@@ -142,7 +142,7 @@ export class FacturacionCajaComponent implements OnInit {
 
     this.productos.push(this.producto);
     this.detalle.producto = this.producto;
-    this.detalle.precio = this.producto.precio_venta;
+    this.detalle.precio = this.producto.precioVenta;
     this.calcularSubtotal();
     this.detalles.push(this.detalle);
 
@@ -211,13 +211,13 @@ export class FacturacionCajaComponent implements OnInit {
 
   generarDetalles(): void {
     for (const detalle of this.detalles) {
-      console.log("Detalle Productos: "+ detalle.producto.id_producto);
+      console.log("Detalle Productos: "+ detalle.producto.idProducto);
       detalle.factura = { idFactura: this.factura.idFactura };
       this._DetalleService.generarDetalle(detalle).subscribe(
         (data: Detalle) => {
           console.log('Detalle generado:', data);
           // Llamar a actualizarStock con el producto y la cantidad del detalle
-          this.actualizarStock(detalle.producto.id_producto, detalle.cantidad);
+          this.actualizarStock(detalle.producto.idProducto, detalle.cantidad);
         },
         (error) => {
           console.error('Error al generar el detalle:', error);

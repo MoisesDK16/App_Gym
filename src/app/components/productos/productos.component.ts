@@ -24,6 +24,7 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   categorias: Categorias[] = [];
   displayedColumns: string[] = ['id_producto', 'nombre', 'categoria', 'precio_compra', 'precio_venta', 'stock','fecha_caducacion', 'acciones'];
   dataSource!: MatTableDataSource<Productos>;
+  selectedFile: File | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -48,20 +49,20 @@ export class ProductosComponent implements OnInit, AfterViewInit {
   }
 
   calcularPrecioVenta(): void {
-    console.log("Precio de compra:", this.producto.precio_compra);
+    console.log("Precio de compra:", this.producto.precioCompra);
     console.log("Margen de ganancia Porcentual:", this.margen_ganancia_porcentual);
 
-    if (!isNaN(this.margen_ganancia_porcentual) && !isNaN(this.producto.precio_compra)) {
-      this.producto.margen_ganancia = this.producto.precio_compra * (this.margen_ganancia_porcentual / 100);
-      this.producto.precio_venta = this.producto.margen_ganancia + this.producto.precio_compra;
-      console.log("Precio de venta calculado:", this.producto.precio_venta);
+    if (!isNaN(this.margen_ganancia_porcentual) && !isNaN(this.producto.precioCompra)) {
+      this.producto.margenGanancia = this.producto.precioCompra * (this.margen_ganancia_porcentual / 100);
+      this.producto.precioVenta = this.producto.margenGanancia + this.producto.precioCompra;
+      console.log("Precio de venta calculado:", this.producto.precioVenta);
     } else {
       console.error("Margen de ganancia o precio de compra no válido");
     }
   }
 
   printMargenGanancia(): void {
-    console.log("Margen de ganancia actual:", this.producto.margen_ganancia);
+    console.log("Margen de ganancia actual:", this.producto.margenGanancia);
   }
 
   parseNumber(value: string): number {
@@ -80,17 +81,35 @@ export class ProductosComponent implements OnInit, AfterViewInit {
     });
   }
 
-  registrarProducto(): void {
-    if (this.producto.categoria && this.producto.categoria.id_categoria) {
-       this.servicio_productos.registrarProducto(this.producto).subscribe((data: any) => {
-          console.log(data);
-          this.getProductos();
-          this.closeModal();
-       });
-    } else {
-       console.error("La categoría no puede ser nula");
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
     }
- }
+  }
+
+  registrarProducto(): void {
+    if (this.producto.categoria && this.producto.categoria.id_categoria && this.selectedFile) {
+      const formData: FormData = new FormData();
+      formData.append('idProducto', this.producto.idProducto);
+      formData.append('categoriaId', this.producto.categoria.id_categoria.toString());
+      formData.append('nombre', this.producto.nombre);
+      formData.append('stock', this.producto.stock.toString());
+      formData.append('precioCompra', this.producto.precioCompra.toString());
+      formData.append('margenGanancia', this.producto.margenGanancia.toString());
+      formData.append('precioVenta', this.producto.precioVenta.toString());
+      formData.append('descripcion', this.producto.descripcion);
+      formData.append('imagen', this.selectedFile);
+
+      this.servicio_productos.registrarProducto(formData).subscribe((data: any) => {
+        console.log(data);
+        this.getProductos();
+        this.closeModal();
+      });
+    } else {
+      console.error("La categoría no puede ser nula o el archivo no está seleccionado");
+    }
+}
+
 
   unoProducto(id_producto: string): void {
     this.servicio_productos.unoProducto(id_producto).subscribe((data: Productos) => {
