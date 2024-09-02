@@ -1,17 +1,18 @@
-import { Component} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ProductosComponent } from './components/productos/productos.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { ClienteComponent } from './components/cliente/cliente.component';
-
+import { Component, Input, OnInit } from '@angular/core';
+import {  RouterLink, RouterOutlet } from '@angular/router';
+import LayoutComponent from "./layouts/layout/layout.component";
+import GeneralComponent from './headers/general/general.component';
+import { AdminComponent } from './headers/admin/admin.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,ProductosComponent, ClienteComponent, NavbarComponent],
+  imports: [RouterOutlet, LayoutComponent, GeneralComponent, AdminComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent {
-  title = 'App_Gym';
+
+  constructor() {}
 }

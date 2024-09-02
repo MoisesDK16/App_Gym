@@ -10,7 +10,7 @@ export class Productos {
   idProducto: string;
   nombre: string;
   categoria: {
-    id_categoria: string,
+    id_categoria: number,
     categoria: string
   };
   stock: number;
@@ -24,7 +24,7 @@ export class Productos {
   constructor(
     idProducto: string,
     nombre: string,
-    categoria: { id_categoria: string, categoria: string },
+    categoria: { id_categoria: number, categoria: string },
     stock: number,
     precioCompra: number,
     margenGanancia: number,

@@ -1,0 +1,33 @@
+
+<h1 style="text-align: center; margin-top: 2rem; margin-bottom: 2rem; ">CATALOGO DE PRODUCTOS</h1>
+
+<div class="container-fluid d-flex justify-content-center flex-wrap">
+  <div class="row">
+    <div *ngFor="let producto of productos" class="col-3">
+      <div class="card mb-5"  style="width: 22rem; height: max-content; margin-right: 10rem;">
+        <img height="300rem" [src]="producto.imagen"
+          class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><b>Nombre:</b> {{producto.nombre}}</h5>
+          <p class="card-text"><b>Descripcion:</b> {{producto.descripcion}}</p>
+          <h5 class="card-title"><b>Precio: </b> <strong
+              style="font-size: x-large; color: green;">{{producto.precioVenta}}$</strong></h5>
+          <div class="d-flex justify-content-center">
+            <a (click)="addDetalle(producto)" style="font-size: large" class="btn btn-primary mt-3">
+              <strong style="text-decoration: solid;">AÑADIR</strong></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-paginator 
+    [pageSizeOptions]="[10,20,30,40,50]" 
+    showFirstLastButtons 
+    aria-label="Select page of periodic elements"
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+
+</div>

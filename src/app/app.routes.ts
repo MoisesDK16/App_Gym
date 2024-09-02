@@ -1,22 +1,79 @@
-import { Routes } from '@angular/router';
-import { ClienteComponent } from './components/cliente/cliente.component';
-import { ProductosComponent } from './components/productos/productos.component';
-import { CatalogoProductosComponent } from './components/catalogo-productos/catalogo-productos.component';
-import { CatalogoPlanesComponent } from './components/catalogo-planes/catalogo-planes.component';
-import { PlanesComponent } from './components/planes/planes.component';
-import { FacturacionCajaComponent } from './components/facturacion-caja/facturacion-caja.component';
-import { ServiciosComponent } from './components/servicio/servicio.component';
-import { FacturasComponent } from './components/facturas/facturas.component';
-import { PersonalComponent } from './components/personal/personal.component';
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
 
 export const routes: Routes = [
-    {path: 'cliente' , component: ClienteComponent}, 
-    {path: 'productos' , component: ProductosComponent},
-    {path: 'planes' , component: PlanesComponent},
-    {path: 'catalogo_productos', component: CatalogoProductosComponent},
-    {path: 'catalogo-planes', component: CatalogoPlanesComponent},
-    {path: 'facturacion-caja', component: FacturacionCajaComponent},
-    {path: 'servicios', component: ServiciosComponent},
-    {path: 'facturas', component: FacturasComponent},
-    {path: 'personal', component: PersonalComponent}
+
+    {
+        path: 'layout-publico',
+        loadComponent: () => import('./layouts/layout/layout.component'),
+        children: [
+            {
+                path: 'home',
+                loadComponent: () => import('./components/general/home/home.component')
+            },
+            {
+                path: 'catalogo-productos',
+                loadComponent: () => import('./components/general/catalogo-productos/catalogo-productos.component')   
+            },
+            {
+                path: 'catalogo-planes',
+                loadComponent: () => import('./components/general/catalogo-planes/catalogo-planes.component')
+            },
+            {
+                path: 'login',
+                loadComponent: () => import('./components/general/login/login.component')
+            },
+            {
+                path: 'registro',
+                loadComponent: () => import('./components/general/registro/registro.component')
+            },
+        ]
+    },
+
+    {
+        path: 'layout-admin',
+        loadComponent: () => import('./layouts/layout-admin/layout-admin.component'),
+        children: [
+            {
+                path: 'cliente',
+                loadComponent: () => import('./components/admin/cliente/cliente.component')
+            },
+            {
+                path: 'facturacion-caja',
+                loadComponent: () => import('./components/admin/facturacion-caja/facturacion-caja.component')
+            },
+            {
+                path: 'facturas',
+                loadComponent: () => import('./components/admin/facturas/facturas.component')
+
+            },
+            {
+                path: 'personal',
+                loadComponent: () => import('./components/admin/personal/personal.component')
+            },
+            {
+                path: 'planes',
+                loadComponent: () => import('./components/admin/planes/planes.component')
+            },
+            {
+                path: 'productos',
+                loadComponent: () => import('./components/admin/productos/productos.component')
+            },
+            {
+                path: 'servicios',
+                loadComponent: () => import('./components/admin/servicios/servicios.component')
+            },
+            
+        ]	
+    },
+    
+    { path: '', redirectTo: '/layout-publico/home', pathMatch: 'full' },
+    { path: '**', redirectTo: '/layout-publico/home' }
+    
 ];
+
+@NgModule({
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
+  })
+  export class AppRoutingModule { }

@@ -1,0 +1,41 @@
+<div class="productCart-wrapper">
+  <div class="header">
+    <h6 style="margin-bottom: 0.2rem;">Cart Resumen</h6>
+    <button (click)="cerrarCarro()" class="close-button">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+  <article *ngFor="let item of (items$ | async)">
+    <div class="productCart-body">
+      <div>
+        <img [src]="item.producto[0].imagen" alt="product" height="110px" width="120px" />
+      </div>
+
+      <div class="body-info">
+        <p style="font-weight: bold; margin-top: 1.3rem;">{{ item.producto[0].nombre }}</p>
+        <p>$ {{ item.producto[0].precioVenta }}</p>
+        <em>Total: $ {{ item.detalle[0].cantidad * item.producto[0].precioVenta }}</em>
+      </div>
+
+      <div class="productCart-buttons-operators">
+        <button (click)="restarCantidad(item.detalle[0])" class="btn-operator">
+          <i class="bi bi-dash-lg"></i>
+        </button>
+        <span class="quantity">{{ item.detalle[0].cantidad }}</span>
+        <button (click)="sumarCantidad(item.detalle[0])" class="btn-operator">
+          <i class="bi bi-plus"></i>
+        </button>
+        <button (click)="eliminarDetalle(item.detalle[0])" class="btn-delete btn btn-danger">
+          <i style="font-size: 1rem;" class="bi bi-trash3"></i>
+        </button>
+      </div>
+
+    </div>
+  </article>
+  <div class="cartTotal">
+    <p class="cartTotal-total"></p>
+  </div>
+  <button class="cart-btn">CHECKOUT</button>
+</div>
+
+
