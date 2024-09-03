@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Detalle } from '../models/Detalle';
 import { Factura } from '../models/Factura';
 
@@ -39,10 +39,9 @@ export class FacturacionCajaService {
     return this.http.get<Detalle[]>(`${this.urlDetalles}/listar/${idFactura}`);
   }
 
-  downloadPdfFactura(idFactura: number): Observable<Blob> {
+  downloadFacturaPDF(idFactura: number): Observable<Blob> {
     return this.http.get(`${this.urlFacturacion}/DownloadPdf/${idFactura}`, {
       responseType: 'blob'
     });
-  }
-
+  }  
 }

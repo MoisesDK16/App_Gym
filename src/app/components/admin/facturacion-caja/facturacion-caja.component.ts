@@ -15,6 +15,7 @@ import {
 } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AdminComponent } from '../../../headers/admin/admin.component';
+import { forkJoin, map, Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-facturacion-caja',
@@ -185,7 +186,6 @@ export default class FacturacionCajaComponent implements OnInit {
 
   pagar(): void {
     this.generarFactura();
-    this.generarFacturaPDF();
   }
 
   generarFactura(): void {
@@ -199,19 +199,34 @@ export default class FacturacionCajaComponent implements OnInit {
       this.factura.iva,
       this.factura.total
     );
-
+  
     this._FacturaService.generarFactura(this.factura).subscribe(
       (data: Factura) => {
         this.factura = data;
         console.log('id Factura generada:', this.factura.idFactura);
-        this.generarDetalles();
+        this.generarDetalles().subscribe(() => {
+          this.generarFacturaPDF();
+        });
       }
     );
   }
-
   
-  generarFacturaPDF(): void {
-    this._FacturaService.downloadPdfFactura(this.factura.idFactura).subscribe(
+  generarDetalles(): Observable<void> {
+    const observables = this.detalles.map(detalle => {
+      console.log("Detalle Productos: " + detalle.producto.idProducto);
+      detalle.factura = { idFactura: this.factura.idFactura };
+      return this._DetalleService.generarDetalle(detalle).pipe(
+        tap((data: Detalle) => {
+          console.log('Detalle generado:', data);
+          this.actualizarStock(detalle.producto.idProducto, detalle.cantidad);
+        })
+      );
+    });
+    return forkJoin(observables).pipe(map(() => {}));
+  }
+
+   generarFacturaPDF(): void {
+    this._FacturaService.downloadFacturaPDF(this.factura.idFactura).subscribe(
       (data: Blob) => {
         const url = window.URL.createObjectURL(data);
         const a = document.createElement('a');
@@ -221,19 +236,6 @@ export default class FacturacionCajaComponent implements OnInit {
         window.URL.revokeObjectURL(url);
       }
     );
-  }
-
-  generarDetalles(): void {
-    for (const detalle of this.detalles) {
-      console.log("Detalle Productos: "+ detalle.producto.idProducto);
-      detalle.factura = { idFactura: this.factura.idFactura };
-      this._DetalleService.generarDetalle(detalle).subscribe(
-        (data: Detalle) => {
-          console.log('Detalle generado:', data);
-          this.actualizarStock(detalle.producto.idProducto, detalle.cantidad);
-        }
-      );
-    }
   }
   
   actualizarStock(id_producto: string , cantidad: number): void {

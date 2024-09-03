@@ -63,7 +63,7 @@ export default class FacturasComponent implements OnInit{
   }   
 
   downloadFacturaPDF(idFactura: number): void {
-    this._FacturaService.downloadPdfFactura(idFactura).subscribe(
+    this._FacturaService.downloadFacturaPDF(idFactura).subscribe(
       (data: Blob) => {
         const url = window.URL.createObjectURL(data);
         const a = document.createElement('a');
@@ -71,9 +71,6 @@ export default class FacturasComponent implements OnInit{
         a.download = 'facturaPersonal.pdf';
         a.click();
         window.URL.revokeObjectURL(url);
-      },
-      (error) => {
-        console.error('Error downloading the PDF:', error);
       }
     );
   }
