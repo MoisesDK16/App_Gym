@@ -234,6 +234,14 @@ export default class FacturacionCajaComponent implements OnInit {
         a.download = 'facturaPersonal.pdf';
         a.click();
         window.URL.revokeObjectURL(url);
+        let destinatario = this.cliente.correo;
+        let asunto = "Factura de Productos";
+        let mensaje = "Gracias por su compra";
+        this._FacturaService.enviarFacturaEmail(destinatario, asunto, mensaje, data).subscribe(
+          (data) => {
+            console.log('Correo enviado:', data);
+          }
+        );
       }
     );
   }

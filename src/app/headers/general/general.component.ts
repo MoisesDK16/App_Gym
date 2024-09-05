@@ -3,6 +3,7 @@ import { Component} from '@angular/core';
 import { RouterLink, RouterLinkActive} from '@angular/router';
 import { ProductoService } from '../../services/producto-service';
 import CarroComponent from "../../components/general/carro/carro.component";
+import { CarroService } from '../../services/carro.service';
 
 @Component({
   selector: 'app-general',
@@ -16,9 +17,9 @@ export default class GeneralComponent{
   title = 'general';
 
   viewCart: boolean = false;
-  myCart$ = this._productoService.recogerItems();
+  myCart$ = this._carroService.retornarCarrito();
 
-  constructor(private _productoService: ProductoService) {}
+  constructor(private _carroService: CarroService) {}
 
   onToggleCart() {
     this.viewCart = !this.viewCart

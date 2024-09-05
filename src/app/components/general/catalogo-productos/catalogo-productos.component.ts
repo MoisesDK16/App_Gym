@@ -6,6 +6,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AdminComponent } from '../../../headers/admin/admin.component';
 import { Detalle } from '../../../models/Detalle';
+import { CarroService } from '../../../services/carro.service';
 
 @Component({
   selector: 'app-catalogo-productos',
@@ -27,7 +28,7 @@ export default class CatalogoProductosComponent implements OnInit{
   currentPage = 0;
   totalItems = 0;
 
-  constructor(private servicio_producto: ProductoService){}
+  constructor(private servicio_producto: ProductoService, private _carroService: CarroService){}
 
   ngOnInit(): void {
     this.getProductos();
@@ -57,7 +58,7 @@ export default class CatalogoProductosComponent implements OnInit{
         idFactura: 0,
       });
       
-      this.servicio_producto.addToCarro(detalle, producto);
+      this._carroService.addToCarro(detalle, producto);
     });
   }
 

@@ -10,6 +10,7 @@ import { Factura } from '../models/Factura';
 export class FacturacionCajaService {
   urlFacturacion: string = 'api/facturas';
   urlDetalles: string = 'api/detalles';
+  urlEnvioCorreo: string = 'apiEmail';
 
   constructor(private http: HttpClient) {}
 
@@ -43,5 +44,20 @@ export class FacturacionCajaService {
     return this.http.get(`${this.urlFacturacion}/DownloadPdf/${idFactura}`, {
       responseType: 'blob'
     });
-  }  
+  }
+  
+  enviarFacturaEmail(destinatario: string, asunto: string, mensaje: string, factura: Blob): Observable<any> {
+    const formData = new FormData();
+    
+    const correoBlob = new Blob([JSON.stringify({
+      destinatario,
+      asunto,
+      mensaje
+    })], { type: 'application/json' });
+
+    formData.append('campos', correoBlob);
+    formData.append('archivo', factura, 'factura.pdf');
+
+    return this.http.post<any>(`${this.urlEnvioCorreo}/enviar-correo`, formData);
+  }
 }

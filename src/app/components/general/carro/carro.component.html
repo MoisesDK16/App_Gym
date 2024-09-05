@@ -14,7 +14,7 @@
       <div class="body-info">
         <p style="font-weight: bold; margin-top: 1.3rem;">{{ item.producto[0].nombre }}</p>
         <p>$ {{ item.producto[0].precioVenta }}</p>
-        <em>Total: $ {{ item.detalle[0].cantidad * item.producto[0].precioVenta }}</em>
+        <em>Total: $ {{ item.detalle[0].total }}</em>
       </div>
 
       <div class="productCart-buttons-operators">
@@ -33,9 +33,12 @@
     </div>
   </article>
   <div class="cartTotal">
-    <p class="cartTotal-total"></p>
+    <p class="cartTotal-total">Subtotal: {{subtotal$ | async}}</p> 
   </div>
-  <button class="cart-btn">CHECKOUT</button>
+  <button class="cart-btn mb-3">CHECKOUT</button>
+
+  <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+
 </div>
 
 
