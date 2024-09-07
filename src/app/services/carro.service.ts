@@ -135,6 +135,11 @@ export class CarroService {
     return preFactura ? of(JSON.parse(preFactura)) : of(null);
   }
 
+  getsubtotalStorage(): Observable<number> {
+    const subtotal = localStorage.getItem('subtotal');
+    return subtotal ? of(JSON.parse(subtotal)) : of(0);
+  }
+
   clear(): void {
     localStorage.removeItem('preFactura');
   }

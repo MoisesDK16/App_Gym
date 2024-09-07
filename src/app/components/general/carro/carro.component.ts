@@ -16,6 +16,8 @@ import { AuthService } from '../../../services/auth.service';
 import { Clientes } from '../../../models/Clientes';
 import { FacturacionCajaService } from '../../../services/facturacion-caja.service';
 import { Factura } from '../../../models/Factura';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DetallesCompraComponent } from '../modales/detalles-compra/detalles-compra.component';
 
 @Component({
   selector: 'app-carro',
@@ -28,6 +30,7 @@ export default class CarroComponent implements OnInit {
   items$: Observable<{ detalle: Detalle[]; producto: Productos[] }[]>;
   subtotal$: Observable<number>;
   listaItems: { detalle: Detalle[]; producto: Productos[] }[] = [];
+  subtotal: number;
   userCliente: Clientes;
 
   public payPalConfig?: IPayPalConfig;
@@ -38,7 +41,8 @@ export default class CarroComponent implements OnInit {
     private _carroService: CarroService,
     private _authService: AuthService,
     private _facturaService: FacturacionCajaService,
-    private _productoService: ProductoService
+    private _productoService: ProductoService,
+    private modalService: NgbModal
   ) {
     this.items$ = this._carroService.retornarCarrito();
     this.subtotal$ = this._carroService.retornarSubtotal();
@@ -51,6 +55,7 @@ export default class CarroComponent implements OnInit {
 
     if (this._carroService.existsCart()) {
       this.items$ = this._carroService.retornarCarrito();
+      this.subtotal$ = this._carroService.retornarSubtotal();
     }
 
     console.log('CarroComponent initialized');
@@ -64,6 +69,12 @@ export default class CarroComponent implements OnInit {
     this.items$.subscribe((items) => {
       this.listaItems = items;
       console.log('ITEMS: ', this.listaItems);
+    });
+  }
+
+  getSubtotalStorage(): void {
+    this._carroService.getsubtotalStorage().subscribe((subtotal) => {
+      this.subtotal = subtotal;
     });
   }
 
@@ -87,9 +98,9 @@ export default class CarroComponent implements OnInit {
 
   private initConfig(): void {
     this.getDataCheckOut().subscribe((data) => {
-      const subtotal = data.subtotal > 0 ? data.subtotal : 9.99;
-      const iva = subtotal * 0.15;
-      const total = subtotal + iva;
+      let subtotal = Number(data.subtotal);
+      let iva = subtotal * 0.15;
+      let total = subtotal + iva;
 
       this.payPalConfig = {
         currency: 'USD',
@@ -113,17 +124,15 @@ export default class CarroComponent implements OnInit {
                     },
                   },
                 },
-                items: (data.detalle || []).flatMap((detalle: Detalle[]) =>
-                  detalle.map((item: Detalle) => ({
-                    name: item.producto.nombre,
-                    quantity: item.cantidad.toString(),
-                    category: 'DIGITAL_GOODS',
-                    unit_amount: {
-                      currency_code: 'USD',
-                      value: item.precio.toString(),
-                    },
-                  }))
-                ),
+                items: (data.detalle || []).map((item: Detalle) => ({
+                  name: item.producto.nombre,
+                  quantity: item.cantidad.toString(),
+                  category: 'DIGITAL_GOODS',
+                  unit_amount: {
+                    currency_code: 'USD',
+                    value: item.precio.toFixed(2),
+                  },
+                })),
               },
             ],
           },
@@ -169,20 +178,23 @@ export default class CarroComponent implements OnInit {
   }
 
   getDataCheckOut(): Observable<any> {
-    const carrito = {
-      detalle: this.listaItems.map((item) => item.detalle),
-      producto: this.listaItems.map((item) => item.producto),
-      subtotal: this.listaItems.reduce(
-        (acc, item) =>
-          acc +
-          item.detalle.reduce(
-            (acc, detalle) => acc + detalle.precio * detalle.cantidad,
-            0
-          ),
-        0
-      ),
-    };
-    return of(carrito);
+    console.log('DATA CHECKOUT: ', this.listaItems);
+    console.log('SUBTOTAL: ', this.subtotal);
+
+    let detalles = this._carroService.retornarCarrito().detalle;
+    let productos = this._carroService.retornarCarrito().producto;
+    let subtotal = this._carroService.retornarSubtotal();
+
+    return subtotal.pipe(
+      map((subtotalValue) => {
+        const carrito = {
+          detalles: detalles,
+          productos: productos,
+          subtotal: subtotalValue,
+        };
+        return carrito;
+      })
+    );
   }
 
   async generarFactura(): Promise<void> {
@@ -244,9 +256,11 @@ export default class CarroComponent implements OnInit {
           .subscribe(
             (data) => {
               console.log('DETALLE GENERADO: ', data);
-              this._productoService.actualizarStock(data.producto.idProducto, data.cantidad).subscribe((data)=> {
-                console.log('Stock actualizado: ', data);
-              });
+              this._productoService
+                .actualizarStock(data.producto.idProducto, data.cantidad)
+                .subscribe((data) => {
+                  console.log('Stock actualizado: ', data);
+                });
             },
             (error) => {
               console.error('Error al generar detalle: ', error);
@@ -276,9 +290,37 @@ export default class CarroComponent implements OnInit {
     try {
       await this.generarFactura();
       await this.generarDetalles();
+      await this.generarFacturaPDF(this.getLastFactura());
       this._carroService.removerCarrito();
     } catch (error) {
       console.error('Error al generar factura y detalles: ', error);
     }
+  }
+
+  async generarFacturaPDF(idFactura: Promise<number>): Promise<void> {
+    this._facturaService.downloadFacturaPDF(await idFactura).subscribe(
+      (data: Blob) => {
+        const url = window.URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'facturaPersonal.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        let destinatario = this.userCliente.correo;
+        let asunto = "Factura de Productos";
+        let mensaje = "Gracias por su compra";
+        this._facturaService.enviarFacturaEmail(destinatario, asunto, mensaje, data).subscribe(
+          (data) => {
+            console.log('Correo enviado:', data);
+          }
+        );
+      }
+    );
+  }
+
+  openModal(listaItems:any, total:any){
+    const modalRef = this.modalService.open(DetallesCompraComponent);
+    modalRef.componentInstance.listaItems = listaItems;
+    modalRef.componentInstance.total = total;
   }
 }
