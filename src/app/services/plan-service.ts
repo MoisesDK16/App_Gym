@@ -24,7 +24,7 @@ export class PlanService {
     );
 }
 
-  registrarPlan(plan: Planes): Observable<Planes> {
+  registrarPlan(plan: FormData): Observable<Planes> {
     return this.http.post<Planes>(`${this.url}/registrar`, plan);
   }
 
@@ -34,5 +34,13 @@ export class PlanService {
 
   eliminarPlan(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/eliminar/${id}`);
+  }
+
+  agregarServicio(id_plan: number, id_servicio: any): Observable<Planes> {
+    return this.http.post<Planes>(`${this.url}/agregar-servicio?id_plan=${id_plan}&id_servicio=${id_servicio}`, null);
+  }
+
+  eliminarServicio(id_plan: number, id_servicio: any): Observable<Planes> {
+    return this.http.post<Planes>(`${this.url}/eliminar-servicio?id_plan=${id_plan}&id_servicio=${id_servicio}`, null);
   }
 }

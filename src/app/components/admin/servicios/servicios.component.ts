@@ -47,13 +47,10 @@ export default class ServiciosComponent implements OnInit, AfterViewInit {
   }
 
   getServicios(): void {
-    this._servicioService.listarServicios(this.currentPage, this.pageSize).subscribe((data: any) => {
-      this.servicios = data.content;
+    this._servicioService.listarServicios().subscribe((data: any) => {
+      this.servicios = data;
       this.dataSource = new MatTableDataSource<Servicios>(this.servicios);
-      this.totalItems = data.totalElements;
-      if (this.paginator) {
-        this.dataSource.paginator = this.paginator;
-      }
+      this.totalItems = this.servicios.length;
       console.log(this.servicios);
     });
   }

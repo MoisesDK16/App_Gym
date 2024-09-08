@@ -5,6 +5,8 @@ import { NgFor } from '@angular/common';
 import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AdminComponent } from '../../../headers/admin/admin.component';
+import { ServicioService } from '../../../services/servicio.service';
+import { Servicios } from '../../../models/Servicios';
 
 @Component({
   selector: 'app-planes',
@@ -16,6 +18,9 @@ import { AdminComponent } from '../../../headers/admin/admin.component';
 export default class CatalogoPlanesComponent implements OnInit{
 
   planes: Planes[] = [];
+  servicios: Servicios[] = [];
+
+  displayedColumns: string[] = ['id_plan', 'nombre', 'precio', 'duracion','imagen', 'acciones'];
   dataSource!: MatTableDataSource<Planes>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -26,12 +31,13 @@ export default class CatalogoPlanesComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.listarPlanes();
+    this.getPlanes();
+    this.getServicios();
   }
 
-  constructor(private planService: PlanService){}
+  constructor(private planService: PlanService, private servicioService: ServicioService){}
 
-  listarPlanes(): void {
+  getPlanes(): void {
     this.planService.listarPlanes(this.currentPage, this.pageSize).subscribe((data: any) => {
       this.planes = data.content;
       this.dataSource = new MatTableDataSource<Planes>(this.planes);
@@ -40,6 +46,13 @@ export default class CatalogoPlanesComponent implements OnInit{
         this.dataSource.paginator = this.paginator;
       }
       console.log(this.planes);
+    });
+  }
+
+  getServicios(): void {
+    this.servicioService.listarServicios().subscribe((data: any) => {
+      this.servicios = data;
+      console.log(this.servicios);
     });
   }
 

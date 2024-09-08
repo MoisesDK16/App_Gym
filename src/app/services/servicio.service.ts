@@ -25,10 +25,8 @@ export class ServicioService {
     return this.http.delete<any>(`${this.url}/eliminar/${id_servicio}`);
   }
 
-  listarServicios(page: number, size: number): Observable<ServiciosResponse> {
-    return this.http.get<ServiciosResponse>(
-      `${this.url}/all?page=${page}&size=${size}`
-    );
+  listarServicios(): Observable<any> {
+    return this.http.get<any>(`${this.url}/all`);
   }
 
   unoServicio(id: number): Observable<Servicios> {
