@@ -1,0 +1,135 @@
+<h2 style="text-align: center;">Factura de Membresía</h2>
+<div class="factura-container">
+  <div class="factura-header">
+    <div class="empresa-info">
+      <p><strong>GYM CIUDAD VERDE</strong></p>
+      <p>RUC: <input [(ngModel)]="ruc" type="text" id="ruc" disabled="true"></p>
+      <p>TELÉFONO: <input type="text" [value]="0129289823" disabled="true"></p>
+      <p>EMAIL: <input style="width: 15rem;" type="text" value="gymCiudadVerde@gmail.com" disabled="true"></p>
+    </div>
+    <div class="factura-info">
+      <p><strong>DATOS DEL CLIENTE</strong></p>
+      <p>IDENTIFICACION:
+        <input [(ngModel)]="id_cliente" style="width: 10rem; margin-right: 0.5rem;" id="id_cliente">
+        <button (click)="openModal()" class="btn btn-success"><i class="bi bi-search"></i></button>
+      </p>
+      <label for="id_nombre">NOMBRE: </label>
+      <p id="id_nombre">{{cliente.nombre}} {{cliente.primer_apellido}} {{cliente.segundo_apellido}}</p>
+      <label for="id_correo_cliente">CORREO:</label>
+      <p id="id_correo_cliente">{{cliente.correo}}</p>
+    </div>
+    <div class="factura-info">
+      <p><strong>DATOS DEL VENDEDOR</strong></p>
+      <p>VENDEDOR:</p>
+      <p>CORREO:</p>
+      <p>TELÉFONO:</p>
+    </div>
+  </div>
+
+  <div class="factura-membresia">
+    <div>
+      <p id="txtCodigoProd"><strong>CODIGO DE PLAN</strong></p>
+      <input (keyup.enter)="buscarPlan()" [(ngModel)]="id_plan" id="buscador-producto">
+      <button (click)="buscarPlan()" ><i class="bi bi-search"></i></button>
+    </div>
+    <div style="margin-left: 2rem;">
+      <p><strong>NOMBRE</strong></p>
+      <input [ngModel]="plan.nombre" readonly disabled>
+    </div>
+    <div style="margin-left: 2rem;">
+      <p><strong>DURACIÓN DIAS:</strong></p>
+      <input [ngModel]="plan.duracion_dias" readonly disabled>
+    </div>
+    <div style="margin-left: 2rem;">
+        <p><strong>PRECIO</strong></p>
+        <input [ngModel]="plan.costo" readonly disabled>
+    </div>
+    <div id="btn-group-productos" style="margin-left: 2rem;">
+      <p><strong>OPERACIONES</strong></p>
+      <button><strong>Añadir</strong></button>
+      <button style="margin-left: 1rem;"><strong>Eliminar</strong></button>
+    </div>
+  </div>
+
+  <table class="factura-table">
+    <thead>
+      <tr>
+        <th>PLAN</th>
+        <th>DURACIÓN</th>
+        <th>PRECIO</th>
+        <th>SUBTOTAL</th>
+        <th>ACCION</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr> 
+        <td>{{plan.nombre}}</td>
+        <td>{{plan.duracion_dias}}</td>
+        <td>{{plan.costo}}</td>
+        <td>{{plan.costo}}</td>
+        <td>
+          <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="factura-pie">
+    <p><strong>SUBTOTAL: {{plan.costo}} $</strong></p>
+    <p><strong>IVA: {{0}} $</strong></p>
+    <p><strong>TOTAL: {{plan.costo}} $</strong></p>
+  </div>
+
+  <div id="pagar-membresia">
+    <button (click)="pagar()" id="btn-pagar" class="btn btn-success">Pagar</button>
+  </div>
+</div>
+
+<div id="myModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Buscar Cliente</h5>
+        <button type="button" (click)="buscarCliente()" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input id="buscador-cliente" (keyup.enter)="buscarCliente()" [(ngModel)]="id_cliente" type="text"
+          placeholder="Buscar por identificación" class="form-control mb-3" />
+
+        <!-- Tabla para mostrar los clientes -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>DNI</th>
+              <th>Tipo DNI</th>
+              <th>Nombre</th>
+              <th>Primer Apellido</th>
+              <th>Segundo Apellido</th>
+              <th>Correo</th>
+              <th>Clave</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{cliente.id_cliente}}</td>
+              <td>{{cliente.tipo_identificacion}}</td>
+              <td>{{cliente.nombre}}</td>
+              <td>{{cliente.primer_apellido}}</td>
+              <td>{{cliente.segundo_apellido}}</td>
+              <td>{{cliente.correo}}</td>
+              <td>{{cliente.clave}}</td>
+              <td>{{cliente.direccion}}</td>
+              <td>{{cliente.telefono}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="closeModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -69,7 +69,7 @@ export default class PlanesComponent implements OnInit {
     this.serviciosSeleccionados = [];
   }
 
-  listarPlanes(): void {
+    listarPlanes(): void {
     this.planService
       .listarPlanes(this.currentPage, this.pageSize)
       .subscribe((data: any) => {
@@ -152,6 +152,7 @@ export default class PlanesComponent implements OnInit {
     });
   }
 
+
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
@@ -170,9 +171,11 @@ export default class PlanesComponent implements OnInit {
       .unoServicio(id_servicio)
       .subscribe(async (data: Servicios) => {
         this.servicio = data;
+        this.plan2.servicios.push(this.servicio);
         console.log('SERVICIOOOO: ', this.servicio);
         this.serviciosSeleccionados.push(this.servicio);
         await this.añadirServicioApi();
+        this.listarPlanes();
 
         console.log(
           'Servicio añadido correctamente: ',
@@ -188,6 +191,7 @@ export default class PlanesComponent implements OnInit {
       .unoServicio(id_servicio)
       .subscribe(async (data: Servicios) => {
         this.servicio = data;
+        this.plan2.servicios.splice(this.plan2.servicios.indexOf(this.servicio), 1);
         console.log('SERVICIOOOO: ', this.servicio);
         this.serviciosSeleccionados = this.serviciosSeleccionados.filter(
           (servicio) => servicio.id_servicio !== this.servicio.id_servicio
@@ -209,7 +213,6 @@ export default class PlanesComponent implements OnInit {
         .agregarServicio(this.plan2.id_plan, servicio.id_servicio)
         .subscribe((data: any) => {
           console.log(data);
-          this.listarPlanes();
           this.resetEstado();
         });
     });
@@ -220,7 +223,6 @@ export default class PlanesComponent implements OnInit {
       .eliminarServicio(this.plan2.id_plan, id_servicio)
       .subscribe((data: any) => {
         console.log(data);
-        this.listarPlanes();
         this.resetEstado();
       });
   }

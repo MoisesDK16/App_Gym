@@ -18,8 +18,12 @@ export class FacturacionCajaService {
     return this.http.post<any>(`${this.urlFacturacion}/generar`, factura);
   }
 
-  generarDetalle(detalle: Detalle): Observable<any> {
+  generarDetalle(detalle: any): Observable<any> {
     return this.http.post<any>(`${this.urlDetalles}/generar`, detalle);
+  }
+
+  generarDetalleMembresia(detalle: any): Observable<any> {
+    return this.http.post<any>(`${this.urlDetalles}/generar-detalle-membresia`, detalle);
   }
 
   getLastFactura(id_cliente: string): Observable<Factura> {
@@ -46,7 +50,7 @@ export class FacturacionCajaService {
     });
   }
   
-  enviarFacturaEmail(destinatario: string, asunto: string, mensaje: string, factura: Blob): Observable<any> {
+   enviarFacturaEmail(destinatario: string, asunto: string, mensaje: string, factura: Blob): Observable<any> {
     const formData = new FormData();
     
     const correoBlob = new Blob([JSON.stringify({
