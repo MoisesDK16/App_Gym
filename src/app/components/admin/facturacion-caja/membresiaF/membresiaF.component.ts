@@ -28,6 +28,7 @@ export class MembresiaComponentF {
   estado: string = '';
   cliente: Clientes = new Clientes('', '', '', '', '', '', '', '', '');
   plan: Planes = new Planes(0, '', '', 0, 0, '');
+  planesModal: Planes[] = [];
   detalle: DetalleMembresia = new DetalleMembresia(
     0,
     0,
@@ -71,6 +72,41 @@ export class MembresiaComponentF {
     this.estado = '';
   }
 
+  resetCliente() {
+    this.id_cliente = '';
+    this.cliente = new Clientes('', '', '', '', '', '', '', '', '');
+  }
+
+  resetPlan() {
+    this.id_plan = 0;
+    this.plan = new Planes(0, '', '', 0, 0, '');
+  }
+
+  resetFactura(): void {
+    this.factura = new Factura(
+      0,
+      { id_cliente: '', nombre: '', primer_apellido: '' },
+      '',
+      new Date(),
+      '',
+      0,
+      0,
+      0
+    );
+  }
+
+  resetMembresia() {
+    this.membresia = new Membresia(
+      0,
+      { id_cliente: '' },
+      { id_plan: 0 },
+      new Date(),
+      new Date(),
+      ''
+    );
+  }
+
+
   resetDetalle() {
     this.detalle = new DetalleMembresia(
       0,
@@ -81,6 +117,15 @@ export class MembresiaComponentF {
     );
   }
 
+  resetAll(): void {
+    this.resetCliente();
+    this.resetPlan();
+    this.resetFactura();
+    this.resetMembresia();
+    this.resetDetalle();
+    this.resetEstado();
+  }
+
   buscarCliente(): void {
     this._ClienteService.unoCliente(this.id_cliente).subscribe((data) => {
       this.cliente = data;
@@ -88,9 +133,10 @@ export class MembresiaComponentF {
     });
   }
 
-  buscarPlan(): void {
-    this._PlanService.buscarPlanId(this.id_plan).subscribe((data) => {
+  buscarPlanModal(id: number): void {
+    this._PlanService.buscarPlanId(id).subscribe((data) => {
       this.plan = data;
+      this.id_plan = data.id_plan;
       console.log(this.plan);
     });
   }
@@ -151,14 +197,78 @@ export class MembresiaComponentF {
     };
 
     this.detalle = await this._DetalleService.generarDetalleMembresia(this.detalle).toPromise();
-    console.log("DETALLE GENERADO: ", this.detalle);
+    console.log("DETALLE GENERADO: ", this.detalle);;
   }
 
   async pagar(): Promise<void> {
     await this.generarFactura();
     await this.registrarMembresia();
     await this.registrarDetalle();
+    await this.generarFacturaPDF();
   }
+
+  notificarRegistro(): void {
+    alert('Registro de membresia exitoso');
+  }
+
+  async generarFacturaPDF(): Promise<void> {
+    this._FacturaService.downloadFacturaMembresiaPDF(this.factura.idFactura).subscribe(
+      async (data: Blob) => {
+        const url = window.URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'facturaPersonalMembresia.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        let destinatario = this.cliente.correo;
+        let asunto = "Factura de Membresia";
+        let mensaje = "Gracias por su compra";
+        await this.enviarFacturaEmail(destinatario, asunto, mensaje, data);
+        this.resetAll();
+      }
+    );
+  }
+
+  async enviarFacturaEmail(destinatario: string, asunto: string, mensaje: string, data: Blob): Promise<void> { 
+    this._FacturaService.enviarFacturaEmail(destinatario, asunto, mensaje, data).subscribe(
+      (data) => {
+        console.log('Correo enviado:', data);
+      }
+    );
+  }
+
+  openModalPlanes(): void{
+    const modalDiv = document.getElementById('myModalPlanes');
+    if(modalDiv != null){
+      modalDiv.classList.add('show');
+      modalDiv.style.display = 'block';
+      document.body.classList.add('modal-open');
+      const backdrop = document.createElement('div');
+      backdrop.classList.add('modal-backdrop', 'fade', 'show');
+      document.body.appendChild(backdrop);
+    }
+  }
+
+  closeModalPlanes(): void{
+    const modalDiv = document.getElementById('myModalPlanes');
+    if(modalDiv != null){
+      modalDiv.classList.remove('show');
+      modalDiv.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if(backdrop){
+        document.body.removeChild(backdrop);
+      }
+    }
+  }
+
+  listarPlanesModal(): void{
+    this._PlanService.listarPlanes2().subscribe((data) => {
+      this.planesModal = data;
+      console.log(this.planesModal);
+    });
+  }
+
 
   openModal(): void {
     const modalDiv = document.getElementById('myModal');

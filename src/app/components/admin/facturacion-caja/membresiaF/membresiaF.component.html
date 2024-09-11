@@ -28,26 +28,8 @@
 
   <div class="factura-membresia">
     <div>
-      <p id="txtCodigoProd"><strong>CODIGO DE PLAN</strong></p>
-      <input (keyup.enter)="buscarPlan()" [(ngModel)]="id_plan" id="buscador-producto">
-      <button (click)="buscarPlan()" ><i class="bi bi-search"></i></button>
-    </div>
-    <div style="margin-left: 2rem;">
-      <p><strong>NOMBRE</strong></p>
-      <input [ngModel]="plan.nombre" readonly disabled>
-    </div>
-    <div style="margin-left: 2rem;">
-      <p><strong>DURACIÓN DIAS:</strong></p>
-      <input [ngModel]="plan.duracion_dias" readonly disabled>
-    </div>
-    <div style="margin-left: 2rem;">
-        <p><strong>PRECIO</strong></p>
-        <input [ngModel]="plan.costo" readonly disabled>
-    </div>
-    <div id="btn-group-productos" style="margin-left: 2rem;">
-      <p><strong>OPERACIONES</strong></p>
-      <button><strong>Añadir</strong></button>
-      <button style="margin-left: 1rem;"><strong>Eliminar</strong></button>
+      <p><strong>Buscar Plan</strong></p>
+      <button style="width: 10rem;" (click)="openModalPlanes(); listarPlanesModal()"><i class="bi bi-search"></i></button>
     </div>
   </div>
 
@@ -62,7 +44,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr> 
+      <tr>
         <td>{{plan.nombre}}</td>
         <td>{{plan.duracion_dias}}</td>
         <td>{{plan.costo}}</td>
@@ -129,6 +111,46 @@
       </div>
       <div class="modal-footer">
         <button type="button" (click)="closeModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="myModalPlanes" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Planes Disponibles</h5>
+        <button type="button" (click)="closeModalPlanes()" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="table-planes" class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Duración</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let plan of planesModal">
+              <td>{{plan.nombre}}</td>
+              <td>{{plan.costo}}</td>
+              <td>{{plan.duracion_dias}}</td>
+              <td>
+                <button (click)="buscarPlanModal(plan.id_plan)" class="btn btn-success">Seleccionar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="closeModalPlanes()" class="btn btn-secondary"
+          data-bs-dismiss="modal">Close</button>
+        <button type="button" (click)="closeModalPlanes()" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

@@ -62,6 +62,20 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
     this.listarCategorias();
   }
 
+  getProductos(): void {
+    this.servicio_productos
+      .getProductos(this.currentPage, this.pageSize)
+      .subscribe((data: any) => {
+        this.productos = data.content;
+        this.dataSource = new MatTableDataSource<Productos>(this.productos);
+        this.totalItems = data.totalElements;
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+        console.log(this.productos);
+      });
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -110,21 +124,6 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
   parseNumber(value: string): number {
     return parseFloat(value.replace('%', ''));
   }
-
-  getProductos(): void {
-    this.servicio_productos
-      .getProductos(this.currentPage, this.pageSize)
-      .subscribe((data: any) => {
-        this.productos = data.content;
-        this.dataSource = new MatTableDataSource<Productos>(this.productos);
-        this.totalItems = data.totalElements;
-        if (this.paginator) {
-          this.dataSource.paginator = this.paginator;
-        }
-        console.log(this.productos);
-      });
-  }
-
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];

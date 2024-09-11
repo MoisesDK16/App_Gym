@@ -1,0 +1,93 @@
+<h2 style="text-align: center; margin-top: 2rem;">MEMBRESIAS</h2>
+
+<div id="filter-container">
+  <input #inputBuscador (keyup)="buscarCliente($event)" id="buscador" type="text" class="form-control"
+    placeholder="Buscar Cliente">
+
+  <select (change)="filtrarPorPlan($event)" id="selectPlan" style="width: 15rem;" class="form-select">
+
+  </select>
+
+  <select (change)="filtrarPorEstado($event)" class="form-select" aria-label="Default select example">
+    <option value="TODOS" selected>TODOS</option>
+    <option value="ACTIVO">ACTIVO</option>
+    <option value="INACTIVO">INACTIVO</option>
+  </select>
+
+</div>
+
+<div class="mat-elevation-z8" id="table-container">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- ID Cliente Column -->
+    <ng-container matColumnDef="ID cliente">
+      <th mat-header-cell *matHeaderCellDef> ID Cliente </th>
+      <td mat-cell *matCellDef="let element"> {{element.cliente.id_cliente  }} </td>
+    </ng-container>
+
+    <!-- Nombres Column -->
+    <ng-container matColumnDef="nombres">
+      <th mat-header-cell *matHeaderCellDef> Nombres </th>
+      <td mat-cell *matCellDef="let element"> {{element.cliente.nombre}} {{element.cliente.primer_apellido}} </td>
+    </ng-container>
+
+    <!-- Plan Column -->
+    <ng-container matColumnDef="plan">
+      <th mat-header-cell *matHeaderCellDef> Plan </th>
+      <td mat-cell *matCellDef="let element"> {{element.plan.nombre}} </td>
+    </ng-container>
+
+    <!-- Costo Column -->
+    <ng-container matColumnDef="costo">
+      <th mat-header-cell *matHeaderCellDef> Costo </th>
+      <td mat-cell *matCellDef="let element"> {{element.plan.costo}} </td>
+    </ng-container>
+
+    <!-- Fecha Inicio Column -->
+    <ng-container matColumnDef="fechaInicio">
+      <th mat-header-cell *matHeaderCellDef> Fecha de Inicio </th>
+      <td mat-cell *matCellDef="let element"> {{element.fechaInicio | date:'yyyy-MM-dd'}} </td>
+    </ng-container>
+
+    <!-- Fecha Fin Column -->
+    <ng-container matColumnDef="fechaFin">
+      <th mat-header-cell *matHeaderCellDef> Fecha de Fin </th>
+      <td mat-cell *matCellDef="let element"> {{element.fechaFin | date:'yyyy-MM-dd'}} </td>
+    </ng-container>
+
+    <!-- Días Restantes Column -->
+    <ng-container matColumnDef="dias_restantes">
+      <th mat-header-cell *matHeaderCellDef> Días Restantes </th>
+      <td mat-cell *matCellDef="let element"> {{element.dias_restantes}} </td>
+    </ng-container>
+
+    <!-- Estado Column -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    </ng-container>
+
+    <!-- Acciones Column -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="d-flex justify-content-center">
+          <button style="margin-right: 0.25rem;" type="button" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button style="margin-right: 0.25rem;" type="button" class="btn btn-danger">
+            <i class="bi bi-trash"></i>
+          </button>
+          <button type="button" class="btn btn-info">INFO</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" showFirstLastButtons aria-label="Select page of periodic elements"
+    [length]="totalItems" [pageSize]="pageSize" (page)="onPageChange($event)">
+  </mat-paginator>
+</div>

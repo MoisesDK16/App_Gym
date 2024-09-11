@@ -1,0 +1,47 @@
+#table-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+}
+
+.table th {
+  padding-top: 12px;
+  text-align: center;
+  background-color: #f2f2f2;
+}
+
+.table td {
+  text-align: center;
+  padding: 10px;
+}
+
+#th-acciones {
+  width: 10rem;
+}
+
+
+#filter-container {
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+#filter-container select {
+  width: 12%;
+  margin-right: 1rem;
+  height: 2rem;
+}
+
+#buscador {
+  width: 15%;
+  margin-left: 6rem;
+  padding: 1rem;
+  margin-right: 1rem;
+}
+

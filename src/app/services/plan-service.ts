@@ -15,6 +15,10 @@ export class PlanService {
     return this.http.get<PlanResponse>(`${this.url}/listar?page=${page}&size=${size}`);
   }
 
+  listarPlanes2(): Observable<Planes[]> {
+    return this.http.get<Planes[]>(`${this.url}/all`);
+  }
+
   buscarPlanId(id: number): Observable<Planes> {
     return this.http.get<Planes>(`${this.url}/${id}`).pipe(
         catchError((error: HttpErrorResponse) => {

@@ -49,6 +49,12 @@ export class FacturacionCajaService {
       responseType: 'blob'
     });
   }
+
+  downloadFacturaMembresiaPDF(idFactura: number): Observable<Blob> {
+    return this.http.get(`${this.urlFacturacion}/Download-MembresiaPdf/${idFactura}`, {
+      responseType: 'blob'
+    });
+  }
   
    enviarFacturaEmail(destinatario: string, asunto: string, mensaje: string, factura: Blob): Observable<any> {
     const formData = new FormData();

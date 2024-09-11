@@ -22,7 +22,7 @@
   }
   
   .factura-membresia {
-    margin-top: 2rem;
+    margin-top: 0.5rem;
     display: flex;
     flex-direction: row;
   }
@@ -67,4 +67,20 @@
     margin: auto;
     justify-content: center;
   }
+
+/*Tabla modal planes*/
+
+#table-planes{
+  width: 70%; 
+  margin: 0 auto;
+}
+
+#table-planes th{
+  padding: 0.5rem;
+  text-align: center; 
+}
+#table-planes tbody tr td{
+  margin-top: 3rem;
+  text-align: center; 
+}
   
