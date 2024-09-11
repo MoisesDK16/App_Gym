@@ -18,7 +18,6 @@
 
 <div class="mat-elevation-z8" id="table-container">
   <table mat-table [dataSource]="dataSource">
-
     <!-- ID Cliente Column -->
     <ng-container matColumnDef="ID cliente">
       <th mat-header-cell *matHeaderCellDef> ID Cliente </th>
@@ -72,13 +71,15 @@
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let element">
         <div class="d-flex justify-content-center">
-          <button style="margin-right: 0.25rem;" type="button" class="btn btn-primary">
+          <button (click)="renovarMembresia(element.idMembresia)" style="margin-right: 0.25rem;" type="button"
+            class="btn btn-primary">
             <i class="bi bi-pencil-square"></i>
-          </button>
-          <button style="margin-right: 0.25rem;" type="button" class="btn btn-danger">
+            Renovar</button>
+          <button (click)="openModalDetalles(element.idMembresia)" style="margin-right: 0.25rem;" type="button"
+            class="btn btn-info">INFO</button>
+          <button type="button" class="btn btn-danger">
             <i class="bi bi-trash"></i>
           </button>
-          <button type="button" class="btn btn-info">INFO</button>
         </div>
       </td>
     </ng-container>
@@ -91,3 +92,69 @@
     [length]="totalItems" [pageSize]="pageSize" (page)="onPageChange($event)">
   </mat-paginator>
 </div>
+
+
+<div id="modal-detalles-membresia" class="modal fade" tabindex="-1" aria-labelledby="modalDetallesMembresiaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDetallesMembresiaLabel">Detalles de la Membresía</h5>
+        <button type="button" class="btn-close" (click)="closeModalDetalles()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="membresiaUno">
+        <div id="container-tablas" class="d-flex justify-content-between">
+          <!-- Tabla de Datos del Cliente -->
+          <table class="table-detalles-cliente table table-bordered table-striped mb-4">
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Nombres completos</th>
+                <td>{{membresiaUno.cliente?.nombre}} {{membresiaUno.cliente?.primer_apellido}} {{membresiaUno.cliente?.segundo_apellido}}</td>
+              </tr>
+              <tr>
+                <th>Correo Electrónico</th>
+                <td>{{membresiaUno.cliente?.correo || 'N/A'}}</td>
+              </tr>
+              <tr>
+                <th>Teléfono</th>
+                <td>{{membresiaUno.cliente?.telefono || 'N/A'}}</td>
+              </tr>
+
+              <tr>
+                <th>Dirección</th>
+                <td>{{membresiaUno.cliente?.direccion || 'N/A'}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Tabla de Servicios Incluidos -->
+          <table class="table-detalles-servicios table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Servicio</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let servicio of membresiaUno.plan?.servicios || []">
+                <td>{{servicio.nombre}}</td>
+                <td>{{servicio.categoria.categoria}}</td>
+                <td>{{servicio.precio}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModalDetalles()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

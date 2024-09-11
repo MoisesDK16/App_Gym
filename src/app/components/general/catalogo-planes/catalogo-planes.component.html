@@ -1,23 +1,19 @@
-
 <h1 style="text-align: center; margin-top: 2rem; margin-bottom: 2rem; ">CATALOGO DE PLANES</h1>
 
 <div class="container-fluid d-flex justify-content-center">
   <div class="row justify-content-center">
     <div *ngFor="let plan of planes; let i = index" class="col-12 col-md-6 col-lg-4 d-flex justify-content-center mb-5">
       <div class="card" style="width: 35rem; height: max-content; margin-left: 2rem;">
-        <img height="300rem"
-          [src]="plan.imagen"
-          class="card-img-top" alt="...">
+        <img height="300rem" [src]="plan.imagen" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title"><b>#</b> {{plan.nombre}}</h5>
           <p class="card-text"><b>Duración :</b> {{plan.duracion_dias}} Días</p>
           <h5 class="card-title"><b>Precio: </b> <strong
               style="font-size: x-large; color: green;">{{plan.costo}}$</strong></h5>
           <div class="d-flex justify-content-center">
-            <a style="font-size: large" href="#" class="btn btn-primary mt-3">
-              <strong style="text-decoration: solid;">COMPRAR</strong>
-            </a>
+            <a class="nav-link" (click)="openCheckout()" style="cursor: pointer;">COMPRAR</a>
           </div>
+
         </div>
       </div>
     </div>

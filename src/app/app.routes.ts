@@ -70,9 +70,14 @@ export const routes: Routes = [
             
         ]	
     },
+
+    {
+        path: 'checkout',
+        loadComponent: () => import('./components/general/checkout/checkout.component')
+    },
     
     { path: '', redirectTo: '/layout-publico/home', pathMatch: 'full' },
-    { path: '**', redirectTo: '/layout-publico/home' }
+    // { path: '**', redirectTo: '/layout-publico/home' }
     
 ];
 

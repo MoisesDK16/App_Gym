@@ -3,26 +3,14 @@
   margin: 0 auto;
 }
 
-.table th,
-.table td {
-  border: 1px solid #ddd;
-}
-
-.table th {
-  padding-top: 12px;
+#table-container table th {
   text-align: center;
-  background-color: #f2f2f2;
+  padding: 1rem;
 }
 
-.table td {
+#table-container table td{
   text-align: center;
-  padding: 10px;
 }
-
-#th-acciones {
-  width: 10rem;
-}
-
 
 #filter-container {
   display: flex;
@@ -45,3 +33,65 @@
   margin-right: 1rem;
 }
 
+
+#modal-detalles-membresia {
+  margin-top: 5rem; 
+}
+
+
+#ambas-tablas {
+  display: flex;
+  justify-content: space-between; 
+  gap: 1rem; 
+}
+
+.table-detalles-cliente {
+  width: 100%;
+  max-width: 45%; 
+  border-collapse: collapse;
+  margin-bottom: 1.5rem; 
+}
+
+.table-detalles-cliente thead th {
+  background-color: #f8f9fa;
+  text-align: left;
+  font-weight: bold;
+  padding: 0.75rem;
+}
+
+.table-detalles-cliente tbody td {
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+
+
+/*Tabla servicios*/
+.table-detalles-servicios {
+  width: 100%;
+  max-width: 45%; 
+  border-collapse: collapse;
+}
+
+.table-detalles-servicios thead th {
+  background-color: #f8f9fa;
+  text-align: left;
+  font-weight: bold;
+  padding: 0.75rem;
+}
+
+.table-detalles-servicios tbody td {
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-dialog {
+  max-width: 75%;
+  margin: 1.75rem auto;
+}

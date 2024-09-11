@@ -43,5 +43,11 @@ export class MembresiaService {
     return this.http.get<MembresiaResponse[]>(`${this.url}/estado/${estado}`);
   }
 
+  renovarMembresia(data:FormData, id:number): Observable<any> {
+    return this.http.patch(`${this.url}/renovar/${id}`, data);
+  }
 
+  desactivarMembresias(): Observable<any> {
+    return this.http.patch(`${this.url}/desactivar`, {});
+  }
 }

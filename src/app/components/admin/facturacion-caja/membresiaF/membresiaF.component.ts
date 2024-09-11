@@ -166,7 +166,7 @@ export class MembresiaComponentF {
   async registrarMembresia(): Promise<void> {
 
     let fechaFin = new Date();
-    fechaFin.setDate(fechaFin.getDate() + 30);
+    fechaFin.setDate(fechaFin.getDate() + this.plan.duracion_dias);
 
     console.log("Fecha Fin:", fechaFin);
 
