@@ -1,3 +1,4 @@
+
 <h1 style="text-align: center; margin-top: 2rem; margin-bottom: 2rem; ">CATALOGO DE PLANES</h1>
 
 <div class="container-fluid d-flex justify-content-center">
@@ -11,11 +12,11 @@
           <h5 class="card-title"><b>Precio: </b> <strong
               style="font-size: x-large; color: green;">{{plan.costo}}$</strong></h5>
           <div class="d-flex justify-content-center">
-            <a class="nav-link" (click)="openCheckout()" style="cursor: pointer;">COMPRAR</a>
+            <button (click)="enviarPlan(plan.id_plan)" style="cursor: pointer;">COMPRAR</button>
           </div>
-
         </div>
       </div>
     </div>
   </div>
 </div>
+

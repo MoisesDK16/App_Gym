@@ -1,1 +1,97 @@
-<p>checkout works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="checkout-container">
+    <h2 style="margin-left: 38rem;">CHECKOUT</h2>
+
+    <div class="form-row">
+      <div class="form-container">
+        <h3 style="text-align: center;">Datos del Cliente</h3>
+        <form>
+          <div class="form-group">
+            <img style="margin-left: 5.1rem; margin-bottom: 1.5rem;" height="150px" width="150px" src="https://png.pngtree.com/png-clipart/20191120/original/pngtree-man-icon-isolated-on-abstract-background-png-image_5081365.jpg"/>
+          </div>
+        </form>
+        <form>
+          <div class="form-group">
+            <label for="id_cliente">Identificación:</label>
+            <input type="text" id="id_cliente" name="id_cliente" disabled />
+          </div>
+          <div class="form-group">
+            <label for="nombres">Nombres:</label>
+            <input type="text" id="nombres" name="nombres" disabled />
+          </div>
+          <div class="form-group">
+            <label for="correo">Correo:</label>
+            <input type="text" id="correo" name="correo" disabled />
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" disabled />
+          </div>
+        </form>
+      </div>
+
+      <div class="form-container-2">
+        <h3 style="text-align: center;">Datos del Plan</h3>
+        <form>
+          <img style="margin-left: 4.5rem; margin-bottom: 1.5rem;" height="250px" width="250px" [src]="plan.imagen" />
+          <div class="form-group">
+            <label for="nombre_plan">Nombre:</label>
+            <input type="text" id="nombre_plan" name="nombre_plan" disabled />
+          </div>
+          <div class="form-group">
+            <label for="costo">Precio:</label>
+            <input type="text" id="costo" name="costo" disabled />
+          </div>
+          <div class="form-group">
+            <label for="duracion_dias">Duración:</label>
+            <input type="text" id="duracion_dias" name="duracion_dias" disabled />
+          </div>
+          <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" disabled />
+          </div>
+
+          <div class="table-container">
+            <h4>Servicios Incluidos</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let servicio of servicios">
+                <tr>
+                  <td>{{servicio.nombre}}</td> 
+                  <td>{{servicio.precio}} $</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+
+      <div style="height: max-content;" class="form-container-3">
+        <form>
+          <div class="form-group">
+            <h3>Elija su forma de Pago</h3>
+            <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+
+</html>
