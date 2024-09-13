@@ -68,3 +68,35 @@
     justify-content: center;
   }
   
+
+/*Modal-Productos*/
+
+#table-container-productos {
+  width: 90%; 
+  margin: 0 auto;
+}
+
+.table-container-productos th, .table td {
+  border: 1px solid #ddd;
+}
+
+.table-container-productos th {
+  padding-top: 12px;
+  text-align: center;
+  background-color: #f2f2f2;
+}
+
+.table-container-productos td {
+  text-align: center;
+  padding: 10px;
+}
+
+#img-productos-modal{
+  width: 75px;
+  height: 50px;
+}
+
+#buscador-producto{
+  width: 15rem;
+  margin: auto;
+}

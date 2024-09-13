@@ -36,7 +36,7 @@ export default class CatalogoProductosComponent implements OnInit{
 
   getProductos(): void {
     this.servicio_producto.getProductos(this.currentPage, this.pageSize).subscribe((data: any) => {
-      this.productos = data.content;
+      this.productos = data.content.filter((producto: any) => producto.stock > 0);
       this.dataSource = new MatTableDataSource<Productos>(this.productos);
       this.totalItems = data.totalElements;
       if (this.paginator) {

@@ -79,6 +79,48 @@ export default class CheckoutComponent {
     console.log("id_plan:", this.id_plan);
   }
 
+  resetFactura(): void {
+    this.factura = new Factura(
+      0,
+      { id_cliente: '', nombre: '', primer_apellido: '' },
+      '',
+      new Date(),
+      '',
+      0,
+      0,
+      0
+    );
+  }
+
+
+  resetMembresia() {
+    this.membresia = new Membresia(
+      0,
+      { id_cliente: '' },
+      { id_plan: 0 },
+      new Date(),
+      new Date(),
+      ''
+    );
+  }
+
+  resetDetalle() {
+    this.detalle = new DetalleMembresia(
+      0,
+      0,
+      0,
+      { idFactura: 0 },
+      { idMembresia: 0 }
+    );
+  }
+
+
+  resetAll(): void {
+    this.resetFactura();
+    this.resetMembresia();
+    this.resetDetalle();
+  }
+
   async generarFactura(): Promise<void> {
     this.factura = {
       idFactura: 0,
@@ -151,6 +193,7 @@ export default class CheckoutComponent {
         let asunto = "Factura de Membresia";
         let mensaje = "Gracias por su compra";
         await this.enviarFacturaEmail(destinatario, asunto, mensaje, data);
+        this.resetAll();
       }
     );
   }

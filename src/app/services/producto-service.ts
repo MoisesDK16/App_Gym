@@ -26,7 +26,11 @@ export class ProductoService {
   }
 
   actualizarProducto(idProducto: String, formData: FormData): Observable<any> {
-    return this.http.put<any>(`${this.url}/actualizar/${idProducto}`, formData);
+    return this.http.patch<any>(`${this.url}/actualizar/${idProducto}`, formData);
+  }
+
+  actualizarProductoImagen(idProducto: String, formData: FormData): Observable<any> {
+    return this.http.patch<any>(`${this.url}/actualizarImagen/${idProducto}`, formData);
   }
 
   eliminarProducto(id_producto: string): Observable<any> {

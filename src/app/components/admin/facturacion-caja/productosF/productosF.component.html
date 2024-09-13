@@ -30,7 +30,7 @@
     <div>
       <p id="txtCodigoProd"><strong>CODIGO DE PRODUCTO</strong></p>
       <input #productoInput (keyup.enter)="unoProducto(productoInput.value)" id="buscador-producto">
-      <button (click)="unoProducto(productoInput.value)"><i class="bi bi-search"></i></button>
+      <button (click)="openModalProductos()"><i class="bi bi-search"></i></button>
     </div>
     <div style="margin-left: 2rem;">
       <p><strong>NOMBRE</strong></p>
@@ -38,7 +38,7 @@
     </div>
     <div style="margin-left: 2rem;">
       <p><strong>CANTIDAD</strong></p>
-      <input type="number" [(ngModel)]="detalle.cantidad" style="width: 5rem;" id="cantidad-producto">
+      <input type="number" [(ngModel)]="detalle.cantidad" style="width: 5rem;">
     </div>
     <div id="btn-group-productos" style="margin-left: 2rem;">
       <p><strong>OPERACIONES</strong></p>
@@ -62,7 +62,7 @@
       <tr *ngIf="detalle.cantidad>0">
         <td>{{detalle.producto.idProducto}}</td>
         <td>{{detalle.producto.nombre}}</td>
-        <td>{{detalle.cantidad}}</td>
+        <td><input #detalleCantidad  id="cantidad-producto" (change)="editarCantidadDetalle(+detalleCantidad.value, i)" [(ngModel)]="detalle.cantidad" type="number"/></td>
         <td>{{detalle.precio}}</td>
         <td>{{detalle.total}}</td>
         <td>
@@ -129,6 +129,86 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="myModalProductos" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Buscar Producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="cerrarModalProductos()"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input id="buscador-producto" [(ngModel)]="nombreProducto" type="text" placeholder="Buscar por nombre"
+          class="form-control mb-3" />
+        <div class="mat-elevation-z8" id="table-container-productos">
+          <table mat-table [dataSource]="dataSource">
+
+            <!-- Nombre Producto Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+
+            <!-- Precio Venta Column -->
+            <ng-container matColumnDef="precio_venta">
+              <th mat-header-cell *matHeaderCellDef> Precio Venta </th>
+              <td mat-cell *matCellDef="let element"> {{element.precioVenta}} </td>
+            </ng-container>
+
+            <!-- Stock Column -->
+            <ng-container matColumnDef="stock">
+              <th mat-header-cell *matHeaderCellDef> Stock </th>
+              <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
+            </ng-container>
+
+
+            <!-- Fecha Caducacion Column -->
+            <ng-container matColumnDef="fecha_caducacion">
+              <th mat-header-cell *matHeaderCellDef> Fecha de Caducación </th>
+              <td mat-cell *matCellDef="let element"> {{element.fecha_caducacion | date:'yyyy-MM-dd'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="imagen">
+              <th mat-header-cell *matHeaderCellDef> Imagen </th>
+              <td mat-cell *matCellDef="let element"> <img id="img-productos-modal" [src]="element.imagen"></td>
+            </ng-container>
+
+            <ng-container matColumnDef="acciones">
+              <th style="width: 2rem;" mat-header-cell *matHeaderCellDef> Acciones </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="d-flex justify-content-start">
+                  <button (click)="addProducto(element.idProducto)" style="margin-left: 0.75rem;" type="button"
+                    class="btn btn-success">
+                    <i class="bi bi-plus-square"></i>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          </table>
+
+          <mat-paginator 
+          [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]" 
+          showFirstLastButtons
+          aria-label="Select page of periodic elements" 
+          [length]="totalItems" 
+          [pageSize]="pageSize"
+          (page)="onPageChange($event)">
+          </mat-paginator>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          (click)="cerrarModalProductos()">Cerrar</button>
       </div>
     </div>
   </div>

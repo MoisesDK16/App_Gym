@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { ProductoService } from '../../../services/producto-service';
 import { Productos } from '../../../models/Productos';
-import { DatePipe, NgFor } from '@angular/common';
+import { DatePipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Categorias } from '../../../models/Categorias';
 import {
@@ -14,7 +14,15 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [NgFor, FormsModule, MatTableModule, MatPaginatorModule, DatePipe],
+  imports: [
+    NgIf,
+    NgFor,
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    DatePipe,
+    NgStyle,
+  ],
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.css'],
 })
@@ -23,7 +31,7 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
   producto: Productos = new Productos(
     '',
     '',
-    { id_categoria: 0 , categoria: '' },
+    { id_categoria: 0, categoria: '' },
     0,
     0,
     0,
@@ -60,6 +68,61 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getProductos();
     this.listarCategorias();
+  }
+
+  async onFileChange(event: any): Promise<void> {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      console.log(this.selectedFile); // Verifica que el archivo se está seleccionando correctamente
+    }
+  }
+
+  async unoProducto(idProducto: string): Promise<void> {
+    this.servicio_productos
+      .unoProducto(idProducto)
+      .subscribe(async (data: Productos) => {
+        this.producto = data;
+        console.log(this.producto);
+        this.openModal();
+        this.estado = 'actualizar';
+        console.log(this.estado);
+      });
+  }
+
+  // unoProductoImagen(idProducto: string): void {
+  //   this.servicio_productos
+  //     .unoProducto(idProducto)
+  //     .subscribe((data: Productos) => {
+  //       this.producto = data;
+  //       console.log(this.producto);
+  //     });
+  // }
+
+  onFileSelected(event: Event, idProducto: string): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      console.log('Archivo seleccionado:', file);
+      let formData = new FormData();
+      formData.append('imagen', file);
+      this.servicio_productos.actualizarProductoImagen(idProducto, formData).subscribe((data: any) => {
+        console.log(data);
+      });
+    }
+  }
+
+  // Función que convierte una URL a un objeto File
+  async urlToFile(url: string, filename: string): Promise<File> {
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error('No se pudo obtener el recurso');
+    }
+    // Convierte la respuesta en un blob
+    const blob = await res.blob();
+    // Crea un objeto File a partir del blob
+    return new File([blob], filename, { type: blob.type });
   }
 
   getProductos(): void {
@@ -124,11 +187,6 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
   parseNumber(value: string): number {
     return parseFloat(value.replace('%', ''));
   }
-  onFileChange(event: any) {
-    if (event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
-    }
-  }
 
   registrarProducto(): void {
     if (
@@ -150,7 +208,10 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
         this.producto.margenGanancia.toString()
       );
       formData.append('precioVenta', this.producto.precioVenta.toString());
-      formData.append('fecha_caducacion', this.producto.fecha_caducacion.toString());
+      formData.append(
+        'fecha_caducacion',
+        this.producto.fecha_caducacion.toString()
+      );
       formData.append('descripcion', this.producto.descripcion);
       formData.append('imagen', this.selectedFile);
 
@@ -168,23 +229,10 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
     }
   }
 
-  unoProducto(idProducto: string): void {
-    this.servicio_productos
-      .unoProducto(idProducto)
-      .subscribe((data: Productos) => {
-        this.producto = data;
-        console.log(this.producto);
-        this.openModal();
-        this.estado = 'actualizar';
-        console.log(this.estado);
-      });
-  }
-
   actualizarProducto(): void {
     if (
       this.producto.categoria &&
-      this.producto.categoria.id_categoria &&
-      this.selectedFile
+      this.producto.categoria.id_categoria
     ) {
       const formData: FormData = new FormData();
       formData.append(
@@ -199,12 +247,14 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
         this.producto.margenGanancia.toString()
       );
       formData.append('precioVenta', this.producto.precioVenta.toString());
-      formData.append('fecha_caducacion', this.producto.fecha_caducacion.toString());
+      formData.append(
+        'fecha_caducacion',
+        this.producto.fecha_caducacion.toString()
+      );
       formData.append('descripcion', this.producto.descripcion);
-      formData.append('imagen', this.selectedFile);
 
       this.servicio_productos
-        .actualizarProducto(this.producto.idProducto,formData)
+        .actualizarProducto(this.producto.idProducto, formData)
         .subscribe((data: Productos) => {
           console.log(data);
           this.getProductos();
@@ -212,7 +262,6 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
           this.resetEstado();
         });
     }
-  
   }
 
   eliminarProducto(id_producto: string): void {
