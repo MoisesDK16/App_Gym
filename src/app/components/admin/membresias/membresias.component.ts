@@ -20,7 +20,15 @@ import { ClienteService } from '../../../services/cliente-service';
 @Component({
   selector: 'app-membresias',
   standalone: true,
-  imports: [NgFor, NgIf, FormsModule, MatTableModule, MatPaginatorModule, DatePipe, KeyValuePipe],
+  imports: [
+    NgFor,
+    NgIf,
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    DatePipe,
+    KeyValuePipe,
+  ],
   templateUrl: './membresias.component.html',
   styleUrl: './membresias.component.css',
 })
@@ -285,6 +293,7 @@ export default class MembresiasComponent implements OnInit {
     const selectElement = $event.target as HTMLSelectElement;
     const planSeleccionado = selectElement.value.trim();
     console.log('Plan:', planSeleccionado);
+    console.log('Plan:', typeof planSeleccionado);
 
     if (planSeleccionado === 'TODOS') {
       this.getMembresias();
@@ -373,13 +382,42 @@ export default class MembresiasComponent implements OnInit {
     console.log('membresia:', this.membresiaUno);
   }
 
+  eliminarMembresia(id: number): void {
+
+    let answer= confirm('¿Está seguro de eliminar la membresía?');
+
+    if(answer){
+      this._membresiaService.eliminarMembresia(id).subscribe({
+        next: () => {
+          // Crear un objeto que simule el evento
+          const simulatedEvent = {
+            target: {
+              value: 'INACTIVO'
+            }
+          } as unknown as Event;
+    
+          // Llamar al método filtrarPorPlan pasando el objeto simulado
+          this.filtrarPorEstado(simulatedEvent);
+          alert('Membresía eliminada correctamente');
+        },
+        error: (err) => {
+          console.error('Error al eliminar la membresía:', err);
+          alert('No se puede eliminar una membresía activa');
+        },
+      });
+    }else{
+      return;
+    }
+  }
+  
+
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
     this.getMembresias();
   }
 
-  openModalDetalles(id: number): void{
+  openModalDetalles(id: number): void {
     this.unoMembresia(id);
     const modalDetalles = document.getElementById('modal-detalles-membresia');
     if (modalDetalles) {
@@ -391,7 +429,7 @@ export default class MembresiasComponent implements OnInit {
     }
   }
 
-  closeModalDetalles(): void{
+  closeModalDetalles(): void {
     const modalDetalles = document.getElementById('modal-detalles-membresia');
     if (modalDetalles) {
       modalDetalles.style.display = 'none';
@@ -402,6 +440,4 @@ export default class MembresiasComponent implements OnInit {
       }
     }
   }
-
-  
 }

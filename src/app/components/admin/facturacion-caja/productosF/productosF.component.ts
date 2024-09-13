@@ -192,43 +192,50 @@ export class ProductosComponentF {
   }
 
   agregarDetalle(): void {
-    if (this.detalle.cantidad <= 0) {
-      console.log('la cantidad debe ser mayor a 0');
+    if (this.detalle.cantidad <= 0 ) {
+      console.log('La cantidad debe ser mayor a 0');
       return;
     }
 
-    if (
-      this.productos.find(
-        (elemento) => this.producto.idProducto === elemento.idProducto
-      )
-    ) {
-      console.log('Producto ya agregado');
-      this.detalles.forEach((elemento) => {
-        if (elemento.producto.idProducto === this.producto.idProducto) {
-          if(elemento.cantidad >= this.producto.stock){
-            console.log('Stock insuficiente');
-            this.resetProducto();
-            const buscadorProducto = document.getElementById(
-              'buscador-producto'
-            ) as HTMLInputElement;
-            buscadorProducto.value = '';
-            const cantidad_producto2 = document.getElementById('cantidad-producto2') as HTMLInputElement;
-            cantidad_producto2.value = '';
-            alert('Stock insuficiente');
-            return;
-          }else{
-            elemento.cantidad += this.detalle.cantidad;
-            this.calcularSubtotal();
-            this.calcularAll();
-            this.resetProducto();
-            this.resetDetalle();
-            const buscadorProducto = document.getElementById('buscador-producto') as HTMLInputElement;
-            buscadorProducto.value = '';
-            const nombre_producto = document.getElementById('nombre-producto') as HTMLInputElement;
-            nombre_producto.value = '';
-          }
+    if(this.detalle.cantidad > this.producto.stock){
+      console.log('Stock insuficiente');
+      this.resetearTxts();
+      alert('Stock insuficiente'); 
+      return; 
+    }
+    
+    // const productoExistente = this.productos.find((producto) => {
+    //   console.log("Stock producto existente stock: ", producto.stock);
+    //   return producto.idProducto === this.producto.idProducto;
+    // });
+
+    const detalleExistente = this.detalles.find((detalle) => {
+      return detalle.producto.idProducto === this.producto.idProducto;
+    })
+
+    console.log("detalle existente: ", detalleExistente);
+    console.log("stock detalle ecistente: ", detalleExistente?.cantidad);
+  
+    if (this.producto && detalleExistente) {
+      console.log('Producto ya agregado');     
+        if (detalleExistente.cantidad >= this.producto.stock) {
+          console.log('Stock insuficiente');
+          detalleExistente.cantidad = this.producto.stock;
+          this.resetProducto();
+          this.resetearTxts();
+          alert('Stock insuficiente');
+          return;
+        } else {
+          detalleExistente.cantidad += this.detalle.cantidad;
+          this.calcularSubtotal();
+          this.calcularAll();
+          this.resetProducto();
+          this.resetDetalle();
+          const buscadorProducto = document.getElementById('buscador-producto') as HTMLInputElement;
+          buscadorProducto.value = '';
+          const nombre_producto = document.getElementById('nombre-producto') as HTMLInputElement;
+          nombre_producto.value = '';
         }
-      });
       return;
     }
     
@@ -394,6 +401,7 @@ export class ProductosComponentF {
     }
 
     await this.generarFactura();
+    alert('Factura generada con éxito');
   }
 
   async generarFactura(): Promise<void> {

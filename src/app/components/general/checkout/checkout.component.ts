@@ -276,12 +276,17 @@ export default class CheckoutComponent {
           data
         );
         this.generarFacturaYDetalles();
+        setTimeout(() => {
+          alert('Pago realizado con éxito');
+        }, 1000);
       },
       onCancel: (data, actions) => {
         console.log('OnCancel', data, actions);
+        alert('Pago cancelado');
       },
       onError: (err) => {
         console.log('OnError', err);
+        alert('Error al procesar el pago');
       },
       onClick: (data, actions) => {
         console.log('onClick', data, actions);

@@ -138,6 +138,7 @@ export class MembresiaComponentF {
       this.plan = data;
       this.id_plan = data.id_plan;
       console.log(this.plan);
+      this.closeModalPlanes();
     });
   }
 
@@ -201,10 +202,29 @@ export class MembresiaComponentF {
   }
 
   async pagar(): Promise<void> {
+
+    if(this.cliente.id_cliente == ''){
+      alert('Seleccione un cliente');
+      return;
+    }
+
+    if(this.plan.id_plan == 0){
+      alert('Seleccione un plan');
+      return;
+    }
+
+    if(this.cliente.id_cliente =='' || this.id_plan == 0){
+      alert('Seleccione un cliente y un plan');
+      return;
+    }
+
     await this.generarFactura();
     await this.registrarMembresia();
     await this.registrarDetalle();
     await this.generarFacturaPDF();
+    setTimeout(() => {
+      alert('Compra de membresia exitosa');
+    },1000);
   }
 
   notificarRegistro(): void {

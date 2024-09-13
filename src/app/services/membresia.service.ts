@@ -50,4 +50,8 @@ export class MembresiaService {
   desactivarMembresias(): Observable<any> {
     return this.http.patch(`${this.url}/desactivar`, {});
   }
+
+  eliminarMembresia(id: number): Observable<any> {
+    return this.http.delete(`${this.url}/eliminar/${id}`);
+  }
 }

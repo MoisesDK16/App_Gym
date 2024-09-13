@@ -23,7 +23,7 @@ export default class FacturacionCajaComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.activeMenu = 'fact-Producto';
+    this.activeMenu = 'fact-Compra_membresia';
   }
 
   setActiveMenu(menu: string): void {
