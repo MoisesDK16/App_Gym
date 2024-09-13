@@ -207,12 +207,25 @@ export class ProductosComponentF {
         if (elemento.producto.idProducto === this.producto.idProducto) {
           if(elemento.cantidad >= this.producto.stock){
             console.log('Stock insuficiente');
+            this.resetProducto();
+            const buscadorProducto = document.getElementById(
+              'buscador-producto'
+            ) as HTMLInputElement;
+            buscadorProducto.value = '';
+            const cantidad_producto2 = document.getElementById('cantidad-producto2') as HTMLInputElement;
+            cantidad_producto2.value = '';
             alert('Stock insuficiente');
             return;
           }else{
             elemento.cantidad += this.detalle.cantidad;
             this.calcularSubtotal();
             this.calcularAll();
+            this.resetProducto();
+            this.resetDetalle();
+            const buscadorProducto = document.getElementById('buscador-producto') as HTMLInputElement;
+            buscadorProducto.value = '';
+            const nombre_producto = document.getElementById('nombre-producto') as HTMLInputElement;
+            nombre_producto.value = '';
           }
         }
       });
@@ -229,9 +242,7 @@ export class ProductosComponentF {
     console.log(this.productos);
     console.log(this.detalles);
 
-    this.calcularSubtotalFactura();
-    this.calcularIva();
-    this.calcularTotalFactura();
+    this.calcularAll();
     this.resetProducto();
     this.resetDetalle();
     const buscadorProducto = document.getElementById(
@@ -243,24 +254,27 @@ export class ProductosComponentF {
   agregarDetalleModal(): void {
     console.log(this.producto.idProducto);
 
-    // Verifica si el producto ya está en la lista
     const productoExistente = this.productos.find(
       (elemento) => this.producto.idProducto === elemento.idProducto
     );
 
     if (productoExistente) {
       this.detalles.forEach((elemento) => {
-        // Verifica si el producto es el mismo y si la cantidad es mayor al stock
+        // Verificar si el producto del detalle es el mismo al idProduco de producto y si la cantidad es mayor al stock
         if (elemento.producto.idProducto === this.producto.idProducto) {
           if (elemento.cantidad >= this.producto.stock) {
             console.log('Stock insuficiente');
-            alert('Stock insuficiente');
+            this.resetProducto();
+            this.resetearTxts();
+            alert('Stock insuficiente'); 
             return;
           } else {
-            // Incrementa la cantidad si hay stock disponible
             elemento.cantidad++;
             this.calcularSubtotal();
             this.calcularAll();
+            this.resetProducto();
+            this.resetDetalle();
+            this.resetearTxts();
           }
         }
       });
@@ -286,28 +300,26 @@ export class ProductosComponentF {
     this.calcularAll();
     this.resetProducto();
     this.resetDetalle();
-    const buscadorProducto = document.getElementById(
-      'buscador-producto'
-    ) as HTMLInputElement;
-    buscadorProducto.value = '';
+    this.resetearTxts();
   }
 
-  editarCantidadDetalle(cantidad: number, index: number): void {
+  editarCantidadDetalle(cantidad: number, nombreProducto: string): void {
     console.log('Cantidad:', cantidad);
-    console.log('Detalle:', this.detalles[index].cantidad);
+
+    const detalleEncontrado = this.detalles.filter((detalle) => {
+      return detalle.producto.nombre === nombreProducto;
+    })
+
+    const index = this.detalles.indexOf(detalleEncontrado[0]);
 
     const producto = this.productos.find(
-      (elemento) =>
-        elemento.idProducto === this.detalles[index].producto.idProducto
-    );
+      (elemento) => elemento.nombre ===  detalleEncontrado[0].producto.nombre);
+    console.log('Producto Seleccionado:', producto?.nombre);
 
     if (producto) {
       if (cantidad > producto.stock) {
         console.log('Stock insuficiente');
-        const cantidad_producto = document.getElementById(
-          'cantidad-producto'
-        ) as HTMLInputElement;
-        cantidad_producto.value = String(producto.stock);
+        detalleEncontrado[0].cantidad = producto.stock;
         alert('Stock insuficiente');
         return;
       } else {
@@ -324,15 +336,28 @@ export class ProductosComponentF {
     console.log(this.detalles);
   }
 
+  eliminarProducto(index: number): void {
+    this.productos.splice(index, 1);
+  }
+
+  eliminarDetalle(index: number): void {
+    const producto = this.productos.find(
+      (elemento) =>
+        elemento.idProducto === this.detalles[index].producto.idProducto
+    );
+
+    if(producto){
+      this.productos.splice(this.productos.indexOf(producto), 1);
+    }
+
+    this.detalles.splice(index, 1);
+    this.calcularAll();
+  }
+
   calcularSubtotal(): void {
     this.detalles.forEach((detalle) => {
       detalle.total = detalle.precio * detalle.cantidad;
     });
-  }
-
-  eliminarDetalle(index: number): void {
-    this.detalles.splice(index, 1);
-    this.calcularAll();
   }
 
   calcularAll(): void {
@@ -341,7 +366,33 @@ export class ProductosComponentF {
     this.calcularTotalFactura();
   }
 
+  resetearTxts(): void {
+    const buscadorProducto = document.getElementById(
+      'buscador-producto'
+    ) as HTMLInputElement;
+    buscadorProducto.value = '';
+    const cantidad_producto2 = document.getElementById(
+      'cantidad-producto2'
+    ) as HTMLInputElement;
+    cantidad_producto2.value = '';
+  }
+
   async pagar(): Promise<void> {
+    if(this.cliente.id_cliente === ''){
+      alert('Cliente no encontrado');
+      return;
+    }
+
+    if(this.detalles.length === 0){
+      alert('No hay productos en la lista');
+      return;
+    }
+
+    if(this.cliente.correo === ''){
+      alert('Cliente no tiene correo');
+      return;
+    }
+
     await this.generarFactura();
   }
 

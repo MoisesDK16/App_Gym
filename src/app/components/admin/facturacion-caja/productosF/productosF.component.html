@@ -34,11 +34,11 @@
     </div>
     <div style="margin-left: 2rem;">
       <p><strong>NOMBRE</strong></p>
-      <input [value]="producto.nombre" readonly>
+      <input id="nombre-producto" [value]="producto.nombre" readonly [disabled]="true">
     </div>
     <div style="margin-left: 2rem;">
       <p><strong>CANTIDAD</strong></p>
-      <input type="number" [(ngModel)]="detalle.cantidad" style="width: 5rem;">
+      <input id="cantidad-producto2" type="number" [(ngModel)]="detalle.cantidad" style="width: 5rem;">
     </div>
     <div id="btn-group-productos" style="margin-left: 2rem;">
       <p><strong>OPERACIONES</strong></p>
@@ -50,19 +50,17 @@
   <table class="factura-table">
     <thead>
       <tr>
-        <th>ID</th>
         <th>PRODUCTO</th>
         <th>CANTIDAD</th>
         <th>PRECIO</th>
-        <th>SUB TOTAL</th>
+        <th>SUBTOTAL</th>
         <th>ACCION</th>
       </tr>
     </thead>
     <tbody *ngFor="let detalle of detalles; let i = index">
       <tr *ngIf="detalle.cantidad>0">
-        <td>{{detalle.producto.idProducto}}</td>
         <td>{{detalle.producto.nombre}}</td>
-        <td><input #detalleCantidad  id="cantidad-producto" (change)="editarCantidadDetalle(+detalleCantidad.value, i)" [(ngModel)]="detalle.cantidad" type="number"/></td>
+        <td><input #detalleCantidad  id="cantidad-producto" (change)="editarCantidadDetalle(+detalleCantidad.value, detalle.producto.nombre ?? '')" [(ngModel)]="detalle.cantidad" type="number"/></td>
         <td>{{detalle.precio}}</td>
         <td>{{detalle.total}}</td>
         <td>
