@@ -1,0 +1,60 @@
+.sidebar {
+  width: 300px;
+  background-color: #333; 
+  color: #fff; 
+  border-radius: 8px 0 0 8px; 
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  font-family: Arial, sans-serif;
+  height: 100%; 
+  top: 0; 
+  right: 0; 
+  overflow-y: auto; 
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #ccc; 
+}
+
+.close-button:hover {
+  color: #fff; 
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin-bottom: 15px;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.menu li:hover {
+  background-color: #444; 
+}
+
+.menu li.active {
+  background-color: #555; 
+}

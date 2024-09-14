@@ -9,15 +9,16 @@
 
 .navbar-cart {
     position: relative;
-    margin-right: 1rem;
+    margin-right: 2rem;
     display: flex;
     align-items: center;
 }
 
+
 .navbar-cart-items {
     position: absolute;
     right: 0;
-    top: -8px;
+    top: -10px;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
@@ -31,6 +32,10 @@
 }
 
 .cart {
+    display: none;
+}
+
+.user{
     display: none;
 }
 
@@ -56,3 +61,27 @@
     justify-content: flex-start;
     width: 100%;
 }
+
+.app-user{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+
+.showUser {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002; 
+    position: absolute;
+    background-color: white;
+    border-radius: 0.5rem;
+    border: 1px solid #cc1414;
+    right: 0px;
+    top: 50px; 
+    width: 300px; 
+}
+

@@ -32,10 +32,22 @@
         </button>
       </div>
     </div>
+
+    <div class="navbar-user" (click)="onToggleUser()">
+      <div class="user-icon">
+        <button style="background-color: black; cursor: pointer;">
+          <i style="font-size: xx-large; color: aliceblue;" class="bi bi-person-circle"></i>
+        </button>
+      </div>
+    </div>
   </div>
 </nav>
 
 <div class="cart" [ngClass]="{ show: viewCart }">
   <app-carro (opened)="offToggleCart($event)"></app-carro>
+</div>
+
+<div class="user" [ngClass]="{showUser: viewUser}" >
+  <app-user (opened)="offToggleUser($event)" ></app-user>
 </div>
 
