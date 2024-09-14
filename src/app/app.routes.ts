@@ -74,6 +74,9 @@ export const routes: Routes = [
     {
         path: 'checkout',
         loadComponent: () => import('./components/general/checkout/checkout.component')
+    },{
+        path: 'user-membresia',
+        loadComponent: () => import('./components/general/user/user-membresia/user-membresia.component')
     },
     
     { path: '', redirectTo: '/layout-publico/home', pathMatch: 'full' },

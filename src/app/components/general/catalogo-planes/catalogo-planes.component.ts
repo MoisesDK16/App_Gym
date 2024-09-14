@@ -56,15 +56,14 @@ export default class CatalogoPlanesComponent implements OnInit{
 
   enviarPlan(id: number): void {
     console.log("Enviando id:", id);
-    localStorage.setItem('id_plan', id.toString());  // Almacena el id en localStorage
+    localStorage.setItem('id_plan', id.toString());  
     const url = this.router.serializeUrl(this.router.createUrlTree(['/checkout']));
-    window.open(url, '_blank');  // Abre la nueva pestaña
+    window.open(url, '_blank');  
   }
 
-
-  openCheckout() {
-    this.router.navigate(['/checkout']);  // Cambiado para abrir en la misma pestaña
-  }
+  // openCheckout() {
+  //   this.router.navigate(['/checkout']);  
+  // }
 
   getServicios(): void {
     this.servicioService.listarServicios().subscribe((data: any) => {

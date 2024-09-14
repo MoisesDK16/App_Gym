@@ -94,26 +94,6 @@ export default class MembresiasComponent implements OnInit {
     this.deactivarMembresias();
   }
 
-  resetAll(): void {
-    this.factura = new Factura(
-      0,
-      { id_cliente: '', nombre: '', primer_apellido: '' }, // Objeto cliente con id_cliente
-      '',
-      new Date(), // fecha_emision
-      'EFECTIVO', // metodo_pago
-      0, // subtotal
-      0, // iva
-      0 // total
-    );
-    this.facturaResponse = null;
-    this.detalle = new DetalleMembresia(
-      0,
-      0,
-      0,
-      { idFactura: 0 },
-      { idMembresia: 0 }
-    );
-  }
 
   async generarFacturaRenovacion(): Promise<void> {
     console.log('membresia 2:', this.membresia);
@@ -182,34 +162,65 @@ export default class MembresiasComponent implements OnInit {
       return;
     }
 
-    const cantidad_dias = membresia.plan.duracion_dias;
+    if (membresia.estado === 'INACTIVO') {
+      const cantidad_dias = membresia.plan.duracion_dias;
+      const fechaInicio = new Date().toLocaleString('en-US', {
+        timeZone: 'America/Guayaquil',
+      });
+      const fechaInicioDate = new Date(fechaInicio);
+      fechaInicioDate.setDate(fechaInicioDate.getDate() + 1);
 
-    const fechaInicio = new Date().toLocaleString('en-US', {
-      timeZone: 'America/Guayaquil',
-    });
-    const fechaInicioDate = new Date(fechaInicio);
-    fechaInicioDate.setDate(fechaInicioDate.getDate() + 1);
+      const fechaFin = new Date(fechaInicioDate);
+      fechaFin.setDate(fechaFin.getDate() + cantidad_dias);
 
-    const fechaFin = new Date(fechaInicioDate);
-    fechaFin.setDate(fechaFin.getDate() + cantidad_dias);
+      const formData = new FormData();
+      formData.append('fechaInicio', fechaInicioDate.toISOString());
+      formData.append('fechaFin', fechaFin.toISOString());
 
-    const formData = new FormData();
-    formData.append('fechaInicio', fechaInicioDate.toISOString());
-    formData.append('fechaFin', fechaFin.toISOString());
+      this._membresiaService.renovarMembresia(formData, id).subscribe({
+        next: async (data) => {
+          console.log('Membresía renovada:', data);
+          this.getMembresias();
+          await this.obtenerMembresia(id);
+          await this.generarFacturaRenovacion();
+          await this.generarDetalleFacturaRenovacion();
+          await this.generarFacturaPDF();
+        },
+        error: (error) => {
+          console.error('Error al renovar la membresía:', error);
+        },
+      });
+    }else{
+      const cantidad_dias = membresia.plan.duracion_dias;
 
-    this._membresiaService.renovarMembresia(formData, id).subscribe({
-      next: async (data) => {
-        console.log('Membresía renovada:', data);
-        this.getMembresias();
-        await this.obtenerMembresia(id);
-        await this.generarFacturaRenovacion();
-        await this.generarDetalleFacturaRenovacion();
-        await this.generarFacturaPDF();
-      },
-      error: (error) => {
-        console.error('Error al renovar la membresía:', error);
-      },
-    });
+      const fechaInicio = new Date(membresia.fechaInicio);
+      fechaInicio.setDate(fechaInicio.getDate() + 1);
+      console.log(fechaInicio);
+    
+
+      const fechaFin =  new Date(membresia.fechaFin);
+      fechaFin.setDate((fechaFin.getDate()+1) + cantidad_dias);
+      console.log(fechaFin);
+
+      const formData = new FormData();
+      formData.append('fechaInicio', fechaInicio.toISOString());
+      formData.append('fechaFin', fechaFin.toISOString());
+
+      this._membresiaService.renovarMembresia(formData, id).subscribe({
+        next: async (data) => {
+          console.log('Membresía renovada:', data);
+          this.getMembresias();
+          await this.obtenerMembresia(id);
+          await this.generarFacturaRenovacion();
+          await this.generarDetalleFacturaRenovacion();
+          await this.generarFacturaPDF();
+        },
+        error: (error) => {
+          console.error('Error al renovar la membresía:', error);
+        },
+      });
+
+    }
   }
 
   buscarCliente(event: Event): void {
@@ -383,19 +394,18 @@ export default class MembresiasComponent implements OnInit {
   }
 
   eliminarMembresia(id: number): void {
+    let answer = confirm('¿Está seguro de eliminar la membresía?');
 
-    let answer= confirm('¿Está seguro de eliminar la membresía?');
-
-    if(answer){
+    if (answer) {
       this._membresiaService.eliminarMembresia(id).subscribe({
         next: () => {
           // Crear un objeto que simule el evento
           const simulatedEvent = {
             target: {
-              value: 'INACTIVO'
-            }
+              value: 'INACTIVO',
+            },
           } as unknown as Event;
-    
+
           // Llamar al método filtrarPorPlan pasando el objeto simulado
           this.filtrarPorEstado(simulatedEvent);
           alert('Membresía eliminada correctamente');
@@ -405,11 +415,10 @@ export default class MembresiasComponent implements OnInit {
           alert('No se puede eliminar una membresía activa');
         },
       });
-    }else{
+    } else {
       return;
     }
   }
-  
 
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
@@ -439,5 +448,26 @@ export default class MembresiasComponent implements OnInit {
         document.body.removeChild(backdrop);
       }
     }
+  }
+
+  resetAll(): void {
+    this.factura = new Factura(
+      0,
+      { id_cliente: '', nombre: '', primer_apellido: '' }, // Objeto cliente con id_cliente
+      '',
+      new Date(), // fecha_emision
+      'EFECTIVO', // metodo_pago
+      0, // subtotal
+      0, // iva
+      0 // total
+    );
+    this.facturaResponse = null;
+    this.detalle = new DetalleMembresia(
+      0,
+      0,
+      0,
+      { idFactura: 0 },
+      { idMembresia: 0 }
+    );
   }
 }
