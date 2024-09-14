@@ -1,4 +1,4 @@
-<div class="container-general">
+<div *ngIf="membresia" class="container-general">
   <div class="membresia-container">
     <div class="membresia-info">
       <h2>Detalles de la Membresía</h2>
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div class="checkout-container">
+  <div *ngIf="membresia" class="checkout-container">
     <div class="container-img">
       <img height="150px" width="200px"
         src="https://previews.123rf.com/images/stuartphoto/stuartphoto1407/stuartphoto140702773/29700047-tarjeta-de-membres%C3%ADa-indicando-persona-muy-importante-y-rico-exclusividad.jpg" />
@@ -37,7 +37,7 @@
       <button (click)="abrirCheckout()" class="btn btn-success">
         Renovar Membresía
       </button>
-      <button class="btn btn-danger">
+      <button (click)="eliminarMembresia(membresia.idMembresia)" class="btn btn-danger">
         Eliminar Membresía
       </button>
     </div>
@@ -49,4 +49,10 @@
     </ng-container>
   </div>
 
+</div>
+
+
+<div *ngIf="!membresia" class="container-noMembresia">
+    <h2>No tienes una membresía activa</h2>
+    <p>Para poder disfrutar de los servicios de la plataforma, adquiere una membresía.</p>
 </div>

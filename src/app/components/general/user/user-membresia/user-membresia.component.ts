@@ -50,8 +50,8 @@ export default class UserMembresiaComponent {
     private _DetalleService: FacturacionCajaService) { }
 
   ngOnInit() {
-    this.getClienteMembresia();
-    this.getMembresiaCliente();
+    this.getCliente();
+    this.getMembresia();
     this.initConfig();
   }
 
@@ -248,17 +248,30 @@ export default class UserMembresiaComponent {
     };
   }
 
-  async getMembresiaCliente(){
+  getCliente() {
+    this.cliente = this._authService.getUserCliente();
+    console.log(this.cliente);
+    return this._authService.getUserCliente(); 
+  }
+
+  async getMembresia(){
     this._membresiaService.getMembresiasByCliente(this.cliente.id_cliente).subscribe((data)=> {
       this.membresia = data;
       console.log(this.membresia);
     });
   }
 
-  getClienteMembresia() {
-    this.cliente = this._authService.getUserCliente();
-    console.log(this.cliente);
-    return this._authService.getUserCliente(); 
+  eliminarMembresia(idMembresia: number) {
+    this._MembresiaService.eliminarMembresia(idMembresia).subscribe({
+      next: (data) => {
+        console.log('Membresía eliminada:', data);
+        this.getMembresia();
+      },
+      error: (error) => {
+        console.error('Error al eliminar la membresía:', error);
+        alert('No puede eliminar su membresia ya que sigue activa');
+      },
+    });
   }
 
   

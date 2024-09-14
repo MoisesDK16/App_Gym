@@ -10,6 +10,8 @@ import { Servicios } from '../../../models/Servicios';
 import { Router, RouterLink } from '@angular/router';
 import { CheckoutService } from '../../../services/checkout.service';
 import CheckoutComponent from "../checkout/checkout.component";
+import { AuthService } from '../../../services/auth.service';
+import { MembresiaService } from '../../../services/membresia.service';
 
 @Component({
   selector: 'app-catalogo-planes',
@@ -23,6 +25,8 @@ export default class CatalogoPlanesComponent implements OnInit{
   planes: Planes[] = [];
   servicios: Servicios[] = [];
   plan: any;
+  cliente: any;
+  membresia: any;
   @Input() id_plan: number;
 
   displayedColumns: string[] = ['id_plan', 'nombre', 'precio', 'duracion','imagen', 'acciones'];
@@ -38,9 +42,14 @@ export default class CatalogoPlanesComponent implements OnInit{
   ngOnInit(): void {
     this.getPlanes();
     this.getServicios();
+    this.getCliente();
+    this.getMembresia();
   }
 
-  constructor(private planService: PlanService, private servicioService: ServicioService,private checkoutService: CheckoutService , private router: Router){}
+  constructor(private planService: PlanService, private servicioService: ServicioService, 
+    private checkoutService: CheckoutService , private router: Router,
+    private _authService: AuthService,
+    private _MembresiaService: MembresiaService){}
 
   getPlanes(): void {
     this.planService.listarPlanes(this.currentPage, this.pageSize).subscribe((data: any) => {
@@ -55,10 +64,30 @@ export default class CatalogoPlanesComponent implements OnInit{
   }
 
   enviarPlan(id: number): void {
+
+    if(this.membresia ){
+      alert("Ya tiene una membresia activa");
+      return;
+    }
+
     console.log("Enviando id:", id);
     localStorage.setItem('id_plan', id.toString());  
     const url = this.router.serializeUrl(this.router.createUrlTree(['/checkout']));
     window.open(url, '_blank');  
+  }
+
+  
+  getCliente() {
+    this.cliente = this._authService.getUserCliente();
+    console.log("Cliente activo: ", this.cliente);
+    return this._authService.getUserCliente(); 
+  }
+
+  async getMembresia(){
+    this._MembresiaService.getMembresiasByCliente(this.cliente.id_cliente).subscribe((data)=> {
+      this.membresia = data;
+      console.log("Membresia cliente activo: ", this.membresia);
+    });
   }
 
   // openCheckout() {

@@ -11,6 +11,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PlanService } from '../../../services/plan-service';
 import { ServicioService } from '../../../services/servicio.service';
 import { Servicios } from '../../../models/Servicios';
+import { AuthService } from '../../../services/auth.service';
+import { MembresiaService } from '../../../services/membresia.service';
 
 @Component({
   selector: 'app-planes',
@@ -51,7 +53,8 @@ export default class PlanesComponent implements OnInit {
 
   constructor(
     private planService: PlanService,
-    private servicioService: ServicioService
+    private servicioService: ServicioService,
+    
   ) {}
 
   ngOnInit(): void {
