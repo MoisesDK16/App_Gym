@@ -100,11 +100,11 @@ export default class PlanesComponent implements OnInit {
     plan.append('costo', this.plan.costo.toString());
     plan.append('duracion_dias', this.plan.duracion_dias.toString());
 
-    if (this.selectedFile) {
-      plan.append('imagen', this.selectedFile);
-    } else {
-      console.warn('No se ha seleccionado ningún archivo.');
-    }
+    // if (this.selectedFile) {
+    //   plan.append('imagen', this.selectedFile);
+    // } else {
+    //   console.warn('No se ha seleccionado ningún archivo.');
+    // }
 
     this.planService.registrarPlan(plan).subscribe((data: any) => {
       console.log(data);
@@ -113,6 +113,21 @@ export default class PlanesComponent implements OnInit {
       this.resetEstado();
     });
   }
+
+
+  onFileSelected(event: Event, id_plan: number): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      console.log('Archivo seleccionado:', file);
+      let formData = new FormData();
+      formData.append('imagen', file);
+      this.planService.insertarImagen(formData, id_plan).subscribe((data: any) => {
+        console.log(data);
+      });
+    }
+  }
+  
 
   actualizarPlan(): void {
     this.planService.actualizarPlan(this.plan).subscribe((data: any) => {
@@ -170,24 +185,36 @@ export default class PlanesComponent implements OnInit {
 
   async addServicio(id_servicio: any): Promise<void> {
     console.log('Plan 2 jejejeje: ', this.plan2);
-    this.servicioService
-      .unoServicio(id_servicio)
-      .subscribe(async (data: Servicios) => {
-        this.servicio = data;
-        this.plan2.servicios.push(this.servicio);
-        console.log('SERVICIOOOO: ', this.servicio);
-        this.serviciosSeleccionados.push(this.servicio);
-        await this.añadirServicioApi();
-        this.listarPlanes();
-
-        console.log(
-          'Servicio añadido correctamente: ',
-          this.servicio,
-          'Lista de servicios: ',
-          this.serviciosSeleccionados
-        );
-      });
+    
+    try {
+      const data = await this.servicioService.unoServicio(id_servicio).toPromise();
+      this.servicio = data? data : new Servicios({ id_categoria: 0, categoria: '' }, '', 0);
+  
+      if (this.plan2.servicios.some((s:any) => s.id_servicio === this.servicio.id_servicio)) {
+        console.log('El servicio ya está en la lista');
+        alert('No puedes añadir servicios repetidos al plan');
+        return;
+      }
+  
+      this.plan2.servicios.push(this.servicio);
+      this.serviciosSeleccionados.push(this.servicio);
+      
+      await this.añadirServicioApi();
+      this.listarPlanes();
+  
+      console.log(
+        'Servicio añadido correctamente: ',
+        this.servicio,
+        'Lista de servicios: ',
+        this.serviciosSeleccionados
+      );
+      
+    } catch (error) {
+      console.error('Error añadiendo el servicio: ', error);
+    }
   }
+  
+
 
   async removeServicio(id_servicio: any): Promise<void> {
     this.servicioService

@@ -76,3 +76,18 @@ body {
 .registro-container button:hover {
     opacity: 0.9;
 }
+
+
+
+/**************************************************/
+
+#container-input{
+    display: flex;
+    justify-content: space-between;
+}
+
+.advertencia{
+    color: aqua;
+    font-size: 1rem;
+    margin-top: 0.2rem;
+}

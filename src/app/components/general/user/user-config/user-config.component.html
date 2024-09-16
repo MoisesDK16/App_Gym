@@ -1,1 +1,48 @@
-<p>user-config works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Cliente</title>
+</head>
+
+<body>
+  <div class="registro-container">
+    <h1>Datos Personales</h1>
+    <form>
+      <label for="id_cliente">Identificación:</label>
+      <input type="text" [(ngModel)]="cliente.id_cliente" id="id_cliente" name="id_cliente" maxlength="15">
+
+      <label for="tipo-id">Tipo de Identificación:</label>
+      <select name="categoria" class="form-control" id="categoria">
+        <option [value]="cliente.tipo_identificacion">{{cliente.tipo_identificacion}}</option>
+      </select>
+
+      <label for="nombre">Nombre:</label>
+      <input [(ngModel)]="cliente.nombre" type="text" id="nombre" name="nombre" maxlength="20">
+
+      <label for="primer_apellido">Primer Apellido:</label>
+      <input [(ngModel)]="cliente.primer_apellido" type="text" id="primer_apellido" name="primer_apellido" maxlength="20">
+
+      <label for="segundo_apellido">Segundo Apellido:</label>
+      <input [(ngModel)]="cliente.segundo_apellido" type="text" id="segundo_apellido" name="segundo_apellido" maxlength="20">
+
+      <label for="correo">Correo:</label>
+      <input [(ngModel)]="cliente.correo" type="email" id="correo" name="correo" maxlength="40">
+
+      <label for="clave">Clave:</label>
+      <input [(ngModel)]="cliente.clave" type="password" id="clave" name="clave" maxlength="100">
+
+      <label for="direccion">Dirección:</label>
+      <input [(ngModel)]="cliente.direccion" type="text" id="direccion" name="direccion" maxlength="100">
+
+      <label for="telefono">Teléfono:</label>
+      <input [(ngModel)]="cliente.telefono" type="text" id="telefono" name="telefono" maxlength="10">
+
+      <button (click)="actualizarDatos()" type="submit">Actualizar</button>
+    </form>
+  </div>
+</body>
+
+</html>

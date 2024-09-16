@@ -14,7 +14,6 @@ export default class UserComponent {
 
   constructor(private router: Router) { }
 
-
   cerrarUser() {
     this.opened.emit(false);
   }
@@ -22,6 +21,11 @@ export default class UserComponent {
   abrirUserMembresia(){
     const url = this.router.serializeUrl(this.router.createUrlTree(['/user-membresia']));
     window.open(url, '_blank');  
+  }
+
+  abrirUserConfig(){
+    const url = this.router.serializeUrl(this.router.createUrlTree(['/user-config']));
+    window.open(url, '_blank');
   }
 
 }

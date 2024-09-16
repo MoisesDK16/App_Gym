@@ -33,12 +33,6 @@
             <input type="number" [(ngModel)]="plan.duracion_dias" name="duracion_dias" class="form-control"
               id="duracion_dias">
           </div>
-
-          <div class="mb-4">
-            <label for="imagen" class="form-label">Imagen</label>
-            <input type="file" [(ngModel)]="plan.imagen" (change)="onFileChange($event)" name="imagen"
-              class="form-control" id="imagen">
-          </div>
           <button class="btn btn-primary" type="button" (click)="estado ? actualizarPlan() : registrarPlan()">Agregar
             Plan</button>
         </form>
@@ -166,6 +160,13 @@
             class="btn btn-danger">
             <i class="bi bi-trash"></i>
           </button>
+
+          <button (click)="fileInput.click()" style="margin-right: 0.25rem;" type="button" class="btn btn-success">
+            <i class="bi bi-images"></i>
+          </button>
+    
+          <input #fileInput type="file" style="display: none;" (change)="onFileSelected($event, element.id_plan)">
+
         </div>
       </td>
     </ng-container>

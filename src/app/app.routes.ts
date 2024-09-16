@@ -78,6 +78,10 @@ export const routes: Routes = [
         path: 'user-membresia',
         loadComponent: () => import('./components/general/user/user-membresia/user-membresia.component')
     },
+    {
+        path: 'user-config',
+        loadComponent: () => import('./components/general/user/user-config/user-config.component')
+    },
     
     { path: '', redirectTo: '/layout-publico/home', pathMatch: 'full' },
     // { path: '**', redirectTo: '/layout-publico/home' }

@@ -32,6 +32,10 @@ export class PlanService {
     return this.http.post<Planes>(`${this.url}/registrar`, plan);
   }
 
+  insertarImagen(data: FormData, id_plan: number): Observable<Planes> {
+    return this.http.patch<Planes>(`${this.url}/newImage/${id_plan}`, data);
+  }
+
   actualizarPlan(plan: Planes): Observable<Planes> {
     return this.http.put<Planes>(`${this.url}/actualizar/${plan.id_plan}`, plan);
   }
