@@ -45,6 +45,22 @@ export class ProductoService {
     return this.http.get<CategoriasResponse[]>(`${this.urlCategorias}/all`);
   }
 
+  buscarXNombre(nombre: string): Observable<ProductoResponse> {
+    return this.http.get<ProductoResponse>(`${this.url}/nombre/${nombre}`);
+  }
+
+  buscarXCategoria(id_categoria: number): Observable<ProductoResponse> {
+    return this.http.get<ProductoResponse>(`${this.url}/categoria/${id_categoria}`);
+  }
+
+  buscarXStock(stock: number): Observable<ProductoResponse> {
+    return this.http.get<ProductoResponse>(`${this.url}/stock/${stock}`);
+  }
+
+  buscarXFechaCaducacion(fechaInicio: string, fechaFin:string): Observable<ProductoResponse> {
+    return this.http.get<ProductoResponse>(`${this.url}/fecha_caducacion/${fechaInicio}/${fechaFin}`);
+  }
+
   actualizarStock(id_producto: string, cantidad: number): Observable<any> {
     return this.http.post<any>(
       `${this.url}/actualizarStock/${id_producto}/${cantidad}`,

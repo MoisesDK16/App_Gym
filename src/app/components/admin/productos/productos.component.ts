@@ -40,10 +40,17 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
     '',
     ''
   );
+
+  fechaInicio: string = '';
+  fechaFin: string = '';
   estado: string = '';
   margen_ganancias: number[] = [5, 10, 15, 20, 25, 30, 40, 50];
   margen_ganancia_porcentual: number = 0;
   categorias: Categorias[] = [];
+
+  startDate = document.getElementById('startDate') as HTMLInputElement;
+  endDate = document.getElementById('endDate') as HTMLInputElement;
+
   displayedColumns: string[] = [
     'id_producto',
     'nombre',
@@ -106,9 +113,11 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
       console.log('Archivo seleccionado:', file);
       let formData = new FormData();
       formData.append('imagen', file);
-      this.servicio_productos.actualizarProductoImagen(idProducto, formData).subscribe((data: any) => {
-        console.log(data);
-      });
+      this.servicio_productos
+        .actualizarProductoImagen(idProducto, formData)
+        .subscribe((data: any) => {
+          console.log(data);
+        });
     }
   }
 
@@ -230,10 +239,7 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
   }
 
   actualizarProducto(): void {
-    if (
-      this.producto.categoria &&
-      this.producto.categoria.id_categoria
-    ) {
+    if (this.producto.categoria && this.producto.categoria.id_categoria) {
       const formData: FormData = new FormData();
       formData.append(
         'id_categoria',
@@ -277,8 +283,147 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
   listarCategorias(): void {
     this.servicio_productos.listarCategorias().subscribe((data: any) => {
       this.categorias = data;
-      console.log(this.categorias);
+      console.log('CATEGORIAS: ', this.categorias);
     });
+  }
+
+  buscarNombreProducto(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const nombre = inputElement.value.toString();
+
+    if (nombre === '') {
+      this.getProductos();
+      return;
+    }
+
+    this.servicio_productos.buscarXNombre(nombre).subscribe((data: any) => {
+      this.productos = data;
+      this.dataSource = new MatTableDataSource<Productos>(this.productos);
+      console.log(this.productos);
+    });
+
+    const categoria = document.getElementById(
+      'selecter-categoria'
+    ) as HTMLSelectElement;
+    categoria.value = '0';
+
+    const fechaInicio = document.getElementById(
+      'startDate'
+    ) as HTMLInputElement;
+    fechaInicio.value = '';
+
+    const fechaFin = document.getElementById('endDate') as HTMLInputElement;
+    fechaFin.value = '';
+
+    const stock = document.getElementById('rangeStock') as HTMLInputElement;
+    stock.value = '100';
+  }
+
+  buscarCategoriaProducto(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const id_categoria = parseInt(inputElement.value);
+
+    if (id_categoria === 0) {
+      this.getProductos();
+      return;
+    }
+
+    this.servicio_productos
+      .buscarXCategoria(id_categoria)
+      .subscribe((data: any) => {
+        this.productos = data;
+        this.dataSource = new MatTableDataSource<Productos>(this.productos);
+        console.log(this.productos);
+      });
+
+    const buscador_producto = document.getElementById(
+      'buscador-producto'
+    ) as HTMLInputElement;
+
+    buscador_producto.value = '';
+
+    const fechaInicio = document.getElementById(
+      'startDate'
+    ) as HTMLInputElement;
+    fechaInicio.value = '';
+
+    const fechaFin = document.getElementById('endDate') as HTMLInputElement;
+    fechaFin.value = '';
+
+    const stock = document.getElementById('rangeStock') as HTMLInputElement;
+    stock.value = '100';
+
+    let eventCreated = {
+      target: {
+        value: '100'
+      }
+    } as unknown as Event;
+
+    this.updateStockValue(eventCreated);
+
+  }
+
+  buscarStockProducto(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const stock = parseInt(inputElement.value);
+
+    this.servicio_productos.buscarXStock(stock).subscribe((data: any) => {
+      this.productos = data;
+      this.dataSource = new MatTableDataSource<Productos>(this.productos);
+      console.log(this.productos);
+    });
+
+      const fechaInicio = document.getElementById(
+        'startDate'
+      ) as HTMLInputElement;
+      fechaInicio.value = '';
+
+      const fechaFin = document.getElementById('endDate') as HTMLInputElement;
+      fechaFin.value = '';
+
+      const categoria = document.getElementById(
+        'selecter-categoria'
+      ) as HTMLSelectElement;
+      categoria.value = '0';
+
+      const buscador_producto = document.getElementById(
+        'buscador-producto'
+      ) as HTMLInputElement;
+  
+      buscador_producto.value = '';
+  }
+
+  addFecha_Inicio(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.fechaInicio = new Date(inputElement.value).toISOString().split('T')[0];
+  }
+
+  addFecha_Fin(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.fechaFin = new Date(inputElement.value).toISOString().split('T')[0];
+  }
+
+  buscarFechaCaducacionProducto(): void {
+    this.servicio_productos
+      .buscarXFechaCaducacion(this.fechaInicio, this.fechaFin)
+      .subscribe((data: any) => {
+        this.productos = data;
+        this.dataSource = new MatTableDataSource<Productos>(this.productos);
+        console.log(this.productos);
+      });
+    const categoria = document.getElementById(
+      'selecter-categoria'
+    ) as HTMLSelectElement;
+    categoria.value = '0';
+
+    const stock = document.getElementById('rangeStock') as HTMLInputElement;
+    stock.value = '100';
+
+    const buscador_producto = document.getElementById(
+      'buscador-producto'
+    ) as HTMLInputElement;
+
+    buscador_producto.value = '';
   }
 
   onPageChange(event: PageEvent): void {
@@ -312,5 +457,24 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
         document.body.removeChild(backdrop);
       }
     }
+  }
+
+  updateStockValue(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+
+    const range_stock = document.getElementById(
+      'rangeStock'
+    ) as HTMLInputElement;
+    if (range_stock) {
+      range_stock.value = value;
+    }
+
+    const stockValue = document.getElementById('stockValue');
+    if (stockValue) {
+      stockValue.innerText = value; 
+    }
+
+    // this.buscarStockProducto(event);
   }
 }

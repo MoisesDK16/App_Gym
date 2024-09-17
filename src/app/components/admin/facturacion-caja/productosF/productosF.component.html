@@ -10,8 +10,9 @@
     <div class="factura-info">
       <p><strong>DATOS DEL CLIENTE</strong></p>
       <p>IDENTIFICACION:
-        <input style="width: 10rem; margin-right: 0.5rem;" [(ngModel)]="id_cliente" id="id_cliente">
+        <input style="width: 10rem; margin-right: 0.5rem;" [(ngModel)]="cliente.id_cliente" id="id_cliente" disabled="true">
         <button (click)="openModal()" class="btn btn-success"><i class="bi bi-search"></i></button>
+        <button (click)="asignarConsumidorFinal()" style="margin-left: 0.5rem;" class="btn btn-primary"><i class="bi bi-person-add"></i></button>
       </p>
       <label for="id_nombre">NOMBRE: </label>
       <p id="id_nombre">{{cliente.nombre}} {{cliente.primer_apellido}} {{cliente.segundo_apellido}}</p>
@@ -19,7 +20,7 @@
       <p id="id_correo_cliente">{{cliente.correo}}</p>
     </div>
     <div class="factura-info">
-      <p><strong>DATOS DEL VENDEDOR</strong></p>
+      <p><strong>DATOS DE EMPLEADO</strong></p>
       <p>VENDEDOR:</p>
       <p>CORREO:</p>
       <p>TELÉFONO:</p>
@@ -41,9 +42,8 @@
       <input id="cantidad-producto2" type="number" [(ngModel)]="detalle.cantidad" style="width: 5rem;">
     </div>
     <div id="btn-group-productos" style="margin-left: 2rem;">
-      <p><strong>OPERACIONES</strong></p>
+      <p><strong>OPERACION</strong></p>
       <button (click)="agregarDetalle()"><strong>Añadir</strong></button>
-      <button style="margin-left: 1rem;"><strong>Eliminar</strong></button>
     </div>
   </div>
 
