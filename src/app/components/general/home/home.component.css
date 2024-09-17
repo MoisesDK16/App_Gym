@@ -6,14 +6,15 @@ body {
 }
 
 h1 {
-  font-size: 2.5rem; /* Ajusta el tamaño del título como prefieras */
+  font-size: 4.5rem; /* Ajusta el tamaño del título como prefieras */
   color: white;
   margin-bottom: 1.5rem; /* Espaciado debajo del título */
   padding: 0 1rem; /* Espaciado horizontal */
+  font-family: Oswald;
 }
 
 section {
-  padding: 3rem 0; /* Espaciado vertical para la sección */
+  padding: 3rem 0;
   background: linear-gradient(to right, #2c222b, #130818); /* Colores del gradiente */
   overflow: hidden;
 }
@@ -67,6 +68,7 @@ section {
   margin-bottom: 26px;
   color: white;
   max-width: max-content;
+  font-family: Oswald;
 }
 
 .badge i {
@@ -88,6 +90,7 @@ p {
   color: white;
   max-width: 40rem;
   text-align: center;
+
 }
 
 a {
@@ -100,6 +103,8 @@ a {
   font-weight: bold;
   text-transform: uppercase;
   transition: background-color 0.3s ease;
+  font-family: Oswald;
+
 }
 
 a:hover {

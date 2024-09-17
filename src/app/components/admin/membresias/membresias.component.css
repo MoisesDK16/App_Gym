@@ -1,6 +1,6 @@
 #table-container {
   width: 90%;
-  margin: 0 auto;
+  margin: 0 100px;
 }
 
 #table-container table th {
@@ -35,21 +35,21 @@
 
 
 #modal-detalles-membresia {
-  margin-top: 5rem; 
+  margin-top: 5rem;
 }
 
 
 #ambas-tablas {
   display: flex;
-  justify-content: space-between; 
-  gap: 1rem; 
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .table-detalles-cliente {
   width: 100%;
-  max-width: 45%; 
+  max-width: 45%;
   border-collapse: collapse;
-  margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem;
 }
 
 .table-detalles-cliente thead th {
@@ -68,7 +68,7 @@
 /*Tabla servicios*/
 .table-detalles-servicios {
   width: 100%;
-  max-width: 45%; 
+  max-width: 45%;
   border-collapse: collapse;
 }
 
@@ -95,3 +95,9 @@
   max-width: 75%;
   margin: 1.75rem auto;
 }
+
+h2 {
+  color: white;
+
+}
+

@@ -1,11 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #fff;
+    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin-top: 200px;
+  margin-bottom: 200px;
 }
 
 .registro-container {
@@ -15,6 +16,8 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
     width:600px;
+
+
 }
 
 .registro-container h1 {

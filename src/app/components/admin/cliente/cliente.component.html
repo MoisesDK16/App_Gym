@@ -148,13 +148,13 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator 
-    [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]" 
-    showFirstLastButtons 
+  <mat-paginator
+    [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]"
+    showFirstLastButtons
     aria-label="Select page of periodic elements"
     [length]="totalItems"
     [pageSize]="pageSize"
     (page)="onPageChange($event)">
   </mat-paginator>
 
-</div> 
+</div>

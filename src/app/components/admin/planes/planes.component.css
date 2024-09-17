@@ -1,6 +1,6 @@
 #table-container {
-  width: 90%; 
-  margin: 0 auto;
+  width: 90%;
+  margin: 0 100px;
 }
 
 .table th, .table td {
@@ -20,4 +20,9 @@
 
 #th-acciones{
   width: 10rem;
+}
+
+h2 {
+  color: white;
+
 }
