@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid lightgrey;
-    background-color: #030301;
+    background-color: #2c222b;
     color: white;
 }
 
@@ -22,7 +22,7 @@
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    background-color: rgb(172, 14, 14);
+    background-color: #f46211;
     height: 20px;
     width: 20px;
     display: flex;
@@ -51,7 +51,7 @@
     border: 1px solid #cc1414;
     right: 0px;
     top: 50px;
-    width: 25%; 
+    width: 25%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -75,13 +75,85 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1002; 
+    z-index: 1002;
     position: absolute;
     background-color: white;
     border-radius: 0.5rem;
     border: 1px solid #cc1414;
     right: 0px;
-    top: 50px; 
-    width: 300px; 
+    top: 50px;
+    width: 300px;
+}
+
+/* Estilos para el header */
+header {
+  background-color: #007bff; /* bg-primary */
+  padding: 2rem 0; /* py-5 */
+  font-family: 'PrimaryFont', sans-serif; /* font-primary */
+}
+
+.container {
+  max-width: 1200px; /* Asume un ancho máximo para centrar el contenido */
+  margin: 0 auto; /* Centra el contenedor */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 1.5rem; /* text-2xl */
+  font-family: 'PrimaryFont', sans-serif; /* font-primary */
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  gap: 2.5rem; /* gap-10 */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-transform: uppercase; /* uppercase */
+}
+
+.nav-list {
+  display: flex;
+}
+
+.nav-list.hidden {
+  display: none; /* Para ocultar en dispositivos móviles si es necesario */
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s; /* transition-all duration-300 */
+}
+
+.nav-link:hover {
+  color: #f0ad4e; /* hover:text-accent */
+}
+
+.button {
+  background-color: #f0ad4e; /* bg-accent */
+  color: white;
+  padding: 0.5rem 2.5rem; /* px-10 py-2 */
+  margin-left: 1.25rem; /* ml-5 */
+  text-decoration: none;
+  text-transform: uppercase; /* uppercase */
+  letter-spacing: 0.1em; /* tracking-widest */
+  border: 1px solid white; /* outline-white */
+  transition: background-color 0.3s; /* transition-all duration-300 */
+}
+
+.button:hover {
+  background-color: #d9534f; /* hover:bg-secondary */
+}
+
+/* Estilos para dispositivos grandes */
+@media (min-width: 1280px) {
+  .nav-list.hidden {
+    display: flex; /* Mostrar nav en dispositivos grandes */
+  }
 }
 

@@ -2,18 +2,17 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    background-color: white;
+    background-color: #2c2c2c;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 35rem;
+    width: 30rem;
     margin: auto;
+  color: white;
 }
 
 .productCart-body {
     display: flex;
     align-items: center;
     padding: 0.75rem;
-    border-bottom: 1px solid lightgrey;
 }
 
 .body-info p{
@@ -22,7 +21,7 @@
 
 .productCart-name {
     font-weight: bold;
-    color: #333;
+    color: white;
 }
 
 .body-info {
@@ -110,5 +109,5 @@
   }
 
   .close-button i {
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
   }

@@ -1,0 +1,125 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif; /* Cambia a la fuente que prefieras */
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2.5rem; /* Ajusta el tamaño del título como prefieras */
+  color: white;
+  margin-bottom: 1.5rem; /* Espaciado debajo del título */
+  padding: 0 1rem; /* Espaciado horizontal */
+}
+
+section {
+  padding: 3rem 0; /* Espaciado vertical para la sección */
+  background: linear-gradient(to right, #2c222b, #130818); /* Colores del gradiente */
+  overflow: hidden;
+}
+
+.profile__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.profile__text {
+  max-width: 40%;
+  text-align: center;
+}
+
+.profile__img {
+  display: none;
+  max-width: 814px;
+  align-self: flex-end;
+}
+
+@media (min-width: 1024px) {
+  .profile__container {
+    flex-direction: row;
+  }
+
+  .profile__text {
+    text-align: left;
+  }
+
+  .profile__img {
+    display: block; /* Mostrar en dispositivos grandes */
+  }
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  background-color: #333; /* Cambia a tu color primario */
+  padding: 10px 20px;
+  border-radius: 999px; /* Bordes redondeados */
+  margin-bottom: 26px;
+  color: white;
+  max-width: max-content;
+}
+
+.badge i {
+  font-size: 2rem; /* Tamaño del icono */
+  color: #f0a500; /* Cambia al color de tu acento */
+}
+
+.badge .text-container {
+  text-transform: uppercase;
+  font-size: 1rem; /* Tamaño del texto */
+  font-weight: 500;
+  letter-spacing: 2px; /* Espaciado entre letras */
+  color: #fff; /* Color del texto */
+}
+
+p {
+  margin-bottom: 20px;
+  padding: 0 1rem;
+  color: white;
+  max-width: 40rem;
+  text-align: center;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  background-color: #f0a500; /* Cambia al color de tu acento */
+  padding: 10px 20px;
+  border-radius: 5px; /* Bordes redondeados del botón */
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+a:hover {
+  background-color: #d88a00; /* Color de fondo al pasar el ratón */
+}
+
+.btn {
+  max-width: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-lg {
+  padding: 15px 30px;
+}
+
+.btn-accent {
+  background-color: #f0a500; /* Color del botón de acento */
+}
+
+.btn-accent:hover {
+  background-color: #d88a00; /* Color del botón de acento al pasar el ratón */
+}
