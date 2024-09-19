@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class MembresiaService {
   url: string = 'api/membresias';
+  urlEmail: string = 'apiEmail';
 
   constructor(private http: HttpClient) {}
 
@@ -58,4 +59,31 @@ export class MembresiaService {
   eliminarMembresia(id: number): Observable<any> {
     return this.http.delete(`${this.url}/eliminar/${id}`);
   }
+
+  advertirMembresia(destinatario: string, asunto: string, mensaje: string, membresia: any): Observable<any> {
+    const data = new FormData();
+  
+    const correoBlob = new Blob(
+      [JSON.stringify({
+        destinatario,
+        asunto,
+        mensaje
+      })], { type: 'application/json' });
+  
+    const membresiaBlob = new Blob(
+      [JSON.stringify(membresia)], { type: 'application/json' });
+  
+    // Añadir el correo como JSON
+    data.append('campos', correoBlob);
+  
+    // Añadir la membresía como JSON
+    data.append('membresia', membresiaBlob);
+  
+    return this.http.post(`${this.urlEmail}/advertencia-membresia`, data, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+  }
+  
 }

@@ -15,7 +15,7 @@ import { Clientes } from '../../../../models/Clientes';
 import { ProductoService } from '../../../../services/producto-service';
 import { FacturacionCajaService } from '../../../../services/facturacion-caja.service';
 import { ClienteService } from '../../../../services/cliente-service';
-import { forkJoin, map, Observable, tap } from 'rxjs';
+import { filter, forkJoin, map, Observable, tap } from 'rxjs';
 import ProductosComponent from '../../productos/productos.component';
 import e from 'cors';
 
@@ -110,16 +110,51 @@ export class ProductosComponentF {
     });
   }
 
+  asignarConsumidorFinal(): void {
+    this.cliente = new Clientes(
+      '9999999999',
+      '',
+      'Consumidor Final',
+      '',
+      '',
+      'consumidorfinal12@gmail.com',
+      '',
+      '',
+      ''
+    );
+  }
+
   getAllProductos(): void {
+    let fechaActual = new Date();
+    console.log('Fecha actual: ', fechaActual);
+
     this._productoService
       .getProductos(this.currentPage, this.pageSize)
-      .subscribe((data: any) => {
-        this.productosModal = data.content.filter(
-          (producto: any) => producto.stock > 0
-        );
+      .subscribe((response: any) => {
+        this.productosModal = [];
+
+        if (response.content) {
+          response.content.forEach((producto: any) => {
+            let fechaCaducacionProducto = new Date(producto.fecha_caducacion);
+            console.log(
+              'Fecha caducación de producto:',
+              fechaCaducacionProducto
+            );
+
+            if (fechaCaducacionProducto >= fechaActual && producto.stock > 0) {
+              this.productosModal.push(producto);
+            }
+          });
+        }
+
         this.dataSource = new MatTableDataSource(this.productosModal);
-        this.totalItems = data.totalElements;
-        console.log(this.productosModal);
+        this.totalItems = response.totalElements;
+
+        this.productosModal.forEach((producto: any) =>
+          console.log(typeof producto.fecha_caducacion)
+        );
+
+        // Asigna el paginador si existe
         if (this.paginator) {
           this.dataSource.paginator = this.paginator;
         }
@@ -192,18 +227,18 @@ export class ProductosComponentF {
   }
 
   agregarDetalle(): void {
-    if (this.detalle.cantidad <= 0 ) {
+    if (this.detalle.cantidad <= 0) {
       console.log('La cantidad debe ser mayor a 0');
       return;
     }
 
-    if(this.detalle.cantidad > this.producto.stock){
+    if (this.detalle.cantidad > this.producto.stock) {
       console.log('Stock insuficiente');
       this.resetearTxts();
-      alert('Stock insuficiente'); 
-      return; 
+      alert('Stock insuficiente');
+      return;
     }
-    
+
     // const productoExistente = this.productos.find((producto) => {
     //   console.log("Stock producto existente stock: ", producto.stock);
     //   return producto.idProducto === this.producto.idProducto;
@@ -211,34 +246,37 @@ export class ProductosComponentF {
 
     const detalleExistente = this.detalles.find((detalle) => {
       return detalle.producto.idProducto === this.producto.idProducto;
-    })
+    });
 
-    console.log("detalle existente: ", detalleExistente);
-    console.log("stock detalle ecistente: ", detalleExistente?.cantidad);
-  
+    console.log('detalle existente: ', detalleExistente);
+    console.log('stock detalle ecistente: ', detalleExistente?.cantidad);
+
     if (this.producto && detalleExistente) {
-      console.log('Producto ya agregado');     
-        if (detalleExistente.cantidad >= this.producto.stock) {
-          console.log('Stock insuficiente');
-          detalleExistente.cantidad = this.producto.stock;
-          this.resetProducto();
-          this.resetearTxts();
-          alert('Stock insuficiente');
-          return;
-        } else {
-          detalleExistente.cantidad += this.detalle.cantidad;
-          this.calcularSubtotal();
-          this.calcularAll();
-          this.resetProducto();
-          this.resetDetalle();
-          const buscadorProducto = document.getElementById('buscador-producto') as HTMLInputElement;
-          buscadorProducto.value = '';
-          const nombre_producto = document.getElementById('nombre-producto') as HTMLInputElement;
-          nombre_producto.value = '';
-        }
+      console.log('Producto ya agregado');
+      if (detalleExistente.cantidad >= this.producto.stock) {
+        console.log('Stock insuficiente');
+        detalleExistente.cantidad = this.producto.stock;
+        this.resetProducto();
+        this.resetearTxts();
+        alert('Stock insuficiente');
+        return;
+      } else {
+        detalleExistente.cantidad += this.detalle.cantidad;
+        this.calcularSubtotal();
+        this.calcularAll();
+        this.resetProducto();
+        this.resetDetalle();
+        const buscadorProducto = document.getElementById(
+          'buscador-producto'
+        ) as HTMLInputElement;
+        buscadorProducto.value = '';
+        const nombre_producto = document.getElementById(
+          'nombre-producto'
+        ) as HTMLInputElement;
+        nombre_producto.value = '';
+      }
       return;
     }
-    
 
     this.productos.push(this.producto);
     this.detalle.producto = this.producto;
@@ -257,7 +295,7 @@ export class ProductosComponentF {
     ) as HTMLInputElement;
     buscadorProducto.value = '';
   }
-  
+
   agregarDetalleModal(): void {
     console.log(this.producto.idProducto);
 
@@ -273,7 +311,7 @@ export class ProductosComponentF {
             console.log('Stock insuficiente');
             this.resetProducto();
             this.resetearTxts();
-            alert('Stock insuficiente'); 
+            alert('Stock insuficiente');
             return;
           } else {
             elemento.cantidad++;
@@ -315,12 +353,13 @@ export class ProductosComponentF {
 
     const detalleEncontrado = this.detalles.filter((detalle) => {
       return detalle.producto.nombre === nombreProducto;
-    })
+    });
 
     const index = this.detalles.indexOf(detalleEncontrado[0]);
 
     const producto = this.productos.find(
-      (elemento) => elemento.nombre ===  detalleEncontrado[0].producto.nombre);
+      (elemento) => elemento.nombre === detalleEncontrado[0].producto.nombre
+    );
     console.log('Producto Seleccionado:', producto?.nombre);
 
     if (producto) {
@@ -353,7 +392,7 @@ export class ProductosComponentF {
         elemento.idProducto === this.detalles[index].producto.idProducto
     );
 
-    if(producto){
+    if (producto) {
       this.productos.splice(this.productos.indexOf(producto), 1);
     }
 
@@ -385,17 +424,17 @@ export class ProductosComponentF {
   }
 
   async pagar(): Promise<void> {
-    if(this.cliente.id_cliente === ''){
+    if (this.cliente.id_cliente === '') {
       alert('Cliente no encontrado');
       return;
     }
 
-    if(this.detalles.length === 0){
+    if (this.detalles.length === 0) {
       alert('No hay productos en la lista');
       return;
     }
 
-    if(this.cliente.correo === ''){
+    if (this.cliente.correo === '') {
       alert('Cliente no tiene correo');
       return;
     }
@@ -502,6 +541,8 @@ export class ProductosComponentF {
   }
 
   openModal(): void {
+    this.cliente = new Clientes('', '', '', '', '', '', '', '', '');
+
     const modalDiv = document.getElementById('myModal');
     if (modalDiv != null) {
       modalDiv.classList.add('show');
@@ -511,6 +552,8 @@ export class ProductosComponentF {
       backdrop.classList.add('modal-backdrop', 'fade', 'show');
       document.body.appendChild(backdrop);
       console.log(this.estado);
+      const buscadorCliente = document.getElementById('buscador-cliente') as HTMLInputElement;
+      buscadorCliente.value = '';
     }
   }
 

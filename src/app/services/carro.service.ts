@@ -19,6 +19,7 @@ export class CarroService {
   }
 
   addToCarro(detalle: Detalle, producto: Productos) {
+    
     const itemIndex = this.myList.findIndex((item) =>
       item.detalle.some((d) => d.producto.nombre === detalle.producto.nombre)
     );

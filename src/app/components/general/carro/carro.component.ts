@@ -4,7 +4,6 @@ import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { first, firstValueFrom, map, Observable, of } from 'rxjs';
 import { Detalle } from '../../../models/Detalle';
 import { Productos } from '../../../models/Productos';
-import { StorageService } from '../../../services/storage.service';
 import {
   ICreateOrderRequest,
   IPayPalConfig,

@@ -420,6 +420,51 @@ export default class MembresiasComponent implements OnInit {
     }
   }
 
+
+  async advertirMembresias2(): Promise<void>{
+    await this.advertirMembresias();
+    alert('Clientes han sido notificados');
+  }
+
+
+  async advertirMembresias(): Promise<void> {
+    this.membresias.forEach(async (membresia) => {
+      if(membresia.dias_restantes <= 10 && membresia.dias_restantes>0){
+        const destinatario = membresia.cliente.correo;
+        const asunto = 'Recordatorio de membresía';
+        const mensaje = `Estimado/a, ${membresia.cliente.nombre} ${membresia.cliente.primer_apellido} 
+        le recordamos que su membresía vence el ${membresia.fechaFin}.
+        Favor revise su estado`;
+ 
+        this._membresiaService.advertirMembresia(destinatario, asunto, mensaje, membresia).subscribe({
+          next: () => {
+            console.log('Correo enviado correctamente');
+          },
+          error: (err) => {
+            console.error('Error al enviar el correo:', err);
+          },
+        });   
+      }
+
+      if(membresia.dias_restantes === 0){
+        const destinatario = membresia.cliente.correo;
+        const asunto = 'Recordatorio de membresía';
+        const mensaje = `Estimado/a, ${membresia.cliente.nombre} ${membresia.cliente.primer_apellido} 
+        le recordamos que su membresía venció el ${membresia.fechaFin}.
+        Favor revise su estado`;
+ 
+        this._membresiaService.advertirMembresia(destinatario, asunto, mensaje, membresia).subscribe({
+         next: () => {
+           console.log('Correo enviado correctamente');
+         },
+         error: (err) => {
+           console.error('Error al enviar el correo:', err);
+         },
+        });   
+      }
+    })
+  }
+
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;

@@ -28,27 +28,51 @@ export default class CatalogoProductosComponent implements OnInit{
   currentPage = 0;
   totalItems = 0;
 
-  constructor(private servicio_producto: ProductoService, private _carroService: CarroService){}
+  constructor(private _productoService: ProductoService, private _carroService: CarroService){}
 
   ngOnInit(): void {
     this.getProductos();
   }
 
   getProductos(): void {
-    this.servicio_producto.getProductos(this.currentPage, this.pageSize).subscribe((data: any) => {
-      this.productos = data.content.filter((producto: any) => producto.stock > 0);
-      this.dataSource = new MatTableDataSource<Productos>(this.productos);
-      this.totalItems = data.totalElements;
-      if (this.paginator) {
-        this.dataSource.paginator = this.paginator;
-      }
-      console.log(this.productos);
-    });
+    let fechaActual = new Date();
+    console.log('Fecha actual: ', fechaActual);
+
+    this._productoService
+      .getProductos(this.currentPage, this.pageSize)
+      .subscribe((response: any) => {
+
+        if (response.content) {
+          response.content.forEach((producto: any) => {
+            let fechaCaducacionProducto = new Date(producto.fecha_caducacion);
+            console.log(
+              'Fecha caducación de producto:',
+              fechaCaducacionProducto
+            );
+
+            if (fechaCaducacionProducto >= fechaActual && producto.stock > 0) {
+              this.productos.push(producto);
+            }
+          });
+        }
+
+        this.dataSource = new MatTableDataSource(this.productos);
+        this.totalItems = response.totalElements;
+
+        this.productos.forEach((producto: any) =>
+          console.log(typeof producto.fecha_caducacion)
+        );
+
+        // Asigna el paginador si existe
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+      });
   }
 
   addDetalle(producto: Productos): void {
     let productoSelec: Productos;
-    this.servicio_producto.unoProducto(producto.idProducto).subscribe((productoSeleccionado) => {
+    this._productoService.unoProducto(producto.idProducto).subscribe((productoSeleccionado) => {
       productoSelec = productoSeleccionado;
       console.log(productoSelec);
   
