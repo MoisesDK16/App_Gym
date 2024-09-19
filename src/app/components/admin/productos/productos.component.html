@@ -51,10 +51,7 @@
 
   </div>
 
-  <div>
-
   </div>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,7 +64,7 @@
       <div class="modal-body">
         <form id="formProductos">
           <div class="mb-3">
-            <label for="codigoProducto" class="form-label">Codigo</label>
+            <label for="codigoProducto" class="form-label">Código</label>
             <input type="text" [(ngModel)]="producto.idProducto" name="idProducto" class="form-control" id="idProducto">
           </div>
           <div class="mb-3">
@@ -77,11 +74,7 @@
           <div class="mb-3">
             <label for="categoria" class="form-label">Categoría</label>
             <select [(ngModel)]="producto.categoria.id_categoria" name="categoria" class="form-control" id="categoria">
-              <option *ngFor="let categoria of categorias" [value]="categoria.id_categoria">{{categoria.categoria}}
-              </option>
-            </select>
-              <option *ngFor="let categoria of categorias" [value]="categoria.id_categoria">{{categoria.categoria}}
-              </option>
+              <option *ngFor="let categoria of categorias" [value]="categoria.id_categoria">{{categoria.categoria}}</option>
             </select>
           </div>
           <div class="mb-3">
@@ -92,13 +85,9 @@
             <label for="precio_compra" class="form-label">Precio de compra</label>
             <input type="number" [(ngModel)]="producto.precioCompra" name="precio_compra" class="form-control"
               id="precio_compra" (input)="calcularPrecioVenta()">
-            <input type="number" [(ngModel)]="producto.precioCompra" name="precio_compra" class="form-control"
-              id="precio_compra" (input)="calcularPrecioVenta()">
           </div>
           <div class="mb-3">
             <label for="margen_ganancia" class="form-label">Margen de ganancia</label>
-            <select [(ngModel)]="margen_ganancia_porcentual" name="margen_ganancia" id="margen_ganancia"
-              class="form-control" (change)="calcularPrecioVenta()">
             <select [(ngModel)]="margen_ganancia_porcentual" name="margen_ganancia" id="margen_ganancia"
               class="form-control" (change)="calcularPrecioVenta()">
               <option [value]="0">Seleccione margen</option>
@@ -109,44 +98,37 @@
             <label for="precio_venta" class="form-label">Precio de venta</label>
             <input type="number" [(ngModel)]="producto.precioVenta" name="precio_venta" class="form-control"
               disabled="true" id="precio_venta">
-            <input type="number" [(ngModel)]="producto.precioVenta" name="precio_venta" class="form-control"
-              disabled="true" id="precio_venta">
           </div>
           <div class="mb-3">
-            <label for="fecha_caducacion" class="form-label">Fecha de Caducacion</label>
-            <input type="date" [(ngModel)]="producto.fecha_caducacion" name="fecha_caducacion" class="form-control"
-              id="fecha_caducacion">
+            <label for="fecha_caducacion" class="form-label">Fecha de Caducación</label>
             <input type="date" [(ngModel)]="producto.fecha_caducacion" name="fecha_caducacion" class="form-control"
               id="fecha_caducacion">
           </div>
           <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripcion</label>
+            <label for="descripcion" class="form-label">Descripción</label>
             <input type="text" [(ngModel)]="producto.descripcion" name="descripcion" class="form-control"
               id="descripcion">
           </div>
-
           <div class="mb-3" *ngIf="!estado">
             <label for="imagen" class="form-label">Imagen</label>
-            <input type="file" (change)="onFileChange($event)" [(ngModel)]="producto.imagen" name="imagen" class="form-control">
+            <input type="file" (change)="onFileChange($event)" [(ngModel)]="producto.imagen" name="imagen"
+              class="form-control">
           </div>
-
-          <button class="btn btn-primary" type="button"
-            (click)="estado ? actualizarProducto() : registrarProducto()">Agregar Producto</button>
-          <button class="btn btn-primary" type="button"
-            (click)="estado ? actualizarProducto() : registrarProducto()">Agregar Producto</button>
+          <button class="btn btn-primary" type="button" (click)="estado ? actualizarProducto() : registrarProducto()">
+            Agregar Producto
+          </button>
         </form>
       </div>
-
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Tabla -->
 <div class="mat-elevation-z8" id="table-container">
   <table mat-table [dataSource]="dataSource">
-
     <!-- Código Producto Column -->
     <ng-container matColumnDef="id_producto">
       <th mat-header-cell *matHeaderCellDef> Código </th>
@@ -189,7 +171,7 @@
       <td mat-cell *matCellDef="let element"> {{element.precioVenta}} </td>
     </ng-container>
 
-    <!-- Fecha Caducacion Column -->
+    <!-- Fecha Caducación Column -->
     <ng-container matColumnDef="fecha_caducacion">
       <th mat-header-cell *matHeaderCellDef> Fecha de Caducación </th>
       <td mat-cell *matCellDef="let element"> {{element.fecha_caducacion | date:'yyyy-MM-dd'}} </td>
@@ -202,20 +184,12 @@
         <div class="d-flex justify-content-start">
           <button (click)="unoProducto(element.idProducto)" style="margin-right: 0.25rem;" type="button"
             class="btn btn-primary">
-          <button (click)="unoProducto(element.idProducto)" style="margin-right: 0.25rem;" type="button"
-            class="btn btn-primary">
             <i class="bi bi-pencil-square"></i>
           </button>
-
           <button (click)="fileInput.click()" style="margin-right: 0.25rem;" type="button" class="btn btn-success">
             <i class="bi bi-images"></i>
           </button>
-
-
           <input #fileInput type="file" style="display: none;" (change)="onFileSelected($event, element.idProducto)">
-
-          <button (click)="eliminarProducto(element.idProducto)" style="margin-right: 0.25rem;" type="button"
-            class="btn btn-danger">
           <button (click)="eliminarProducto(element.idProducto)" style="margin-right: 0.25rem;" type="button"
             class="btn btn-danger">
             <i class="bi bi-trash"></i>
@@ -231,9 +205,6 @@
 
   <mat-paginator [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]" showFirstLastButtons
     aria-label="Select page of periodic elements" [length]="totalItems" [pageSize]="pageSize"
-  <mat-paginator [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]" showFirstLastButtons
-    aria-label="Select page of periodic elements" [length]="totalItems" [pageSize]="pageSize"
     (page)="onPageChange($event)">
   </mat-paginator>
-
 </div>
