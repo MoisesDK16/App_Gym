@@ -1,4 +1,6 @@
-<h2 style="text-align: center; margin-top: 2rem;">CRUD PLANES</h2>
+<body>
+
+<h2 style="text-align: center;">CRUD PLANES</h2>
 
 <div style="margin-top: 2rem; margin-bottom: 2rem; margin-left: 7rem;">
   <button style="font-size: medium;" (click)="openModal(); resetEstado()" type="button" class="btn btn-primary">
@@ -90,7 +92,7 @@
           <tbody *ngIf="plan2">
             <tr *ngFor="let servicio of plan2.servicios">
               <td>{{plan2.nombre}}</td>
-              <td>{{servicio.nombre}}</td> 
+              <td>{{servicio.nombre}}</td>
               <td>{{servicio.precio}}</td>
               <td style="width: 12rem;">
                 <button (click)="removeServicio(servicio.id_servicio)" type="button" class="btn btn-danger btn-sm">
@@ -99,7 +101,7 @@
               </td>
             </tr>
           </tbody>
-          
+
         </table>
       </div>
       <div class="modal-footer">
@@ -164,7 +166,7 @@
           <button (click)="fileInput.click()" style="margin-right: 0.25rem;" type="button" class="btn btn-success">
             <i class="bi bi-images"></i>
           </button>
-    
+
           <input #fileInput type="file" style="display: none;" (change)="onFileSelected($event, element.id_plan)">
 
         </div>
@@ -179,3 +181,5 @@
     [length]="totalItems" [pageSize]="pageSize" (page)="onPageChange($event)">
   </mat-paginator>
 </div>
+
+</body>

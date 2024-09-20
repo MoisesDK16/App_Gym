@@ -1,8 +1,9 @@
 
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -27,7 +28,7 @@
     </div>
     <div class="navbar-cart" (click)="onToggleCart()">
       <div class="navbar-cart-items">
-        <button style="background-color: black; cursor: pointer;">
+        <button style="background-color: #d88a00; cursor: pointer;">
           <i style="font-size: xx-large; color: aliceblue;" class="bi bi-cart-plus-fill"></i>
         </button>
       </div>
@@ -35,7 +36,7 @@
 
     <div class="navbar-user" (click)="onToggleUser()">
       <div class="user-icon">
-        <button style="background-color: black; cursor: pointer;">
+        <button style="background-color: #d88a00; cursor: pointer;">
           <i style="font-size: xx-large; color: aliceblue;" class="bi bi-person-circle"></i>
         </button>
       </div>
@@ -50,4 +51,3 @@
 <div class="user" [ngClass]="{showUser: viewUser}" >
   <app-user (opened)="offToggleUser($event)" ></app-user>
 </div>
-

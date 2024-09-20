@@ -1,14 +1,16 @@
 body {
-  background-color: #f2f2f2; 
+  background-color: #f2f2f2;
   margin: 0;
   padding: 0;
-  height: 100vh; 
+  height: 100vh;
+  font-family: Oswald;
 }
 
 .div-tittle{
   display: flex;
   justify-content: center;
   height: 10vh;
+  margin-bottom: 30px;
 }
 
 .text-tittle{
@@ -22,7 +24,7 @@ body {
   justify-content: flex-start;
   margin-left: 7rem;
   margin-bottom: 2rem;
-  gap: 1rem; 
+  gap: 1rem;
 }
 
 #init-container .item-container {
@@ -37,6 +39,10 @@ body {
   border-radius: 0.5rem;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 1rem;
+}
+
+h2 {
+  font-family: Oswald;
 }
 
 #init-container button {
@@ -63,11 +69,12 @@ body {
 
 #table-container {
   width: 90%;
-  margin: 0 auto;
+  margin-left: 100px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   border-radius: 8px;
   background-color: #fff;
+  overflow-x: auto;
 }
 
 .table {
@@ -75,28 +82,15 @@ body {
   border-collapse: collapse;
 }
 
-.table th, .table td {
-  border: 2px solid #ddd;
-  text-align: center;
+.table tr {
+  background: #2C2F33;
+  color: white;
+  font-family: Oswald;
 }
 
-.table th {
-  background-color: darkorange;
-  color: #333;
-  font-weight: bold;
-  font-size: larger;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
 
-.table td {
-  font-size: 0.9rem;
-  padding-bottom: 0.5rem;
-}
 
-.table tr:hover {
-  background-color: #ddd;
-}
+
 
 #th-acciones {
   width: 12rem;

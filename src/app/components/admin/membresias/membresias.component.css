@@ -1,9 +1,14 @@
 /* Estilos Globales */
 body {
-  background-color: #f2f2f2; 
+  background-color: #f2f2f2;
   margin: 0;
   padding: 0;
-  height: 100vh; 
+  height: 100vh;
+  font-family: Oswald;
+}
+
+h2 {
+  font-family: Oswald;
 }
 
 .div-tittle {
@@ -62,7 +67,7 @@ body {
 /* Contenedor de la tabla */
 #table-container {
   width: 90%;
-  margin: 0 auto;
+  margin-left: 100px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   border-radius: 8px;
@@ -74,28 +79,12 @@ body {
   border-collapse: collapse;
 }
 
-.table th, .table td {
-  border: 2px solid #ddd;
-  text-align: center;
-}
 
-.table th {
-  background-color: darkorange;
-  color: #333;
-  font-weight: bold;
-  font-size: larger;
-  padding-bottom: 2rem;
+.table tr {
+  background: #2C2F33;
+  color: white;
+  font-family: Oswald;
 }
-
-.table td {
-  font-size: 0.9rem;
-  padding: 0.75rem; 
-}
-
-.table tr:hover {
-  background-color: #ddd;
-}
-
 
 .d-flex {
   display: flex;
@@ -136,13 +125,13 @@ table .btn-danger {
 
 /* Estilos del modal */
 #modal-detalles-membresia {
-  margin-top: 5rem; 
+  margin-top: 5rem;
 }
 
 #container-tablas {
   display: flex;
-  justify-content: space-between; 
-  gap: 1rem; 
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .table-detalles-cliente, .table-detalles-servicios {

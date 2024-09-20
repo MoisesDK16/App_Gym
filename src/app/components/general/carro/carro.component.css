@@ -1,114 +1,110 @@
 .productCart-wrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    background-color: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 35rem;
-    margin: auto;
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30px;
 }
 
 .productCart-body {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem;
-    border-bottom: 1px solid lightgrey;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
 }
 
 .body-info p{
-    font-size: 1.3rem;
+  font-size: 1.3rem;
 }
 
 .productCart-name {
-    font-weight: bold;
-    color: #333;
+  font-weight: bold;
+  color: white;
 }
 
 .body-info {
-    display: flex;
-    flex-direction: column;
-    margin-left: 2rem;
-    margin-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 
 .body-info em {
-    font-size: 1.5rem;
-    width: max-content;
-    font-style: normal;
+  font-size: 1.5rem;
+  width: max-content;
+  font-style: normal;
 }
 
 
 .productCart-buttons-operators {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .btn-operator{
-    background-color: #030301;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-    border-radius: none;
-    width: 2.5rem;
-    height: 2.5rem;
+  background-color: #030301;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  border-radius: none;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .btn-delete{
-    margin-left: 1rem;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-    border-radius: none;
-    width: 3rem;
-    height: 2.5rem;
+  margin-left: 1rem;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  border-radius: none;
+  width: 3rem;
+  height: 2.5rem;
 }
 
 .quantity{
-    margin-top: 0.65rem;
-    font-size: 1.5rem;
-    font-weight: 500;
+  margin-top: 0.65rem;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .cartTotal {
-    padding: 1rem 0;
-    text-align: right;
+  padding: 1rem 0;
+  text-align: right;
 }
 
 .cartTotal-total {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #cc1414;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #cc1414;
 }
 
 .cart-btn {
-    width: 80%;
-    align-self: center;
-    border-radius: none;
-    background-color: #030301;
-    color: white;
-    cursor: pointer;
-    padding: 1rem;
-    text-align: center;
+  width: 80%;
+  align-self: center;
+  border-radius: none;
+  background-color: #030301;
+  color: white;
+  cursor: pointer;
+  padding: 1rem;
+  text-align: center;
 }
 
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .header h6 {
-    margin: 0;
-  }
+.header h6 {
+  margin: 0;
+}
 
-  .close-button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-  }
+.close-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
 
-  .close-button i {
-    font-size: 1.5rem; 
-  }
+.close-button i {
+  font-size: 1.5rem;
+}

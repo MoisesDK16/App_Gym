@@ -1,8 +1,19 @@
+body {
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 20px 0;
+  height: 100vh;
+  font-family: Oswald;
+}
+
+h2 {
+  font-family: Oswald;
+}
+
 .menu-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
 }
 
 .menu {

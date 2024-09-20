@@ -1,50 +1,62 @@
+body {
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 20px 0;
+  height: 100vh;
+  font-family: Oswald;
+}
+
+h2 {
+  font-family: Oswald;
+}
+
 .factura-container {
     margin-top: 20px;
   }
-  
+
   .factura-header,
   .factura-footer {
     display: flex;
     justify-content: space-between;
   }
-  
+
   .factura-table {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
   }
-  
+
   .factura-table th,
   .factura-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
   }
-  
+
   .factura-membresia {
     margin-top: 0.5rem;
     display: flex;
     flex-direction: row;
   }
-  
+
   .factura-producto .cantidad-producto {
     height: 2rem;
     width: 4rem;
   }
-  
+
   .factura-pie {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     margin-top: 2rem;
   }
-  
+
   #pagar-membresia {
     display: flex;
     flex-direction: row;
     justify-content: end;
   }
-  
+
   #pagar-membresia button {
     background-color: green;
     border: none;
@@ -53,15 +65,15 @@
     width: 10rem;
     border-radius: 3rem;
   }
-  
+
   .modal-dialog {
     margin-right: 70rem;
   }
-  
+
   .modal-content {
     width: 80rem;
   }
-  
+
   #buscador-cliente {
     width: 15rem;
     margin: auto;
@@ -71,16 +83,15 @@
 /*Tabla modal planes*/
 
 #table-planes{
-  width: 70%; 
+  width: 70%;
   margin: 0 auto;
 }
 
 #table-planes th{
   padding: 0.5rem;
-  text-align: center; 
+  text-align: center;
 }
 #table-planes tbody tr td{
   margin-top: 3rem;
-  text-align: center; 
+  text-align: center;
 }
-  

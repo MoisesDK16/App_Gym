@@ -1,48 +1,75 @@
-<div>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['cliente']">Clientes</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['membresias']">Membresias</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['productos']">Productos</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['planes']">Planes</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['facturas']">Facturas</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['facturacion-caja']">Caja</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['servicios']">Servicios</a>
-          </li>
-
-          <li>
-            <a class="nav-link" [routerLink]="['personal']">Personal</a>
-          </li>
-
-        </ul>
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <img src="/logo.png" alt="logo">
+    <h2>
+      Ciudad Verde
+    </h2>
+  </div>
+  <ul class="sidebar-links">
+    <h4>
+      <span>Main Menu</span>
+      <div class="menu-separator"></div>
+    </h4>
+    <li>
+      <a href="dashboard.php">
+        <span class="material-symbols-outlined"> dashboard </span>Dashboard</a>
+    </li>
+    <li>
+      <a href="#"><span class="material-symbols-outlined"> overview </span>Overview</a>
+    </li>
+    <li>
+      <a href="#"><span class="material-symbols-outlined"> monitoring </span>Analytic</a>
+    </li>
+    <h4>
+      <span>General</span>
+      <div class="menu-separator"></div>
+    </h4>
+    <li>
+      <a [routerLink]="['cliente']"><span class="material-symbols-outlined"> Person </span>Clientes</a>
+    </li>
+    <li>
+      <a [routerLink]="['productos']"><span class="material-symbols-outlined"> Inventory </span>Productos</a>
+    </li>
+    <li>
+      <a [routerLink]="['membresias']"><span class="material-symbols-outlined"> Concierge </span>Membresias</a>
+    </li>
+    <li>
+      <a [routerLink]="['planes']"><span class="material-symbols-outlined"> Star </span>Planes</a>
+    </li>
+    <li>
+      <a [routerLink]="['facturas']"><span class="material-symbols-outlined"> receipt_long </span>Facturacion</a>
+    </li>
+    <li>
+      <a [routerLink]="['facturacion-caja']"><span class="material-symbols-outlined"> savings </span>Caja</a>
+    </li>
+    <li>
+      <a [routerLink]="['servicios']"><span class="material-symbols-outlined"> room_service </span>Servicios</a>
+    </li>
+    <li>
+      <a [routerLink]="['personal']"><span class="material-symbols-outlined"> Taunt </span>Personal</a>
+    </li>
+    <h4>
+      <span>Account</span>
+      <div class="menu-separator"></div>
+    </h4>
+    <li>
+      <a href="#"><span class="material-symbols-outlined"> account_circle </span>Profile</a>
+    </li>
+    <li>
+      <a href="#"><span class="material-symbols-outlined"> settings </span>Settings</a>
+    </li>
+    <li>
+      <a href="#"><span class="material-symbols-outlined"> logout </span>Logout</a>
+    </li>
+  </ul>
+  <div class="user-account">
+    <div class="user-profile">
+      <img src="/login.png" alt="Profile Image" />
+      <div class="user-detail">
+        <h3>Justin Moreira</h3>
+        <span>Gerente</span>
       </div>
     </div>
-  </nav>
-</div>
+  </div>
+</aside>

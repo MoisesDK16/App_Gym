@@ -1,4 +1,6 @@
-<h2 style="text-align: center; margin-top: 2rem;">CRUD SERVICIOS</h2>
+<body>
+
+<h2 style="text-align: center;">CRUD SERVICIOS</h2>
 
 <div style="margin-top: 2rem; margin-bottom: 2rem; margin-left: 7rem;">
   <button style="font-size: medium;" (click)="openModal(); resetEstado()" type="button" class="btn btn-primary">
@@ -82,9 +84,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator 
-    [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]" 
-    showFirstLastButtons 
+  <mat-paginator
+    [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]"
+    showFirstLastButtons
     aria-label="Select page of periodic elements"
     [length]="totalItems"
     [pageSize]="pageSize"
@@ -92,4 +94,4 @@
   </mat-paginator>
 
 </div>
-
+</body>
