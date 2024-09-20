@@ -24,7 +24,7 @@ export class MembresiaService {
     return this.http.get<MembresiaResponse>(`${this.url}/all?page=${page}&size=${size}`);
   }
 
-  getMembresiasByCliente(idCliente: string): Observable<MembresiaResponse[]> {
+  getMembresiaByCliente(idCliente: string): Observable<MembresiaResponse[]> {
     return this.http.get<MembresiaResponse[]>(`${this.url}/cliente/${idCliente}`);
   }
 
@@ -32,16 +32,12 @@ export class MembresiaService {
     return this.http.get<MembresiaResponse[]>(`${this.url}/cliente/apellido/${primerApellido}`);
   }
 
-  getMembresiasByPlanNombre(planNombre: string): Observable<MembresiaResponse[]> {
-    return this.http.get<MembresiaResponse[]>(`${this.url}/plan/${planNombre}`);
+  getMembresiasByPlan_Estado(plan: string, estado: string): Observable<MembresiaResponse[]>{
+    return this.http.get<MembresiaResponse[]>(`${this.url}/planYestado/${plan}/${estado}`);
   }
 
   getMembresiasByDiasRestantesAsc(): Observable<MembresiaResponse[]> {
     return this.http.get<MembresiaResponse[]>(`${this.url}/dias_restantes-asc`);
-  }
-
-  getMembresiasByEstado(estado: string): Observable<MembresiaResponse[]> {
-    return this.http.get<MembresiaResponse[]>(`${this.url}/estado/${estado}`);
   }
 
   renovarMembresia(data:FormData, id:number): Observable<any> {

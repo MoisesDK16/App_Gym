@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClienteService } from '../../../services/cliente-service';
 import {ClienteResponse, Clientes}  from '../../../models/Clientes';
@@ -6,11 +6,16 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { AdminComponent } from '../../../headers/admin/admin.component';
+import {validarCedula} from '../../../../resources/validations/validar-cedula';
+import { validarRuc } from '../../../../resources/validations/validar-ruc';
+import { validarCorreoGmail } from '../../../../resources/validations/validar-correo';
+import { validarContraseñaSegura } from '../../../../resources/validations/validar-pass';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cliente',
   standalone: true,
-  imports: [NgFor, FormsModule, MatTableModule, MatPaginatorModule, AdminComponent],
+  imports: [NgFor,NgIf , FormsModule, MatTableModule, MatPaginatorModule, AdminComponent],
   templateUrl: './cliente.component.html',
   styleUrl: './cliente.component.css',
 })
@@ -21,6 +26,13 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
   estado: string = "";
   displayedColumns: string[] = ['id_cliente', 'tipo_identificacion', 'nombre', 'primer_apellido', 'segundo_apellido', 'correo', 'clave', 'direccion', 'telefono', 'acciones'];
   dataSource!: MatTableDataSource<Clientes>;
+
+  /*Variables de plantilla */
+  avisoIdentificacion: boolean = false;
+  avisoCorreo: boolean = false;
+  avisoContrasenia: boolean = false;
+
+  incompleto: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -33,7 +45,7 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private clienteServicio: ClienteService){}
+  constructor(private clienteServicio: ClienteService, private router: Router){}
 
   ngOnInit(): void {
     this.getClientes();
@@ -61,10 +73,48 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
   }
 
   registrarCliente(): void {
-    this.clienteServicio.registrarCliente(this.cliente).subscribe((data: any) => {
-      this.getClientes();
-      this.closeModal();
-    });
+
+    if(this.incompleto == false){
+      if (
+        this.validarID() &&
+        this.validarCorreo() &&
+        this.validarContrasenia() 
+      ) {
+        console.log('Cliente a registrar', this.cliente);
+        this.clienteServicio.registrarCliente(this.cliente).subscribe((data) => {
+          console.log('Cliente creado', data);
+          this.getClientes();
+          this.closeModal();
+        });
+      } else {
+        console.log('Datos inválidos');
+        alert('Ingrese Datos validos');
+      }
+    }
+  }
+  
+  registrarCliente2(): void{
+    if(this.validarID() && this.incompleto==true){
+      this.clienteServicio.registrarCliente(this.cliente).subscribe(data => {
+        console.log('Cliente creado', data);
+        this.getClientes();
+        this.closeModal();
+      });
+    }
+  }
+
+  verificarCamposIncompletos(): void {
+
+    const correoInput = document.getElementById('correo') as HTMLInputElement;
+    let correoValue = correoInput.value;
+    const claveInput = document.getElementById('clave') as HTMLInputElement;
+    let claveValue = claveInput.value;
+
+    if(correoValue === '' && claveValue === ''){
+      this.incompleto = true;
+    }
+
+    console.log("incompleto?: ", this.incompleto);
   }
 
   actualizarCliente(): void {
@@ -91,11 +141,93 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   // Método que se ejecuta cuando cambia la paginación
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
     this.getClientes();
+  }
+
+
+  validarIdentificacion(): boolean {
+    let valido = false;
+
+    if (this.cliente.id_cliente.trim() === '') {
+      valido = false; 
+    }
+
+    if (
+      this.cliente.id_cliente.length < 10 ||
+      this.cliente.id_cliente.length > 13
+    ) {
+      console.log('La identificación debe tener entre 10 y 13 caracteres.');
+      valido = false; 
+    } 
+
+    if (this.cliente.id_cliente.length === 10) {
+      if (validarCedula(this.cliente.id_cliente)) {
+        console.log('Cédula válida');
+        valido = true;
+      } else {
+        console.log('Cédula inválida');
+        valido = false; 
+      }
+    }
+
+    if (this.cliente.id_cliente.length === 13) {
+      if (validarRuc(this.cliente.id_cliente)) {
+        console.log('RUC válido');
+        valido = true;
+      } else {
+        console.log('RUC inválido');
+        valido = false; 
+      }
+    }
+
+    return valido;
+  }
+
+  validarCorreo(): boolean {
+    let campoValido = false;
+
+    if (!validarCorreoGmail(this.cliente.correo)) {
+      this.avisoCorreo = true;
+      campoValido = false;
+
+    } else {
+      this.avisoCorreo = false;
+      campoValido = true;
+    }
+    return campoValido;
+  }
+
+  validarContrasenia(): boolean {
+    let campoValido = false;
+
+    if (!validarContraseñaSegura(this.cliente.clave)) {
+      this.avisoContrasenia = true;
+      campoValido = false;
+    } else {
+      this.avisoContrasenia = false;
+      campoValido = true;
+    }
+
+    return campoValido;
+  }
+
+
+  validarID(): boolean {
+    let campoValido = true;
+
+    if (!this.validarIdentificacion()) {
+      campoValido = false;
+      this.avisoIdentificacion = true; 
+    } else {
+      this.avisoIdentificacion = false; 
+      campoValido = true;
+    }
+    return campoValido;
   }
 
 

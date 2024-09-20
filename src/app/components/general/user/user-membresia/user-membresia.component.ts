@@ -255,7 +255,7 @@ export default class UserMembresiaComponent {
   }
 
   async getMembresia(){
-    this._membresiaService.getMembresiasByCliente(this.cliente.id_cliente).subscribe((data)=> {
+    this._membresiaService.getMembresiaByCliente(this.cliente.id_cliente).subscribe((data)=> {
       this.membresia = data;
       console.log(this.membresia);
     });

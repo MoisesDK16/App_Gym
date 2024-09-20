@@ -434,11 +434,6 @@ export class ProductosComponentF {
       return;
     }
 
-    if (this.cliente.correo === '') {
-      alert('Cliente no tiene correo');
-      return;
-    }
-
     await this.generarFactura();
     alert('Factura generada con éxito');
   }

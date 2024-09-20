@@ -1,160 +1,310 @@
-
-<h2 style="text-align: center;" class="mt-4 mb-3">CRUD CLIENTES</h2>
-
-<div style="margin-top: 2rem; margin-bottom: 2rem; margin-left: 7rem;">
-  <button style="font-size: medium;" (click)="openModal(); resetEstado()" type="button" class="btn btn-primary">
-    Insertar Cliente
-  </button>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Cliente</h1>
-        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clientes</title>
+  </head>
+  <body>
+    <header>
+      <div class="div-tittle">
+        <h2 id="text-tittle" class="mt-4 mb-3">GESTION DE CLIENTES</h2>
       </div>
-      <div class="modal-body">
-        <form id="formCliente">
-          <div class="mb-3">
-            <label for="id_cliente" class="form-label">ID Cliente</label>
-            <input type="text" [(ngModel)]="cliente.id_cliente" name="id_cliente" class="form-control" id="id_cliente">
-          </div>
-          <div class="mb-3">
-            <label for="tipo_identificacion" class="form-label">Tipo Identificación</label>
-            <input type="text" [(ngModel)]="cliente.tipo_identificacion" name="tipo_identificacion" class="form-control"
-              id="tipo_identificacion">
-          </div>
-          <div class="mb-3">
+      <div id="init-container">
+        <div class="item-container">
+          <button
+            style="font-size: large"
+            (click)="openModal(); resetEstado()"
+            type="button"
+          >
+            AGREGAR CLIENTE <i class="bi bi-person-add"></i>
+          </button>
+        </div>
+
+        <div class="item-container">
+          <input placeholder="Buscar cliente" id="buscador-cliente" />
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="mat-elevation-z8" id="table-container">
+        <table mat-table [dataSource]="dataSource" class="table">
+          <!-- DNI Column -->
+          <ng-container matColumnDef="id_cliente">
+            <th mat-header-cell *matHeaderCellDef>DNI</th>
+            <td mat-cell *matCellDef="let element">{{ element.id_cliente }}</td>
+          </ng-container>
+
+          <!-- Tipo DNI Column -->
+          <ng-container matColumnDef="tipo_identificacion">
+            <th mat-header-cell *matHeaderCellDef>Tipo DNI</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.tipo_identificacion }}
+            </td>
+          </ng-container>
+
+          <!-- Nombre Column -->
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+          </ng-container>
+
+          <!-- Primer Apellido Column -->
+          <ng-container matColumnDef="primer_apellido">
+            <th mat-header-cell *matHeaderCellDef>Primer Apellido</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.primer_apellido }}
+            </td>
+          </ng-container>
+
+          <!-- Segundo Apellido Column -->
+          <ng-container matColumnDef="segundo_apellido">
+            <th mat-header-cell *matHeaderCellDef>Segundo Apellido</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.segundo_apellido || "N/A" }}
+            </td>
+          </ng-container>
+
+          <!-- Correo Column -->
+          <ng-container matColumnDef="correo">
+            <th mat-header-cell *matHeaderCellDef>Correo</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.correo || "N/A" }}
+            </td>
+          </ng-container>
+
+          <!-- Clave Column -->
+          <ng-container matColumnDef="clave">
+            <th mat-header-cell *matHeaderCellDef>Clave</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.clave || "N/A" }}
+            </td>
+          </ng-container>
+
+          <!-- Dirección Column -->
+          <ng-container matColumnDef="direccion">
+            <th mat-header-cell *matHeaderCellDef>Dirección</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.direccion || "N/A" }}
+            </td>
+          </ng-container>
+
+          <!-- Teléfono Column -->
+          <ng-container matColumnDef="telefono">
+            <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.telefono || "N/A" }}
+            </td>
+          </ng-container>
+
+          <!-- Acciones Column -->
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell id="th-acciones" *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="d-flex justify-content-start">
+                <button
+                  (click)="unoCliente(element.id_cliente)"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                  Editar
+                </button>
+                <button
+                  (click)="eliminarCliente(element.id_cliente)"
+                  type="button"
+                  class="btn btn-danger"
+                >
+                  <i class="bi bi-trash"></i>
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[
+            30, 60, 90, 120, 160, 200, 240, 280, 320, 360, 400
+          ]"
+          showFirstLastButtons
+          aria-label="Select page of periodic elements"
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          (page)="onPageChange($event)"
+        >
+        </mat-paginator>
+      </div>
+    </main>
+  </body>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="myModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Agregar Cliente
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="closeModal()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form id="formCliente" (change)="verificarCamposIncompletos()">
+            <div id="container-input">
+              <label for="id_cliente" class="form-label">Identificación</label>
+              <span *ngIf="avisoIdentificacion" class="advertencia"
+                >Ingrese Indetificacion valida</span
+              >
+            </div>
+            <input
+              (change)="validarID()"
+              style="margin-bottom: 1rem"
+              type="text"
+              [(ngModel)]="cliente.id_cliente"
+              name="id_cliente"
+              class="form-control"
+              id="id_cliente"
+            />
+
+            <label for="tipo_identificacion" class="form-label"
+              >Tipo Identificación</label
+            >
+            <input
+              style="margin-bottom: 1rem"
+              type="text"
+              [(ngModel)]="cliente.tipo_identificacion"
+              name="tipo_identificacion"
+              class="form-control"
+              id="tipo_identificacion"
+            />
+
             <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" [(ngModel)]="cliente.nombre" name="nombre" class="form-control" id="nombre">
-          </div>
-          <div class="mb-3">
-            <label for="primer_apellido" class="form-label">Primer Apellido</label>
-            <input type="text" [(ngModel)]="cliente.primer_apellido" name="primer_apellido" class="form-control"
-              id="primer_apellido">
-          </div>
-          <div class="mb-3">
-            <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
-            <input type="text" [(ngModel)]="cliente.segundo_apellido" name="segundo_apellido" class="form-control"
-              id="segundo_apellido">
-          </div>
-          <div class="mb-3">
-            <label for="correo" class="form-label">Correo</label>
-            <input type="email" [(ngModel)]="cliente.correo" name="correo" class="form-control" id="correo">
-          </div>
-          <div class="mb-3">
-            <label for="clave" class="form-label">Clave</label>
-            <input type="password" [(ngModel)]="cliente.clave" name="clave" class="form-control" id="clave">
-          </div>
-          <div class="mb-3">
-            <label for="direccion" class="form-label">Dirección</label>
-            <input type="text" [(ngModel)]="cliente.direccion" name="direccion" class="form-control" id="direccion">
-          </div>
-          <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="text" [(ngModel)]="cliente.telefono" name="telefono" class="form-control" id="telefono">
-          </div>
-          <button class="btn btn-primary" type="button"
-            (click)="estado ? actualizarCliente() : registrarCliente()">Agregar Cliente</button>
-        </form>
-      </div>
+            <input
+              style="margin-bottom: 1rem"
+              type="text"
+              [(ngModel)]="cliente.nombre"
+              name="nombre"
+              class="form-control"
+              id="nombre"
+            />
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+            <label for="primer_apellido" class="form-label"
+              >Primer Apellido</label
+            >
+            <input
+              style="margin-bottom: 1rem"
+              type="text"
+              [(ngModel)]="cliente.primer_apellido"
+              name="primer_apellido"
+              class="form-control"
+              id="primer_apellido"
+            />
+
+            <label for="segundo_apellido" class="form-label"
+              >Segundo Apellido</label
+            >
+            <input
+              style="margin-bottom: 1rem"
+              type="text"
+              [(ngModel)]="cliente.segundo_apellido"
+              name="segundo_apellido"
+              class="form-control"
+              id="segundo_apellido"
+            />
+
+            <div id="container-input">
+              <label for="correo" class="form-label">Correo</label>
+              <span *ngIf="avisoCorreo" class="advertencia"
+                >Ingrese correo valido</span
+              >
+            </div>
+            <input
+              (change)="validarCorreo()"
+              style="margin-bottom: 1rem"
+              type="email"
+              [(ngModel)]="cliente.correo"
+              name="correo"
+              class="form-control"
+              id="correo"
+            />
+
+            <div id="container-input">
+              <label for="clave" class="form-label">Clave</label>
+              <span *ngIf="avisoContrasenia" class="advertencia"
+                >Ingrese una contraseña segura</span
+              >
+            </div>
+            <input
+              (change)="validarContrasenia()"
+              style="margin-bottom: 1rem"
+              type="password"
+              [(ngModel)]="cliente.clave"
+              name="clave"
+              class="form-control"
+              id="clave"
+            />
+
+            <label for="direccion" class="form-label">Dirección</label>
+            <input
+              style="margin-bottom: 1rem"
+              type="text"
+              [(ngModel)]="cliente.direccion"
+              name="direccion"
+              class="form-control"
+              id="direccion"
+            />
+
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input
+              style="margin-bottom: 1rem"
+              type="text"
+              [(ngModel)]="cliente.telefono"
+              name="telefono"
+              class="form-control"
+              id="telefono"
+            />
+
+            <button
+              class="btn btn-primary"
+              type="button"
+              (click)="
+                estado
+                  ? actualizarCliente()
+                  : incompleto
+                  ? registrarCliente2()
+                  : registrarCliente()
+              "
+            >
+              Agregar Cliente
+            </button>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-
-<div class="mat-elevation-z8" id="table-container">
-  <table mat-table [dataSource]="dataSource">
-
-    <!-- DNI Column -->
-    <ng-container matColumnDef="id_cliente">
-      <th mat-header-cell *matHeaderCellDef> DNI </th>
-      <td mat-cell *matCellDef="let element"> {{element.id_cliente}} </td>
-    </ng-container>
-
-    <!-- Tipo DNI Column -->
-    <ng-container matColumnDef="tipo_identificacion">
-      <th mat-header-cell *matHeaderCellDef> Tipo DNI </th>
-      <td mat-cell *matCellDef="let element"> {{element.tipo_identificacion}} </td>
-    </ng-container>
-
-    <!-- Nombre Column -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-    </ng-container>
-
-    <!-- Primer Apellido Column -->
-    <ng-container matColumnDef="primer_apellido">
-      <th mat-header-cell *matHeaderCellDef> Primer Apellido </th>
-      <td mat-cell *matCellDef="let element"> {{element.primer_apellido}} </td>
-    </ng-container>
-
-    <!-- Segundo Apellido Column -->
-    <ng-container matColumnDef="segundo_apellido">
-      <th mat-header-cell *matHeaderCellDef> Segundo Apellido </th>
-      <td mat-cell *matCellDef="let element"> {{element.segundo_apellido}} </td>
-    </ng-container>
-
-    <!-- Correo Column -->
-    <ng-container matColumnDef="correo">
-      <th mat-header-cell *matHeaderCellDef> Correo </th>
-      <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
-    </ng-container>
-
-    <!-- Clave Column -->
-    <ng-container matColumnDef="clave">
-      <th mat-header-cell *matHeaderCellDef> Clave </th>
-      <td mat-cell *matCellDef="let element"> {{element.clave}} </td>
-    </ng-container>
-
-    <!-- Dirección Column -->
-    <ng-container matColumnDef="direccion">
-      <th mat-header-cell *matHeaderCellDef> Dirección </th>
-      <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
-    </ng-container>
-
-    <!-- Teléfono Column -->
-    <ng-container matColumnDef="telefono">
-      <th mat-header-cell *matHeaderCellDef> Teléfono </th>
-      <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
-    </ng-container>
-
-    <!-- Acciones Column -->
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let element">
-        <div class="d-flex justify-content-center">
-          <button (click)="unoCliente(element.id_cliente)" style="margin-right: 0.25rem;" type="button"
-            class="btn btn-primary">
-            <i class="bi bi-pencil-square"></i>
-          </button>
-          <button (click)="eliminarCliente(element.id_cliente)" style="margin-right: 0.25rem;" type="button"
-            class="btn btn-danger">
-            <i class="bi bi-trash"></i>
-          </button>
-          <button type="button" class="btn btn-info">INFO</button>
-        </div>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <mat-paginator 
-    [pageSizeOptions]="[30,60,90,120,160,200,240,280,320,360,400]" 
-    showFirstLastButtons 
-    aria-label="Select page of periodic elements"
-    [length]="totalItems"
-    [pageSize]="pageSize"
-    (page)="onPageChange($event)">
-  </mat-paginator>
-
-</div> 
+</html>

@@ -84,7 +84,7 @@ export default class CatalogoPlanesComponent implements OnInit{
   }
 
   async getMembresia(){
-    this._MembresiaService.getMembresiasByCliente(this.cliente.id_cliente).subscribe((data)=> {
+    this._MembresiaService.getMembresiaByCliente(this.cliente.id_cliente).subscribe((data)=> {
       this.membresia = data;
       console.log("Membresia cliente activo: ", this.membresia);
     });

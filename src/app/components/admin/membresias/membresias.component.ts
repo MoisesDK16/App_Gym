@@ -233,12 +233,12 @@ export default class MembresiasComponent implements OnInit {
     if (regexLetras.test(valor)) {
       this.getMembresiasByPrimerApellido(valor);
     } else if (regexNumeros.test(valor)) {
-      this.getMembresiasByCliente(valor);
+      this.getMembresiaByCliente(valor);
     }
   }
 
-  getMembresiasByCliente(id_cliene: string): void {
-    this._membresiaService.getMembresiasByCliente(id_cliene).subscribe({
+  getMembresiaByCliente(id_cliene: string): void {
+    this._membresiaService.getMembresiaByCliente(id_cliene).subscribe({
       next: (data: any) => {
         if (data && data.length > 0) {
           this.membresias = data;
@@ -273,60 +273,28 @@ export default class MembresiasComponent implements OnInit {
       });
   }
 
-  filtrarPorEstado($event: Event): void {
-    const selectElement = $event.target as HTMLSelectElement;
-    this.selectedEstado = selectElement.value.trim();
-    console.log('Estado:', this.selectedEstado);
-
-    if (selectElement.value === 'TODOS') {
+  filtrarPlan_Estado(): void {
+    const selectPlan = document.getElementById('selectPlan') as HTMLSelectElement;
+    const selectEstado = document.getElementById('selectEstado') as HTMLSelectElement; 
+  
+    if (selectPlan.value === 'TODOS' && selectEstado.value === 'TODOS') {
       this.getMembresias();
-    } else {
-      this._membresiaService
-        .getMembresiasByEstado(this.selectedEstado)
-        .subscribe({
-          next: (data: any) => {
-            if (data && data.length > 0) {
-              this.membresias = data;
-              this.dataSource = new MatTableDataSource<any>(this.membresias);
-              this.dataSource.paginator = this.paginator;
-            } else {
-              this.getMembresias();
-            }
-          },
-          error: (error) => {
-            console.error('Error al obtener las membresías:', error);
-          },
-        });
+
+    }
+    else if(selectPlan.value === 'TODOS' || selectEstado.value === 'TODOS'){
+      this.getMembresias();
+      selectPlan.value = 'TODOS';
+      selectEstado.value = 'TODOS';
+    }
+    else{
+      this._membresiaService.getMembresiasByPlan_Estado(selectPlan.value, selectEstado.value).subscribe((data: any) => {
+          this.membresias = data;
+          this.dataSource = new MatTableDataSource<any>(this.membresias);
+          this.dataSource.paginator = this.paginator; 
+      });
     }
   }
 
-  filtrarPorPlan($event: Event): void {
-    const selectElement = $event.target as HTMLSelectElement;
-    const planSeleccionado = selectElement.value.trim();
-    console.log('Plan:', planSeleccionado);
-    console.log('Plan:', typeof planSeleccionado);
-
-    if (planSeleccionado === 'TODOS') {
-      this.getMembresias();
-    } else {
-      this._membresiaService
-        .getMembresiasByPlanNombre(planSeleccionado)
-        .subscribe({
-          next: (data: any) => {
-            if (data && data.length > 0) {
-              this.membresias = data;
-              this.dataSource = new MatTableDataSource<any>(this.membresias);
-              this.dataSource.paginator = this.paginator;
-            } else {
-              this.getMembresias();
-            }
-          },
-          error: (error) => {
-            console.error('Error al obtener las membresías:', error);
-          },
-        });
-    }
-  }
 
   async listarPlanesCombo(): Promise<void> {
     await this.getPlanes();
@@ -407,7 +375,7 @@ export default class MembresiasComponent implements OnInit {
           } as unknown as Event;
 
           // Llamar al método filtrarPorPlan pasando el objeto simulado
-          this.filtrarPorEstado(simulatedEvent);
+          // this.filtrarPorEstado(simulatedEvent);
           alert('Membresía eliminada correctamente');
         },
         error: (err) => {
