@@ -30,16 +30,17 @@ export default class RegistroComponent {
     private _clienteServide: ClienteService
   ) {}
 
+  resetCliente(): void {
+    this.cliente = new Clientes('', '', '', '', '', '', '', '', '');
+  }
+
   registrarCliente(): void {
-    if (
-      this.validarID() &&
-      this.validarCorreo() &&
-      this.validarContrasenia()
-    ) {
+    if (this.validarID() && this.validarCorreo() && this.validarContrasenia()) {
       console.log('Cliente a registrar', this.cliente);
       this._clienteServide.registrarCliente(this.cliente).subscribe((data) => {
         console.log('Cliente creado', data);
-        this.router.navigate(['/login']);
+        alert('Registro exitoso');
+        this.resetCliente();
       });
     } else {
       console.log('Datos inválidos');
@@ -49,41 +50,60 @@ export default class RegistroComponent {
 
   validarIdentificacion(): boolean {
     let valido = false;
-
+    const tipo_identificacion = document.getElementById('tipo_identificacion') as HTMLSelectElement;
+  
     if (this.cliente.id_cliente.trim() === '') {
-      valido = false; 
+      valido = false;
     }
-
+  
     if (
       this.cliente.id_cliente.length < 10 ||
       this.cliente.id_cliente.length > 13
     ) {
       console.log('La identificación debe tener entre 10 y 13 caracteres.');
-      valido = false; 
-    } 
-
+      valido = false;
+    }
+  
     if (this.cliente.id_cliente.length === 10) {
+      console.log('Cédula: ', this.cliente.id_cliente.toString());
       if (validarCedula(this.cliente.id_cliente)) {
         console.log('Cédula válida');
+        if (tipo_identificacion) {
+          tipo_identificacion.innerHTML = ''; // Limpia los options anteriores
+          const option = document.createElement('option');
+          option.value = 'cedula';
+          option.textContent = 'cedula';
+          tipo_identificacion.appendChild(option);
+        }
+        this.cliente.tipo_identificacion = 'cedula';
         valido = true;
       } else {
         console.log('Cédula inválida');
-        valido = false; 
+        valido = false;
       }
     }
-
+  
     if (this.cliente.id_cliente.length === 13) {
       if (validarRuc(this.cliente.id_cliente)) {
         console.log('RUC válido');
+        if (tipo_identificacion) {
+          tipo_identificacion.innerHTML = ''; // Limpia los options anteriores
+          const option = document.createElement('option');
+          option.value = 'RUC';
+          option.textContent = 'RUC';
+          tipo_identificacion.appendChild(option);
+        }
+        this.cliente.tipo_identificacion = 'RUC';
         valido = true;
       } else {
         console.log('RUC inválido');
-        valido = false; 
+        valido = false;
       }
     }
-
+  
     return valido;
   }
+  
 
   validarCorreo(): boolean {
     let campoValido = false;
@@ -91,7 +111,6 @@ export default class RegistroComponent {
     if (!validarCorreoGmail(this.cliente.correo)) {
       this.avisoCorreo = true;
       campoValido = false;
-
     } else {
       this.avisoCorreo = false;
       campoValido = true;
@@ -113,15 +132,14 @@ export default class RegistroComponent {
     return campoValido;
   }
 
-
   validarID(): boolean {
     let campoValido = true;
 
     if (!this.validarIdentificacion()) {
       campoValido = false;
-      this.avisoIdentificacion = true; 
+      this.avisoIdentificacion = true;
     } else {
-      this.avisoIdentificacion = false; 
+      this.avisoIdentificacion = false;
       campoValido = true;
     }
     return campoValido;

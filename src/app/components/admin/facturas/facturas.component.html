@@ -1,86 +1,20 @@
 <body>
-<div class="menu-container">
-  <div class="menu">
-    <div class="menu-header">
-      <button (click)="setActiveMenu('Producto')">Facturas</button>
-    </div>
-
-    <div class="menu-content">
-      <ng-container *ngIf="activeMenu === 'Producto'">
-        <h2 style="text-align: center;">FACTURAS</h2>
-
-        <button (click)="downloadFacturasPDF()" class="btn btn-danger mb-2" style="font-size: large; float: right;" id="facturasDownloadPDF">
-          <i class="bi bi-filetype-pdf"></i>
-        </button>
-
-        <table class="factura-table">
-          <thead>
-            <tr>
-              <th>ID Factura</th>
-              <th>Identificación</th>
-              <th>Cliente</th>
-              <th>Fecha Emisión</th>
-              <th>Método Pago</th>
-              <th>Subtotal</th>
-              <th>IVA</th>
-              <th>Total</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tr *ngFor="let factura of facturas">
-            <td>{{factura.idFactura}}</td>
-            <td>{{factura.cliente.id_cliente}}</td>
-            <td>{{factura.cliente.nombre}} {{factura.cliente.primer_apellido}}</td>
-            <td>{{factura.fechaEmision | date: 'yyyy-MM-dd'}}</td>
-            <td>{{factura.metodoPago}}</td>
-            <td>{{factura.subtotal}}</td>
-            <td>{{factura.iva}}</td>
-            <td>{{factura.total}}</td>
-            <td>
-              <button (click)="downloadFacturaPDF(factura.idFactura)" class="btn btn-success">PDF</button>
-              <button (click)="listarDetallesFactura(factura.idFactura)" style="margin-left: 0.5rem;"
-                class="btn btn-info">Detalles</button>
-            </td>
-          </tr>
-        </table>
-      </ng-container>
-    </div>
-  </div>
-</div>
-
-<!-- Modal para Detalles de la Factura -->
-<div id="detailsModal" class="modal fade" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="detailsModalLabel">Detalles de la Factura</h5>
-        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+  <div class="menu-container">
+    <div class="menu">
+      <div class="menu-header">
+        <button (click)="setActiveMenu('fact-Producto')">Productos</button>
+        <button (click)="setActiveMenu('fact-membresias')">Membresías</button>
       </div>
-      <div class="modal-body">
-        <!-- Tabla para mostrar los detalles -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let detalle of detallesFactura">
-              <td>{{ detalle.producto.nombre }}</td>
-              <td>{{ detalle.precio }}</td>
-              <td>{{ detalle.cantidad }}</td>
-              <td>{{ detalle.total }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+
+      <div class="menu-content">
+        <ng-container *ngIf="activeMenu === 'fact-Producto'">
+          <app-facturas-productos></app-facturas-productos>
+        </ng-container>
+
+        <ng-container *ngIf="activeMenu === 'fact-membresias'">
+          <app-facturas-membresias></app-facturas-membresias>
+        </ng-container>
       </div>
     </div>
   </div>
-</div>
 </body>

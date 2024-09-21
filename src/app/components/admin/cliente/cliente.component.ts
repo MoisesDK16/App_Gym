@@ -74,6 +74,21 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
 
   registrarCliente(): void {
 
+    console.log('Incompleto?', this.incompleto);
+
+    const index = this.clientes.findIndex((cliente)=> {
+      return cliente.id_cliente == this.cliente.id_cliente;
+    })
+
+    console.log('Index:', index);
+
+    if(index != -1){
+      console.log('El cliente ya existe');
+      alert('El cliente ya existe');
+      return;
+    }
+
+
     if(this.incompleto == false){
       if (
         this.validarID() &&
@@ -81,11 +96,17 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
         this.validarContrasenia() 
       ) {
         console.log('Cliente a registrar', this.cliente);
-        this.clienteServicio.registrarCliente(this.cliente).subscribe((data) => {
-          console.log('Cliente creado', data);
-          this.getClientes();
-          this.closeModal();
-        });
+        this.clienteServicio.registrarCliente(this.cliente).subscribe({
+          next: (data) => {
+            console.log('Cliente creado', data);
+            this.getClientes();
+            this.closeModal();
+          },
+          error: (error) => {
+            console.error('Error al registrar cliente:', error);
+            alert('Error al registrar cliente');
+          }});
+
       } else {
         console.log('Datos inválidos');
         alert('Ingrese Datos validos');
@@ -94,6 +115,21 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
   }
   
   registrarCliente2(): void{
+
+    console.log('Incompleto?', this.incompleto);
+
+    const index = this.clientes.findIndex((cliente)=> {
+      return cliente.id_cliente == this.cliente.id_cliente;
+    })
+
+    console.log('Index:', index);
+
+    if(index != -1){
+      console.log('El cliente ya existe');
+      alert('El cliente ya existe');
+      return;
+    }
+
     if(this.validarID() && this.incompleto==true){
       this.clienteServicio.registrarCliente(this.cliente).subscribe(data => {
         console.log('Cliente creado', data);
@@ -112,6 +148,8 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
 
     if(correoValue === '' && claveValue === ''){
       this.incompleto = true;
+    }else{
+      this.incompleto = false;
     }
 
     console.log("incompleto?: ", this.incompleto);
@@ -132,14 +170,28 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
       this.estado = "actualizar";
       console.log(this.cliente);
       console.log(this.estado);
+      const tipo_identificacion = document.getElementById('tipo_identificacion') as HTMLSelectElement;
+      if (tipo_identificacion) {
+        tipo_identificacion.innerHTML = ''; // Limpia los options anteriores
+        const option = document.createElement('option');
+        option.value = this.cliente.tipo_identificacion;
+        option.textContent = this.cliente.tipo_identificacion;
+        tipo_identificacion.appendChild(option);
+      }
     });
   }
 
   eliminarCliente(id_cliente: string): void {
-    this.clienteServicio.eliminarCliente(id_cliente).subscribe((data: any) => {
-      this.getClientes();
+    this.clienteServicio.eliminarCliente(id_cliente).subscribe({
+      next: (success) => {
+        this.getClientes();
+      },
+      error: (error) => {
+        alert("Error al eliminar cliente ya que está asociado a una membresia");
+      }
     });
   }
+  
 
 
   // Método que se ejecuta cuando cambia la paginación
@@ -149,45 +201,62 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
     this.getClientes();
   }
 
-
   validarIdentificacion(): boolean {
     let valido = false;
-
+    const tipo_identificacion = document.getElementById('tipo_identificacion') as HTMLSelectElement;
+  
     if (this.cliente.id_cliente.trim() === '') {
-      valido = false; 
+      valido = false;
     }
-
+  
     if (
       this.cliente.id_cliente.length < 10 ||
       this.cliente.id_cliente.length > 13
     ) {
       console.log('La identificación debe tener entre 10 y 13 caracteres.');
-      valido = false; 
-    } 
-
+      valido = false;
+    }
+  
     if (this.cliente.id_cliente.length === 10) {
       if (validarCedula(this.cliente.id_cliente)) {
         console.log('Cédula válida');
-        valido = true;
+        if (tipo_identificacion) {
+          tipo_identificacion.innerHTML = ''; // Limpia los options anteriores
+          const option = document.createElement('option');
+          option.value = 'cedula';
+          option.textContent = 'Cédula';
+          tipo_identificacion.appendChild(option);
+          this.cliente.tipo_identificacion = 'cedula';
+          valido = true;
+        }
       } else {
         console.log('Cédula inválida');
-        valido = false; 
+        valido = false;
       }
     }
-
+  
     if (this.cliente.id_cliente.length === 13) {
       if (validarRuc(this.cliente.id_cliente)) {
         console.log('RUC válido');
-        valido = true;
+        if (tipo_identificacion) {
+          tipo_identificacion.innerHTML = ''; // Limpia los options anteriores
+          const option = document.createElement('option');
+          option.value = 'RUC';
+          option.textContent = 'RUC';
+          tipo_identificacion.appendChild(option);
+          this.cliente.tipo_identificacion = 'RUC';
+          valido = true;
+        }
       } else {
         console.log('RUC inválido');
-        valido = false; 
+        valido = false;
       }
     }
-
+  
     return valido;
   }
 
+  
   validarCorreo(): boolean {
     let campoValido = false;
 
@@ -225,7 +294,6 @@ export default class ClienteComponent implements OnInit, AfterViewInit {
       this.avisoIdentificacion = true; 
     } else {
       this.avisoIdentificacion = false; 
-      campoValido = true;
     }
     return campoValido;
   }

@@ -24,6 +24,10 @@ export class MembresiaService {
     return this.http.get<MembresiaResponse>(`${this.url}/all?page=${page}&size=${size}`);
   }
 
+  getMembresias2(): Observable<MembresiaResponse[]> {
+    return this.http.get<MembresiaResponse[]>(`${this.url}/all2`);
+  }
+
   getMembresiaByCliente(idCliente: string): Observable<MembresiaResponse[]> {
     return this.http.get<MembresiaResponse[]>(`${this.url}/cliente/${idCliente}`);
   }

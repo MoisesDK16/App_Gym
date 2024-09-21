@@ -34,6 +34,14 @@ export class FacturacionCajaService {
     return this.http.get<Factura[]>(`${this.urlFacturacion}/all`);
   }
 
+  listarFacturasMembresia(): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-membresia`);
+  }
+
+  listarFacturasProductos(): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-productos`);
+  }
+
   downloadFacturasPDF(): Observable<Blob> {
     return this.http.get(`${this.urlFacturacion}/all?format=pdf`, {
       responseType: 'blob'

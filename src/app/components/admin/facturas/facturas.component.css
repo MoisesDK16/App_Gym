@@ -32,37 +32,3 @@ h2 {
   margin-bottom: 2rem;
 }
 
-.factura-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-  }
-
-.factura-table th,
-.factura-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* Centrar el modal */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Ancho del modal */
-}
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}

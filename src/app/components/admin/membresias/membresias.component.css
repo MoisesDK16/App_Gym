@@ -171,3 +171,12 @@ table .btn-danger {
   margin: 1.75rem auto;
 }
 
+
+.activo {
+  color: green;
+}
+
+.inactivo {
+  color: red;
+}
+

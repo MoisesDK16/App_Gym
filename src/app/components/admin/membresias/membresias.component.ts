@@ -6,7 +6,7 @@ import {
 } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MembresiaService } from '../../../services/membresia.service';
-import { DatePipe, KeyValuePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlanService } from '../../../services/plan-service';
 import { Planes } from '../../../models/Planes';
@@ -23,6 +23,7 @@ import { ClienteService } from '../../../services/cliente-service';
   imports: [
     NgFor,
     NgIf,
+    NgClass,
     FormsModule,
     MatTableModule,
     MatPaginatorModule,
@@ -389,8 +390,13 @@ export default class MembresiasComponent implements OnInit {
   }
 
 
-  async advertirMembresias2(): Promise<void>{
+  async advertirMembresiasBtn(): Promise<void>{
     await this.advertirMembresias();
+    alert('Clientes han sido notificados');
+  }
+
+  async advertirMembresiasVencidasBtn(): Promise<void>{
+    await this.advertirMembresiasVencidas();
     alert('Clientes han sido notificados');
   }
 
@@ -413,8 +419,12 @@ export default class MembresiasComponent implements OnInit {
           },
         });   
       }
+    })
+  }
 
-      if(membresia.dias_restantes === 0){
+  async advertirMembresiasVencidas(): Promise<void> {
+    this.membresias.forEach(async (membresia) => {
+      if(membresia.dias_restantes <= 0){
         const destinatario = membresia.cliente.correo;
         const asunto = 'Recordatorio de membresía';
         const mensaje = `Estimado/a, ${membresia.cliente.nombre} ${membresia.cliente.primer_apellido} 
@@ -422,12 +432,12 @@ export default class MembresiasComponent implements OnInit {
         Favor revise su estado`;
  
         this._membresiaService.advertirMembresia(destinatario, asunto, mensaje, membresia).subscribe({
-         next: () => {
-           console.log('Correo enviado correctamente');
-         },
-         error: (err) => {
-           console.error('Error al enviar el correo:', err);
-         },
+          next: () => {
+            console.log('Correo enviado correctamente');
+          },
+          error: (err) => {
+            console.error('Error al enviar el correo:', err);
+          },
         });   
       }
     })

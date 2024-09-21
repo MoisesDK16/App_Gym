@@ -181,17 +181,8 @@
               id="id_cliente"
             />
 
-            <label for="tipo_identificacion" class="form-label"
-              >Tipo Identificación</label
-            >
-            <input
-              style="margin-bottom: 1rem"
-              type="text"
-              [(ngModel)]="cliente.tipo_identificacion"
-              name="tipo_identificacion"
-              class="form-control"
-              id="tipo_identificacion"
-            />
+            <label for="tipo_identificacion" class="form-label">Tipo de Identificación:</label>
+            <select id="tipo_identificacion" disabled></select>
 
             <label for="nombre" class="form-label">Nombre</label>
             <input

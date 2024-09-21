@@ -18,10 +18,8 @@
             </div> 
             <input (change)="validarID()" [(ngModel)]="cliente.id_cliente" type="text" id="id_cliente" name="id_cliente" maxlength="15" required>
             
-            <label [(ngModel)]="cliente.tipo_identificacion" for="tipo-id">Tipo de Identificación:</label>
-            <select class="tipo-id">
-                <option value="cedula">cedula</option>
-                <option value="ruc">RUC</option>
+            <label for="tipo-id">Tipo de Identificación:</label>
+            <select  id="tipo_identificacion" class="tipo-id" disabled>
             </select>
             
             <label for="nombre">Nombre:</label>

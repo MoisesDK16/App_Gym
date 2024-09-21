@@ -1,14 +1,17 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FacturacionCajaService } from '../../../services/facturacion-caja.service';
 import { Factura } from '../../../models/Factura';
 import { Detalle } from '../../../models/Detalle';
 import { AdminComponent } from '../../../headers/admin/admin.component';
+import ProductosComponent from "../productos/productos.component";
+import { FacturasProductosComponent } from "./facturas-productos/facturas-productos.component";
+import { FacturasRenovacionComponent } from "./facturas-membresias/facturas-membresias.component";
 
 @Component({
   selector: 'app-facturas',
   standalone: true,
-  imports: [NgIf, NgFor, DatePipe, AdminComponent],
+  imports: [NgIf, NgFor, DatePipe, CommonModule, AdminComponent, ProductosComponent, FacturasProductosComponent, FacturasRenovacionComponent],
   templateUrl: './facturas.component.html',
   styleUrl: './facturas.component.css'
 })
@@ -21,83 +24,14 @@ export default class FacturasComponent implements OnInit{
   constructor(private _FacturaService: FacturacionCajaService) { }
 
   ngOnInit(): void {
-    this.setActiveMenu('Producto');
-    this.listarFacturas();
+    this.setActiveMenu('fact-Producto');
+
   }
 
-  activeMenu:String = 'Producto';
+  activeMenu: String = 'fact-Producto';
 
   setActiveMenu(menu: String):void {
     this.activeMenu = menu;
   }
 
-  listarFacturas(): void {
-    this._FacturaService.listarFacturas().subscribe(
-      (data) => {
-        this.facturas = data;
-      }
-    );
-  }
-
-  listarDetallesFactura(idFactura: number): void {
-    this._FacturaService.listarDetallesFactura(idFactura).subscribe(
-      (data) => {
-        this.detallesFactura = data;
-        console.log(this.detallesFactura);
-        this.openModal();
-      }
-    );
-  }
-
-  downloadFacturasPDF(): void {
-    this._FacturaService.downloadFacturasPDF().subscribe(
-      (data: Blob) => {
-        const url = window.URL.createObjectURL(data);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'facturas.pdf';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      },
-    );
-  }   
-
-  downloadFacturaPDF(idFactura: number): void {
-    this._FacturaService.downloadFacturaPDF(idFactura).subscribe(
-      (data: Blob) => {
-        const url = window.URL.createObjectURL(data);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'facturaPersonal.pdf';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    );
-  }
-  
-
-  openModal(): void {
-    const modalDiv = document.getElementById('detailsModal');
-    if (modalDiv != null) {
-      modalDiv.classList.add('show');
-      modalDiv.style.display = 'block';
-      document.body.classList.add('modal-open');
-      const backdrop = document.createElement('div');
-      backdrop.classList.add('modal-backdrop', 'fade', 'show');
-      document.body.appendChild(backdrop);
-    }
-  }
-
-  closeModal(): void {
-    const modalDiv = document.getElementById('detailsModal');
-    if (modalDiv != null) {
-      modalDiv.classList.remove('show');
-      modalDiv.style.display = 'none';
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        document.body.removeChild(backdrop);
-      }
-    }
-  }
 }

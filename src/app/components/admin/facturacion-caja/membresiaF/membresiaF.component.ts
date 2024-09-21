@@ -29,6 +29,7 @@ export class MembresiaComponentF {
   cliente: Clientes = new Clientes('', '', '', '', '', '', '', '', '');
   plan: Planes = new Planes(0, '', '', 0, 0, '');
   planesModal: Planes[] = [];
+  membresias: any[] = [];
   detalle: DetalleMembresia = new DetalleMembresia(
     0,
     0,
@@ -66,6 +67,7 @@ export class MembresiaComponentF {
 
   ngOnInit(): void {
     console.log('Componente de productos cargado');
+    this.getMembresias();
   }
 
   resetEstado() {
@@ -117,6 +119,10 @@ export class MembresiaComponentF {
     );
   }
 
+  reloadPage(): void {
+    window.location.reload();
+  }
+
   resetAll(): void {
     this.resetCliente();
     this.resetPlan();
@@ -143,6 +149,15 @@ export class MembresiaComponentF {
   }
 
   async generarFactura(): Promise<void> {
+
+    const membresiaCliente = this.membresias.findIndex((membresia) => membresia.cliente.id_cliente == this.cliente.id_cliente);
+
+    if(membresiaCliente != -1){
+      alert('El cliente ya tiene una membresia activa');
+      this.resetAll();
+      return;
+    }
+
     this.factura = {
       idFactura: 0,
       cliente: {
@@ -217,11 +232,12 @@ export class MembresiaComponentF {
       alert('Seleccione un cliente y un plan');
       return;
     }
-
+  
     await this.generarFactura();
     await this.registrarMembresia();
     await this.registrarDetalle();
     await this.generarFacturaPDF();
+    this.reloadPage();
     setTimeout(() => {
       alert('Compra de membresia exitosa');
     },1000);
@@ -289,6 +305,12 @@ export class MembresiaComponentF {
     });
   }
 
+  getMembresias(): void {
+    this._MembresiaService.getMembresias2().subscribe((data) => {
+      this.membresias = data;
+      console.log(this.membresias);
+    });
+  }
 
   openModal(): void {
     const modalDiv = document.getElementById('myModal');
