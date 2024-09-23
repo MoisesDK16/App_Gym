@@ -32,3 +32,66 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+/**Filtros**/
+
+.container-init{
+  display: flex;
+  flex-direction: row;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+#select-dias {
+  width: 12%;
+  padding: 12px 20px;
+  margin-right: 1rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#buscador-cliente {
+  width: 20%;
+  padding: 12px 20px;
+  margin-right: 1rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#select-metodoPago {
+  width: 10%;
+  padding: 12px 20px;
+  margin-right: 1rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}	
+
+#filtrar-fecha {
+  width: 5%;
+  margin-right: 1rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 3.3rem;
+  box-sizing: border-box;
+  background-color: green;
+  color: white;
+}
+
+#todos {
+  width: 10%;
+  margin-right: 1rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 3.3rem;
+  box-sizing: border-box;
+  background-color: green;
+  color: white;
+}	

@@ -10,41 +10,62 @@
 <body>
 
   <div class="menu-content">
-      <h2 style="text-align: center;">FACTURAS DE PRODUCTOS</h2>
+    <h2 style="text-align: center;">FACTURAS DE PRODUCTOS</h2>
+
+    <div class="container-init">
+      <input (keyup)="listarFacturasByCliente($event)" type="text" id="buscador-cliente" placeholder="buscar cliente">
+      <select id="select-dias">
+        <option value="0">Seleccione</option>
+        <option value="1">Hoy</option>
+        <option value="7">Últimos 7 días</option>
+        <option value="30">Últimos 30 días</option>
+        <option value="60">Últimos 60 días</option>
+      </select>
+
+      <select id="select-metodoPago">
+        <option value="0">Seleccione</option>
+        <option value="EFECTIVO">EFECTIVO</option>
+        <option value="EN LINEA">EN LINEA</option>
+      </select>
+
+      <button (click)="filtrarPorFecha()" class="filtrar-fecha" id="filtrar-fecha">FILTRAR</button>
+
+      <button (click)="listarTodasFacturas()" class="todos" id="todos">MOSTRAR TODAS</button>
 
       <button (click)="downloadFacturasPDF()" class="btn btn-danger mb-2" style="font-size: large; float: right;"
         id="facturasDownloadPDF">
         <i class="bi bi-filetype-pdf"></i>
       </button>
+    </div>
 
-      <table class="factura-table">
-        <thead>
-          <tr>
-            <th>Identificación</th>
-            <th>Cliente</th>
-            <th>Fecha Emisión</th>
-            <th>Método Pago</th>
-            <th>Subtotal</th>
-            <th>IVA</th>
-            <th>Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tr *ngFor="let factura of facturas">
-          <td>{{factura.cliente.id_cliente}}</td>
-          <td>{{factura.cliente.nombre}} {{factura.cliente.primer_apellido}}</td>
-          <td>{{factura.fechaEmision | date: 'yyyy-MM-dd'}}</td>
-          <td>{{factura.metodoPago}}</td>
-          <td>{{factura.subtotal}}</td>
-          <td>{{factura.iva}}</td>
-          <td>{{factura.total}}</td>
-          <td>
-            <button (click)="downloadFacturaPDF(factura.idFactura)" class="btn btn-success">PDF</button>
-            <button (click)="listarDetallesFactura(factura.idFactura)" style="margin-left: 0.5rem;"
-              class="btn btn-info">Detalles</button>
-          </td>
+    <table class="factura-table">
+      <thead>
+        <tr>
+          <th>Identificación</th>
+          <th>Cliente</th>
+          <th>Fecha Emisión</th>
+          <th>Método Pago</th>
+          <th>Subtotal</th>
+          <th>IVA</th>
+          <th>Total</th>
+          <th>Acciones</th>
         </tr>
-      </table>
+      </thead>
+      <tr *ngFor="let factura of facturas">
+        <td>{{factura.cliente.id_cliente}}</td>
+        <td>{{factura.cliente.nombre}} {{factura.cliente.primer_apellido}}</td>
+        <td>{{factura.fechaEmision | date: 'yyyy-MM-dd'}}</td>
+        <td>{{factura.metodoPago}}</td>
+        <td>{{factura.subtotal}}</td>
+        <td>{{factura.iva}}</td>
+        <td>{{factura.total}}</td>
+        <td>
+          <button (click)="downloadFacturaPDF(factura.idFactura)" class="btn btn-success">PDF</button>
+          <button (click)="listarDetallesFactura(factura.idFactura)" style="margin-left: 0.5rem;"
+            class="btn btn-info">Detalles</button>
+        </td>
+      </tr>
+    </table>
   </div>
 
 

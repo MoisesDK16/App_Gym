@@ -20,16 +20,7 @@ export class FacturasProductosComponent {
   constructor(private _FacturaService: FacturacionCajaService) { }
 
   ngOnInit(): void {
-    this.listarFacturas();
-  }
-
-  listarFacturas(): void {
-    this._FacturaService.listarFacturasProductos().subscribe(
-      (data) => {
-        this.facturas = data;
-        console.log(this.facturas);
-      }
-    );
+    this.listarTodasFacturas();
   }
 
   listarDetallesFactura(idFactura: number): void {
@@ -68,6 +59,165 @@ export class FacturasProductosComponent {
     );
   }
   
+
+  //FILTROS
+
+  filtrarPorFecha(): void {
+    const select_dias = document.getElementById(
+      'select-dias'
+    ) as HTMLSelectElement;
+    const select_metodoPago = document.getElementById(
+      'select-metodoPago'
+    ) as HTMLSelectElement;
+    let fechaInicio = new Date();
+    let fechaFin;
+    let formattedFechaInicio = fechaInicio.toString().split('T')[0];
+    let formattedFechaFin;
+
+    switch (select_dias.value) {
+      case '0':
+        this.listarTodasFacturas();
+        break;
+
+      case '1':
+        if (select_metodoPago.value == '0') {
+          this.listarTodasFacturas();
+          break;
+        }
+        fechaFin = new Date(fechaInicio);
+        fechaFin.setDate(fechaFin.getDate());
+        formattedFechaFin = fechaFin.toISOString().split('T')[0];
+        this._FacturaService
+          .getAllProductosByFecha(
+            formattedFechaInicio,
+            formattedFechaFin,
+            select_metodoPago.value
+          )
+          .subscribe((data) => {
+            this.facturas = data;
+          });
+        break;
+
+      case '7':
+        if (select_metodoPago.value == '0') {
+          this.listarTodasFacturas();
+          break;
+        }
+        fechaFin = new Date(fechaInicio);
+        fechaFin.setDate(fechaFin.getDate() + 7);
+        formattedFechaFin = fechaFin.toISOString().split('T')[0];
+        this._FacturaService
+          .getAllProductosByFecha(
+            formattedFechaInicio,
+            formattedFechaFin,
+            select_metodoPago.value
+          )
+          .subscribe((data) => {
+            this.facturas = data;
+          });
+        break;
+
+      case '30':
+        if (select_metodoPago.value == '0') {
+          this.listarTodasFacturas();
+          break;
+        }
+        fechaFin = new Date(fechaInicio);
+        fechaFin.setDate(fechaFin.getDate() + 30);
+        formattedFechaFin = fechaFin.toISOString().split('T')[0];
+        this._FacturaService
+          .getAllProductosByFecha(
+            formattedFechaInicio,
+            formattedFechaFin,
+            select_metodoPago.value
+          )
+          .subscribe((data) => {
+            this.facturas = data;
+          });
+        break;
+
+      case '60':
+        if (select_metodoPago.value == '0') {
+          this.listarTodasFacturas();
+          break;
+        }
+        fechaFin = new Date(fechaInicio);
+        fechaFin.setDate(fechaFin.getDate() + 60);
+        formattedFechaFin = fechaFin.toISOString().split('T')[0];
+        this._FacturaService
+          .getAllProductosByFecha(
+            formattedFechaInicio,
+            formattedFechaFin,
+            select_metodoPago.value
+          )
+          .subscribe((data) => {
+            this.facturas = data;
+          });
+        break;
+
+      default:
+        this.listarTodasFacturas();
+        break;
+    }
+  }
+
+
+  listarTodasFacturas(): void {
+    const select_dias = document.getElementById(
+      'select-dias'
+    ) as HTMLSelectElement;
+    const select_metodoPago = document.getElementById(
+      'select-metodoPago'
+    ) as HTMLSelectElement;
+
+    select_dias.value = '30';
+    select_metodoPago.value = '0';
+    let fechaInicio = new Date();
+    let fechaFin;
+    let formattedFechaInicio = fechaInicio.toString().split('T')[0];
+    let formattedFechaFin;
+    fechaFin = new Date(fechaInicio);
+    fechaFin.setDate(fechaFin.getDate() + 30);
+    formattedFechaFin = fechaFin.toISOString().split('T')[0];
+    this._FacturaService
+      .getAllProductosByFecha(formattedFechaInicio, formattedFechaFin, 'null')
+      .subscribe((data) => {
+        this.facturas = data;
+      });
+  }
+
+  listarFacturasByCliente(event: Event): void {
+    let clienteInput = event.target as HTMLInputElement;
+    let clienteValue = clienteInput.value;
+    console.log("Cliente: ", clienteValue);
+    let verificaNumeros = /^[0-9]+$/;
+
+    if(verificaNumeros.test(clienteValue)){
+      this._FacturaService.getAllProductosByClienteId(clienteValue).subscribe({
+        next: (data) => {
+          this.facturas = data;
+          console.log(this.facturas);
+        },
+        error: (error) => {
+          console.log(error);
+          this.listarTodasFacturas();
+        }
+      });
+    }else{
+      this._FacturaService.getAllProductosByClienteCompleto(clienteValue).subscribe({
+        next: (data) => {
+          this.facturas = data;
+          console.log(this.facturas);
+        },
+        error: (error) => {
+          console.log(error);
+          this.listarTodasFacturas();
+        }
+      });
+    }
+
+  }
+
 
   openModal(): void {
     const modalDiv = document.getElementById('detailsModal');

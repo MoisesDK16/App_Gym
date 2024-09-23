@@ -34,14 +34,6 @@ export class FacturacionCajaService {
     return this.http.get<Factura[]>(`${this.urlFacturacion}/all`);
   }
 
-  listarFacturasMembresia(): Observable<any[]> {
-    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-membresia`);
-  }
-
-  listarFacturasProductos(): Observable<any[]> {
-    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-productos`);
-  }
-
   downloadFacturasPDF(): Observable<Blob> {
     return this.http.get(`${this.urlFacturacion}/all?format=pdf`, {
       responseType: 'blob'
@@ -78,4 +70,43 @@ export class FacturacionCajaService {
 
     return this.http.post<any>(`${this.urlEnvioCorreo}/enviar-correo`, formData);
   }
+
+
+  /***FILTROS******/
+
+  //Membresias
+  listarFacturasMembresia(): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-membresia`);
+  }
+
+  getAllMembresiaByFecha(fechaInicio: string, fechaFin:string, metodoPago:string): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-membresia/by-fecha/${fechaInicio}/${fechaFin}/${metodoPago}`);
+  }
+
+  getAllMembresiaByClienteId(id_cliente: string): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-membresia/by-cliente/${id_cliente}`);
+  }
+
+  getAllMembresiaByClienteCompleto(nombreApellido:string){
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-membresia/by-nombre-apellido/${nombreApellido}`);
+  }
+
+
+  //Productos
+  listarFacturasProductos(): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-productos`);
+  }
+
+  getAllProductosByFecha(fechaInicio: string, fechaFin:string, metodoPago:string): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-productos/by-fecha/${fechaInicio}/${fechaFin}/${metodoPago}`);
+  }
+
+  getAllProductosByClienteId(id_cliente: string): Observable<any[]> {
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-productos/by-cliente/${id_cliente}`);
+  }
+
+  getAllProductosByClienteCompleto(nombreApellido:string){
+    return this.http.get<Factura[]>(`${this.urlFacturacion}/all-productos/by-nombre-apellido/${nombreApellido}`);
+  }
+
 }
