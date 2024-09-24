@@ -12,15 +12,15 @@ export class PlanService {
   constructor(private http: HttpClient) {}
 
   listarPlanes(page: number, size: number): Observable<PlanResponse> {
-    return this.http.get<PlanResponse>(`${this.url}/listar?page=${page}&size=${size}`);
+    return this.http.get<PlanResponse>(`${this.url}/me/listar?page=${page}&size=${size}`);
   }
 
   listarPlanes2(): Observable<Planes[]> {
-    return this.http.get<Planes[]>(`${this.url}/all`);
+    return this.http.get<Planes[]>(`${this.url}/me/all`);
   }
 
   buscarPlanId(id: number): Observable<Planes> {
-    return this.http.get<Planes>(`${this.url}/${id}`).pipe(
+    return this.http.get<Planes>(`${this.url}/me/${id}`).pipe(
         catchError((error: HttpErrorResponse) => {
             console.error('Error al buscar el plan:', error);
             return throwError(() => new Error('Error al buscar el plan'));

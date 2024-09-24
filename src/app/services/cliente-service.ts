@@ -19,11 +19,11 @@ export class ClienteService {
   }
 
   registrarCliente(cliente: Clientes): Observable<any> {
-    return this.http.post<any>(`${this.url}/registrar`, cliente);
+    return this.http.post<any>(`${this.url}me/registrar`, cliente);
   }
 
   actualizarCliente(cliente: Clientes): Observable<any> {
-    return this.http.put<any>(`${this.url}/actualizar/${cliente.id_cliente}`,cliente);
+    return this.http.put<any>(`${this.url}me/actualizar/${cliente.id_cliente}`,cliente);
   }
 
   eliminarCliente(id_cliente: string): Observable<any> {
@@ -31,7 +31,7 @@ export class ClienteService {
   }
 
   unoCliente(id_cliente: string): Observable<any> {
-    return this.http.get<any>(`${this.url}/${id_cliente}`);
+    return this.http.get<any>(`${this.url}/me/${id_cliente}`);
   }
 
   unoClienteCorreo(correo: string): Observable<any> {

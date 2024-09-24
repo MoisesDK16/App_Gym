@@ -17,7 +17,7 @@ export class ProductoService {
   
   getProductos(page: number, size: number): Observable<ProductoResponse> {
     return this.http.get<ProductoResponse>(
-      `${this.url}/all?page=${page}&size=${size}`
+      `${this.url}/me/all?page=${page}&size=${size}`
     );
   }
 
@@ -38,7 +38,7 @@ export class ProductoService {
   }
 
   unoProducto(id_producto: string): Observable<Productos> {
-    return this.http.get<Productos>(`${this.url}/${id_producto}`);
+    return this.http.get<Productos>(`${this.url}/me/${id_producto}`);
   }
 
   listarCategorias(): Observable<CategoriasResponse[]> {

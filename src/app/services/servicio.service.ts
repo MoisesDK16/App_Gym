@@ -26,11 +26,11 @@ export class ServicioService {
   }
 
   listarServicios(): Observable<any> {
-    return this.http.get<any>(`${this.url}/all`);
+    return this.http.get<any>(`${this.url}/me/all`);
   }
 
   unoServicio(id: number): Observable<Servicios> {
-    return this.http.get<Servicios>(`${this.url}/uno/${id}`);
+    return this.http.get<Servicios>(`${this.url}/me/uno/${id}`);
   }
 
   listarCategorias(): Observable<Categorias[]> {

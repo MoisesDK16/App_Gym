@@ -17,7 +17,7 @@ export class MembresiaService {
   }
 
   uno(id: number): Observable<any> {
-    return this.http.get<Membresia>(`${this.url}/uno/${id}`);
+    return this.http.get<Membresia>(`${this.url}/me/uno/${id}`);
   }
 
   getMembresias(page:number, size:number): Observable<MembresiaResponse> {
@@ -29,7 +29,7 @@ export class MembresiaService {
   }
 
   getMembresiaByCliente(idCliente: string): Observable<MembresiaResponse[]> {
-    return this.http.get<MembresiaResponse[]>(`${this.url}/cliente/${idCliente}`);
+    return this.http.get<MembresiaResponse[]>(`${this.url}/me/cliente/${idCliente}`);
   }
 
   getMembresiasByPrimerApellido(primerApellido: string): Observable<MembresiaResponse[]> {

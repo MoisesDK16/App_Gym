@@ -15,19 +15,19 @@ export class FacturacionCajaService {
   constructor(private http: HttpClient) {}
 
   generarFactura(factura: Factura): Observable<any> {
-    return this.http.post<any>(`${this.urlFacturacion}/generar`, factura);
+    return this.http.post<any>(`${this.urlFacturacion}/me/generar`, factura);
   }
 
   generarDetalle(detalle: any): Observable<any> {
-    return this.http.post<any>(`${this.urlDetalles}/generar`, detalle);
+    return this.http.post<any>(`${this.urlDetalles}/me/generar`, detalle);
   }
 
   generarDetalleMembresia(detalle: any): Observable<any> {
-    return this.http.post<any>(`${this.urlDetalles}/generar-detalle-membresia`, detalle);
+    return this.http.post<any>(`${this.urlDetalles}/me/generar-detalle-membresia`, detalle);
   }
 
   getLastFactura(id_cliente: string): Observable<Factura> {
-    return this.http.get<Factura>(`${this.urlFacturacion}/last/${id_cliente}`);
+    return this.http.get<Factura>(`${this.urlFacturacion}/me/last/${id_cliente}`);
   }
 
   listarFacturas(): Observable<Factura[]> {
@@ -41,17 +41,17 @@ export class FacturacionCajaService {
   }
   
   listarDetallesFactura(idFactura: number): Observable<Detalle[]> {
-    return this.http.get<Detalle[]>(`${this.urlDetalles}/listar/${idFactura}`);
+    return this.http.get<Detalle[]>(`${this.urlDetalles}/me/listar/${idFactura}`);
   }
 
   downloadFacturaPDF(idFactura: number): Observable<Blob> {
-    return this.http.get(`${this.urlFacturacion}/DownloadPdf/${idFactura}`, {
+    return this.http.get(`${this.urlFacturacion}/me/DownloadPdf/${idFactura}`, {
       responseType: 'blob'
     });
   }
 
   downloadFacturaMembresiaPDF(idFactura: number): Observable<Blob> {
-    return this.http.get(`${this.urlFacturacion}/Download-MembresiaPdf/${idFactura}`, {
+    return this.http.get(`${this.urlFacturacion}/me/Download-MembresiaPdf/${idFactura}`, {
       responseType: 'blob'
     });
   }
@@ -68,7 +68,7 @@ export class FacturacionCajaService {
     formData.append('campos', correoBlob);
     formData.append('archivo', factura, 'factura.pdf');
 
-    return this.http.post<any>(`${this.urlEnvioCorreo}/enviar-correo`, formData);
+    return this.http.post<any>(`${this.urlEnvioCorreo}/me/enviar-correo`, formData);
   }
 
 

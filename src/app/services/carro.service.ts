@@ -11,7 +11,7 @@ export class CarroService {
 
   private carrito = new BehaviorSubject<
     { detalle: Detalle[]; producto: Productos[] }[]
-  >(this.myList);
+>(this.myList);
 
   private subtotal = new BehaviorSubject<number>(0);
 
