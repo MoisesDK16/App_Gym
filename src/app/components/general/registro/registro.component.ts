@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import LoginComponent from '../login/login.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { validarCorreoGmail } from '../../../../resources/validations/validar-co
 import { validarContraseñaSegura } from '../../../../resources/validations/validar-pass';
 import { FormsModule } from '@angular/forms';
 import { ClienteService } from '../../../services/cliente-service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -17,18 +18,41 @@ import { ClienteService } from '../../../services/cliente-service';
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css',
 })
-export default class RegistroComponent {
+export default class RegistroComponent implements OnInit {
   avisoIdentificacion: boolean = false;
   avisoCorreo: boolean = false;
   avisoContrasenia: boolean = false;
+
+  loginObj = {
+    username: 'justin',
+    password: 'Justin123!',
+  };
+
 
   cliente: Clientes = new Clientes('', '', '', '', '', '', '', '', '');
   title = 'registro';
 
   constructor(
     private router: Router,
-    private _clienteServide: ClienteService
+    private _clienteServide: ClienteService,
+    private _authServise: AuthService
   ) {}
+
+  ngOnInit(): void {
+    this.login();
+  }
+
+  login() {
+    this._authServise.onLogin(this.loginObj).subscribe(
+      (response: any) => {
+        console.log('Login exitoso', response);
+        localStorage.setItem('authToken', response.token);
+      },
+      (error: any) => {
+        console.error('Error en el login', error);
+      }
+    );
+  }
 
   resetCliente(): void {
     this.cliente = new Clientes('', '', '', '', '', '', '', '', '');
@@ -37,9 +61,10 @@ export default class RegistroComponent {
   registrarCliente(): void {
     if (this.validarID() && this.validarCorreo() && this.validarContrasenia()) {
       console.log('Cliente a registrar', this.cliente);
-      this._clienteServide.registrarCliente(this.cliente).subscribe((data) => {
+      this._clienteServide.registrarCliente(this.cliente).subscribe(async (data) => {
         console.log('Cliente creado', data);
         alert('Registro exitoso');
+        await this.registrarClientelikeUser();
         this.resetCliente();
       });
     } else {
@@ -47,6 +72,22 @@ export default class RegistroComponent {
       alert('Ingrese Datos validos');
     }
   }
+
+
+  async registrarClientelikeUser(): Promise<void> {
+    const userObj = {
+      name: this.cliente.nombre,
+      lastName: this.cliente.primer_apellido,
+      username: this.cliente.correo,
+      password: this.cliente.clave,
+    }
+
+      this._authServise.OnRegister(userObj).subscribe((data) => {
+        console.log('Usuario Cliente creado', data);
+        // this.router.navigate(['/login']);
+      });
+  }
+  
 
   validarIdentificacion(): boolean {
     let valido = false;

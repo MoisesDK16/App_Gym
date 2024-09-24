@@ -34,6 +34,10 @@ export class ClienteService {
     return this.http.get<any>(`${this.url}/${id_cliente}`);
   }
 
+  unoClienteCorreo(correo: string): Observable<any> {
+    return this.http.get<any>(`${this.url}/me/correo/${correo}`);
+  }
+
 }
   
 
