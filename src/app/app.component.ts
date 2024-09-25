@@ -7,14 +7,25 @@ import { NgxPayPalModule } from 'ngx-paypal';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { CommonModule } from '@angular/common';
 import { DetallesCompraComponent } from './components/general/modales/detalles-compra/detalles-compra.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { auth2Interceptor } from './interceptor/auth2.interceptor';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,LayoutComponent, GeneralComponent, AdminComponent, NgxPayPalModule, NgxSpinnerModule],
+  imports: [CommonModule, RouterOutlet,LayoutComponent, GeneralComponent, AdminComponent, NgxPayPalModule, NgxSpinnerModule, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  // providers: [
+  //    {
+  //     provide: HTTP_INTERCEPTORS,
+  //     useValue: auth2Interceptor,
+  //     multi: true,
+  //   },
+  // ],
 })
 
 export class AppComponent {
@@ -22,9 +33,21 @@ export class AppComponent {
   constructor() {}
 }
 
-@NgModule({
-  declarations: [DetallesCompraComponent],
-  imports: [CommonModule],
-  exports: [DetallesCompraComponent]
-})
-export class DetallesCompraModule {}
+// @NgModule({
+//   providers: [
+//     {
+//       provide: HTTP_INTERCEPTORS,
+//       useValue: auth2Interceptor,
+//       multi: true,
+//     },
+//   ],
+// })
+// export class InterceptorModule {}
+
+
+// @NgModule({
+//   declarations: [DetallesCompraComponent],
+//   imports: [CommonModule],
+//   exports: [DetallesCompraComponent],
+// })
+// export class DetallesCompraModule {}

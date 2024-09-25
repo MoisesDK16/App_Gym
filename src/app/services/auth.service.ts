@@ -19,6 +19,23 @@ export class AuthService {
     this.isLoginSubject.next(status);
   }
 
+  setTokenUser(token: string): void {
+    if (token) {
+      localStorage.setItem('accessToken', token); 
+      console.log('Token seteado: ', localStorage.getItem('accessToken'));
+    } else {
+      console.error('Intento de guardar un token nulo o indefinido');
+    }
+  }
+  
+
+  getTokenUser(): string | null {
+    const token = localStorage.getItem('accessToken');
+    console.log("Token desde el servicio: ", token);
+    return token; 
+  }
+  
+
   setUserCliente(){
     localStorage.setItem('userCliente', JSON.stringify(this.userCliente));
   }

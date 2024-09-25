@@ -237,8 +237,8 @@ export class MembresiaComponentF {
     await this.registrarMembresia();
     await this.registrarDetalle();
     await this.generarFacturaPDF();
-    this.reloadPage();
     setTimeout(() => {
+      this.reloadPage();
       alert('Compra de membresia exitosa');
     },1000);
   }

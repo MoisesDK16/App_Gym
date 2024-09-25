@@ -13,7 +13,7 @@ export class MembresiaService {
   constructor(private http: HttpClient) {}
 
   registrar(membresia: Membresia): Observable<any> {
-    return this.http.post<Membresia>(`${this.url}/registrar`, membresia);
+    return this.http.post<Membresia>(`${this.url}/me/registrar`, membresia);
   }
 
   uno(id: number): Observable<any> {
@@ -45,7 +45,7 @@ export class MembresiaService {
   }
 
   renovarMembresia(data:FormData, id:number): Observable<any> {
-    return this.http.patch(`${this.url}/renovar/${id}`, data);
+    return this.http.patch(`${this.url}/me/renovar/${id}`, data);
   }
 
   desactivarMembresias(): Observable<any> {

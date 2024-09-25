@@ -30,34 +30,39 @@ export default class LoginComponent {
   }
 
   async login() {
-
     this.clienteService.unoClienteCorreo(this.loginObj.username).subscribe({
       next: (response: any) => {
         console.log('Cliente encontrado', response);
         this.userCliente = response;
         this.authService.onLogin(this.loginObj).subscribe(
-          (response: any) => {
-            console.log('Login exitoso', response);
+          (loginResponse: any) => {
+            console.log('Login exitoso', loginResponse);
+            this.authService.setTokenUser(loginResponse.accessToken); // Establecer el token al hacer login
             this.router.navigate(['/layout-publico/home']);
           },
-          (error: any) => {
-            console.error('Error en el login', error);
-          });
+          (loginError: any) => {
+            console.error('Error en el login', loginError);
+          }
+        );
       },
-      error: (error: any) => {
-        console.error('Error al buscar cliente', error);
+      error: (clientError: any) => {
+        console.error('Error al buscar cliente', clientError);
+        // Intentar iniciar sesión como admin si no se encuentra el cliente
         this.authService.onLogin(this.loginObj).subscribe(
-          (response: any) => {
-            this.userAdmin = response;
-            console.log('Login exitoso', response);
+          (adminResponse: any) => {
+            this.userAdmin = adminResponse;
+            console.log('Login exitoso como admin', adminResponse);
+            this.authService.setTokenUser(adminResponse.accessToken); // Establecer el token al hacer login como admin
             this.router.navigate(['/layout-admin/cliente']);
           },
-          (error: any) => {
-            console.error('Error en el login admin', error);
-          });
+          (adminError: any) => {
+            console.error('Error en el login admin', adminError);
+          }
+        );
       }
     });
   }
+  
 
       // this.router.navigate(['/layout-admin/cliente']);
 }

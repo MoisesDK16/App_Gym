@@ -199,18 +199,18 @@ export default class ProductosComponent implements OnInit, AfterViewInit {
 
   registrarProducto(): void {
 
-    const productoRepetido = this.productos.findIndex((producto)=> this.producto.nombre === this.producto.nombre);
+    // const productoRepetido = this.productos.findIndex((producto)=> this.producto.nombre === this.producto.nombre);
 
-    if (productoRepetido !== -1) {
-      alert('El producto ya existe');
-      return;
-    }
+    // if (productoRepetido !== -1) {
+    //   alert('El producto ya existe');
+    //   return;
+    // }
 
-    const productoRepetido2 = this.productos.findIndex((producto)=> this.producto.idProducto === this.producto.idProducto);
-    if (productoRepetido2 !== -1) {
-      alert('El producto ya existe');
-      return;
-    }
+    // const productoRepetido2 = this.productos.findIndex((producto)=> this.producto.idProducto === this.producto.idProducto);
+    // if (productoRepetido2 !== -1) {
+    //   alert('El producto ya existe');
+    //   return;
+    // }
 
     if (
       this.selectedFile

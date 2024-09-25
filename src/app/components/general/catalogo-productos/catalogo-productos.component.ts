@@ -32,6 +32,7 @@ export default class CatalogoProductosComponent implements OnInit{
 
   ngOnInit(): void {
     this.getProductos();
+    console.log('Imagenes: ', this.productos);
   }
 
   getProductos(): void {
