@@ -42,7 +42,7 @@ export default class CatalogoPlanesComponent implements OnInit{
   ngOnInit(): void {
     this.getPlanes();
     this.getServicios();
-    this.getCliente();
+    this.getClienteToken();
     this.getMembresia();
   }
 
@@ -77,10 +77,10 @@ export default class CatalogoPlanesComponent implements OnInit{
   }
 
   
-  getCliente() {
-    this.cliente = this._authService.getUserCliente();
+  getClienteToken() {
+    this.cliente = this._authService.getCliente();
     console.log("Cliente activo: ", this.cliente);
-    return this._authService.getUserCliente(); 
+    return this._authService.getCliente(); 
   }
 
   async getMembresia(){

@@ -33,11 +33,12 @@ export default class LoginComponent {
     this.clienteService.unoClienteCorreo(this.loginObj.username).subscribe({
       next: (response: any) => {
         console.log('Cliente encontrado', response);
+        localStorage.setItem('cliente', JSON.stringify(response));
         this.userCliente = response;
         this.authService.onLogin(this.loginObj).subscribe(
           (loginResponse: any) => {
             console.log('Login exitoso', loginResponse);
-            localStorage.setItem('accessTokenCliente', loginResponse.accessToken);
+            localStorage.setItem('accessToken', loginResponse.accessToken);
             // localStorage.removeItem('accessToken');
             this.router.navigate(['/layout-publico/home']);
           },
@@ -52,6 +53,7 @@ export default class LoginComponent {
           (response: any) => {
             console.log('Login exitoso como admin', response);
             localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('admin', response.accessToken);
             this.router.navigate(['/layout-admin/cliente']);
             // localStorage.removeItem('accessTokenCliente');
           },

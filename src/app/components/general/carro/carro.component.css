@@ -1,15 +1,19 @@
 .productCart-wrapper {
- display: flex;
+  display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-left: 30px;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 35rem;
+  margin: auto;
 }
 
 .productCart-body {
   display: flex;
   align-items: center;
   padding: 0.75rem;
+  border-bottom: 1px solid lightgrey;
 }
 
 .body-info p{
@@ -18,7 +22,7 @@
 
 .productCart-name {
   font-weight: bold;
-  color: white;
+  color: #333;
 }
 
 .body-info {
@@ -94,17 +98,14 @@
   align-items: center;
   justify-content: space-between;
 }
-
 .header h6 {
   margin: 0;
 }
-
 .close-button {
   border: none;
   background: transparent;
   cursor: pointer;
 }
-
 .close-button i {
-  font-size: 1.5rem;
+  font-size: 1.5rem; 
 }

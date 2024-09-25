@@ -24,10 +24,7 @@ export default class UserConfigComponent {
   }
 
   getDatosUser() {
-    this._clienteService.unoCliente('2350918856').subscribe((data) => {
-      console.log("cliente", data);
-      this.cliente = data;
-    });
+    this.cliente = this._authService.getCliente();
   }
 
   onSubmit() {

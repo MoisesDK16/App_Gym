@@ -9,6 +9,7 @@ import { FacturacionCajaService } from '../../../../services/facturacion-caja.se
 import { PlanService } from '../../../../services/plan-service';
 import { Factura } from '../../../../models/Factura';
 import { DetalleMembresia } from '../../../../models/DetalleMembresia';
+import { Clientes } from '../../../../models/Clientes';
 
 @Component({
   selector: 'app-user-membresia',
@@ -19,7 +20,7 @@ import { DetalleMembresia } from '../../../../models/DetalleMembresia';
 })
 export default class UserMembresiaComponent {
 
-  cliente: any;
+  cliente: Clientes;
   membresia: any;
   checkoutOpended: boolean = false;
   public payPalConfig?: IPayPalConfig;
@@ -249,9 +250,9 @@ export default class UserMembresiaComponent {
   }
 
   getCliente() {
-    this.cliente = this._authService.getUserCliente();
+    this.cliente = this._authService.getCliente();
     console.log(this.cliente);
-    return this._authService.getUserCliente(); 
+    return this._authService.getCliente(); 
   }
 
   async getMembresia(){

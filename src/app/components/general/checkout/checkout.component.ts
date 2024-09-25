@@ -18,6 +18,7 @@ import { DetalleMembresia } from '../../../models/DetalleMembresia';
 import { FacturacionCajaService } from '../../../services/facturacion-caja.service';
 import { MembresiaService } from '../../../services/membresia.service';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -29,7 +30,7 @@ import { environment } from '../../../../environments/environment';
 export default class CheckoutComponent {
   public payPalConfig?: IPayPalConfig;
 
-  cliente: Clientes = this._checkoutService.getCliente();
+  cliente: Clientes = this._authService.getCliente();
   id_plan: number = 0;
   plan: any;
   servicios: any;
@@ -64,7 +65,7 @@ export default class CheckoutComponent {
   );
 
 
-  constructor(private _checkoutService: CheckoutService, private _planService: PlanService, 
+  constructor(private _authService:AuthService, private _planService: PlanService, 
     private _facturaService: FacturacionCajaService, private _MembresiaService: MembresiaService,
     private _DetalleService: FacturacionCajaService) {
   }

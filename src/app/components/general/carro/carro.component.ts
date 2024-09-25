@@ -45,12 +45,10 @@ export default class CarroComponent implements OnInit {
   ) {
     this.items$ = this._carroService.retornarCarrito();
     this.subtotal$ = this._carroService.retornarSubtotal();
-    this.userCliente = this._authService.getUserCliente();
+    // this.userCliente = this._authService.getUserCliente();
   }
 
   ngOnInit() {
-    this._authService.setUserCliente();
-    console.log('USER CLIENTE: ', this.userCliente);
 
     if (this._carroService.existsCart()) {
       this.items$ = this._carroService.retornarCarrito();
@@ -62,13 +60,38 @@ export default class CarroComponent implements OnInit {
     this.generarDetalles();
 
     this.initConfig();
+    this.getCliente();
+    // this._authService.setUserCliente();
+    console.log('USER CLIENTE: ', this.userCliente);
+    this.getCliente2();
   }
 
+  
   agregarLista(): void {
     this.items$.subscribe((items) => {
       this.listaItems = items;
       console.log('ITEMS: ', this.listaItems);
     });
+  }
+
+  getCliente(): void {
+    const user = this._authService.getUserCliente();
+    
+    if (user) {
+        console.log('USER CLIENTE: ', user);
+    } else {
+        console.warn('No se pudo obtener el usuario cliente');
+    }
+  }
+
+  getCliente2(): void {
+    const user = this._authService.getCliente();
+    if(user) {
+      this.userCliente = user;
+      console.log('USER CLIENTE 2: ', this.userCliente);
+    } else {
+      console.warn('No se pudo obtener el cliente');
+    }
   }
 
   getSubtotalStorage(): void {

@@ -9,9 +9,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 export class CarroService {
   private myList: { detalle: Detalle[]; producto: Productos[] }[] = [];
 
-  private carrito = new BehaviorSubject<
-    { detalle: Detalle[]; producto: Productos[] }[]
->(this.myList);
+  private carrito = new BehaviorSubject<{ detalle: Detalle[]; producto: Productos[] }[]>(this.myList);
 
   private subtotal = new BehaviorSubject<number>(0);
 
@@ -26,19 +24,15 @@ export class CarroService {
     );
 
     if (itemIndex > -1) {
-      this.myList.forEach((item) => {
-        if (item.detalle[0].cantidad >= item.producto[0].stock) {
-          item.detalle[0].cantidad = item.producto[0].stock;
-          item.detalle[0].total = item.detalle[0].cantidad * item.producto[0].precioVenta;
-          return;
-        } else {
-          this.myList[itemIndex].detalle[0].cantidad += 1;
-          this.myList[itemIndex].detalle[0].total += this.myList[itemIndex].producto[0].precioVenta;
-          this.subtotal.next(
-            this.subtotal.value + this.myList[itemIndex].producto[0].precioVenta
-          );
-        }
-      });
+      const item = this.myList[itemIndex];
+      if (item.detalle[0].cantidad >= item.producto[0].stock) {
+        item.detalle[0].cantidad = item.producto[0].stock;
+        item.detalle[0].total = item.detalle[0].cantidad * item.producto[0].precioVenta;
+      } else {
+        item.detalle[0].cantidad += 1;
+        item.detalle[0].total += item.producto[0].precioVenta;
+        this.subtotal.next(this.subtotal.value + item.producto[0].precioVenta);
+      }
     } else {
       this.myList.push({
         detalle: [
@@ -49,9 +43,7 @@ export class CarroService {
         producto: [producto],
       });
       const newIndex = this.myList.length - 1;
-      this.subtotal.next(
-        this.subtotal.value + this.myList[newIndex].producto[0].precioVenta
-      );
+      this.subtotal.next(this.subtotal.value + this.myList[newIndex].producto[0].precioVenta);
     }
 
     this.carrito.next([...this.myList]);
@@ -64,22 +56,17 @@ export class CarroService {
     );
 
     if (itemIndex > -1) {
-      this.myList.forEach((item) => {
-        if (
-          item.detalle[0].cantidad >= item.producto[0].stock
-        ) {
-          console.log('Stock insuficiente');
-          console.log('Stock Producto: ', item.producto[0].stock);
-          item.detalle[0].cantidad = item.producto[0].stock;
-          item.detalle[0].total = item.detalle[0].cantidad * item.producto[0].precioVenta;
-          return;
-          
-        } else {
-          this.myList[itemIndex].detalle[0].cantidad += 1;
-          this.myList[itemIndex].detalle[0].total += this.myList[itemIndex].producto[0].precioVenta;
-          this.subtotal.next(this.subtotal.value + this.myList[itemIndex].producto[0].precioVenta);
-        }
-      });
+      const item = this.myList[itemIndex];
+      if (item.detalle[0].cantidad >= item.producto[0].stock) {
+        console.log('Stock insuficiente');
+        console.log('Stock Producto: ', item.producto[0].stock);
+        item.detalle[0].cantidad = item.producto[0].stock;
+        item.detalle[0].total = item.detalle[0].cantidad * item.producto[0].precioVenta;
+      } else {
+        item.detalle[0].cantidad += 1;
+        item.detalle[0].total += item.producto[0].precioVenta;
+        this.subtotal.next(this.subtotal.value + item.producto[0].precioVenta);
+      }
     }
 
     this.carrito.next([...this.myList]);
@@ -92,19 +79,15 @@ export class CarroService {
     );
 
     if (itemIndex > -1) {
-      this.myList[itemIndex].detalle[0].cantidad -= 1;
-      this.myList[itemIndex].detalle[0].total -=
-        this.myList[itemIndex].producto[0].precioVenta;
+      const item = this.myList[itemIndex];
+      item.detalle[0].cantidad -= 1;
+      item.detalle[0].total -= item.producto[0].precioVenta;
 
-      if (this.myList[itemIndex].detalle[0].cantidad === 0) {
-        this.subtotal.next(
-          this.subtotal.value - this.myList[itemIndex].producto[0].precioVenta
-        );
+      if (item.detalle[0].cantidad === 0) {
+        this.subtotal.next(this.subtotal.value - item.producto[0].precioVenta);
         this.myList.splice(itemIndex, 1);
       } else {
-        this.subtotal.next(
-          this.subtotal.value - this.myList[itemIndex].producto[0].precioVenta
-        );
+        this.subtotal.next(this.subtotal.value - item.producto[0].precioVenta);
       }
     }
 
