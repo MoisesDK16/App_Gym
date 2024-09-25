@@ -45,11 +45,32 @@ export class AuthService {
       return userCliente ? JSON.parse(userCliente) : null;
   }
 
+  setTokenCliente(token: string): void {
+    localStorage.setItem('accessTokenCliente', token); 
+    console.log('Token seteado: ', localStorage.getItem('accessTokenCliente'));
+    console.error('Intento de guardar un token nulo o indefinido');
+  }
+
+  getTokenCliente(): string | null {
+    const token = localStorage.getItem('accessTokenCliente');
+    console.log("Token desde el servicio: ", token);
+    return token; 
+  }
+
+  setCliente(cliente: Clientes){
+    localStorage.setItem('cliente', JSON.stringify(cliente));
+  }
+
+  getCliente(): any{
+    const cliente = localStorage.getItem('cliente');
+    return cliente ? JSON.parse(cliente) : null;
+  }
+
   onLogin(obj:any): Observable<any> {
     return this.http.post(`${this.urlLogin}/login`, obj);
   }
 
   OnRegister(obj:any): Observable<any> {
-    return this.http.post(`${this.urlLogin}/registerCliente`, obj);
+    return this.http.post(`${this.urlLogin}/me/registerCliente`, obj);
   }
 }

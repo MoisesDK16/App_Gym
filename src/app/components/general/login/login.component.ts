@@ -37,7 +37,8 @@ export default class LoginComponent {
         this.authService.onLogin(this.loginObj).subscribe(
           (loginResponse: any) => {
             console.log('Login exitoso', loginResponse);
-            this.authService.setTokenUser(loginResponse.accessToken); // Establecer el token al hacer login
+            localStorage.setItem('accessTokenCliente', loginResponse.accessToken);
+            // localStorage.removeItem('accessToken');
             this.router.navigate(['/layout-publico/home']);
           },
           (loginError: any) => {
@@ -47,13 +48,12 @@ export default class LoginComponent {
       },
       error: (clientError: any) => {
         console.error('Error al buscar cliente', clientError);
-        // Intentar iniciar sesión como admin si no se encuentra el cliente
         this.authService.onLogin(this.loginObj).subscribe(
-          (adminResponse: any) => {
-            this.userAdmin = adminResponse;
-            console.log('Login exitoso como admin', adminResponse);
-            this.authService.setTokenUser(adminResponse.accessToken); // Establecer el token al hacer login como admin
+          (response: any) => {
+            console.log('Login exitoso como admin', response);
+            localStorage.setItem('accessToken', response.accessToken);
             this.router.navigate(['/layout-admin/cliente']);
+            // localStorage.removeItem('accessTokenCliente');
           },
           (adminError: any) => {
             console.error('Error en el login admin', adminError);

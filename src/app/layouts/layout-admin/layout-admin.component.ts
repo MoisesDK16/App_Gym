@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AdminComponent } from "../../headers/admin/admin.component";
 import { RouterOutlet } from '@angular/router';
 
@@ -9,6 +9,11 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './layout-admin.component.html',
   styleUrl: './layout-admin.component.css'
 })
-export default class LayoutAdminComponent {
+export default class LayoutAdminComponent implements OnInit {
+  constructor() {}
+  
+  ngOnInit() {
+    localStorage.removeItem('accessTokenCliente');
+  }
 
 }
